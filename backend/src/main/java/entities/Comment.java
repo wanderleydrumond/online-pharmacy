@@ -10,6 +10,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Comment information type that backend consumes and produces.
@@ -17,15 +20,17 @@ import lombok.Data;
  * @author Wanderley Drumond
  */
 @Entity
+@NoArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "comments")
 public @Data class Comment implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Byte   id;
-	private String content;
+	private Byte id;
+	private @NonNull String content;
 	
 	@ManyToOne
-	private User 	owner;
+	private User owner;
 	@ManyToOne
 	private Product product;
 	

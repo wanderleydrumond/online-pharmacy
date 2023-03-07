@@ -9,10 +9,7 @@ public class PharmacyExceptionHandler implements ExceptionMapper<PharmacyExcepti
 
 	@Override
 	public Response toResponse(PharmacyException pharmacyException) {
-		// Response.status(greetingException.getHttpStatus()).header(greetingException.getHeader(), greetingException.getMessage()).build();
-		return Response.status(pharmacyException.getHttpStatus())
-				.header(pharmacyException.getHeader(), pharmacyException.getMessage())
-				.build();
+		return Response.status(pharmacyException.getHttpStatus()).header(pharmacyException.getHeader(), pharmacyException.getMessage()).build();
 	}
 
 }

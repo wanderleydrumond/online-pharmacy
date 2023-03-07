@@ -3,17 +3,23 @@ package entities;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Product information type that backend consumes and produces.
@@ -21,27 +27,32 @@ import lombok.Data;
  * @author Wanderley Drumond
  */
 @Entity
+@NoArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "products")
 public @Data class Product implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Byte 	id;
+	private Byte id;
 	@NotBlank
-	private String 	name;
+	private @NonNull String name;
 	@NotBlank
-	private Double 	price;
+	private @NonNull Float price;
 	@NotBlank
-	private String 	group;
+	private @NonNull String section;
 	@NotBlank
-	private String 	image;
+	private @NonNull String image;
 	
-	@OneToMany(fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Comment> comments;
 	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "liked_products", joinColumns = @JoinColumn(name = "liked_product_id"), inverseJoinColumns = @JoinColumn(name = "user_that_liked_id"))
 	private List<User> 	  usersThatLiked;
 	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "favorite_products", joinColumns = @JoinColumn(name = "favorite_product_id"), inverseJoinColumns = @JoinColumn(name = "user_that_favorited_id"))
 	private List<User> 	  usersThatFavorited;
 	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "ordered_products", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "order_id"))
 	private List<Order>   ordersOfAProduct;
 	
 	/**

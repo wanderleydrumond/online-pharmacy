@@ -5,9 +5,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,8 +16,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
-import constants.Role;
+import enums.Role;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import mappers.RoleConverter;
 
 /**
  * User information type that backend consumes and produces.
@@ -26,20 +29,32 @@ import lombok.Data;
  * @author Wanderley Drumond
  */
 @Entity
+@NoArgsConstructor
+/**
+ * Custom constructor used only in {@link UserMapper} </p>.
+ * 
+ * @param name
+ * @param username
+ * @param password
+ * @param role
+ * 
+ * @see	  <a href= "https://github.com/projectlombok/lombok/issues/1269">Implicit @RequiredArgsConstructor on @Data will be removed when using @NoArgsConstructor #1269</a>
+ */
+@RequiredArgsConstructor
 @Table(name = "users")
 public @Data class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Byte 	id;
+	private Byte id;
 	@NotBlank
-	private String 	name;
+	private @NonNull String name;
 	private String 	token;
 	@NotBlank
-	private String 	username;
+	private @NonNull String username;
 	@NotBlank
-	private String 	password;
-	@Enumerated(EnumType.STRING)
-	private Role 	role;
+	private @NonNull String password;
+	@Convert(converter = RoleConverter.class)
+	private @NonNull Role role;
 	@Column(name = "is_deleted")
 	private Boolean isDeleted;
 	
@@ -54,7 +69,7 @@ public @Data class User implements Serializable {
 	
 	/**
 	 * <p>The serial version identifier for this class.<p>
-	 * <p>This identifier is used during deserialization to verify that the sender and receiver of a serialized object have loaded classes for that object that are compatible with respect to serialization.<p>
+	 * <p>This identifier is used during deserialisation to verify that the sender and receiver of a serialized object have loaded classes for that object that are compatible with respect to serialization.<p>
 	 */
 	private static final long serialVersionUID = 1L;
 }

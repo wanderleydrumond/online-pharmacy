@@ -14,9 +14,14 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 
 /**
  * Order information type that backend consumes and produces.
@@ -24,23 +29,31 @@ import lombok.Data;
  * @author Wanderley Drumond
  */
 @Entity
+@NoArgsConstructor
+/**
+ * Custom constructor used only in {@link OrderMapper}</p>.
+ * @param totalValue single parameter necessary to pass on the information to frontend
+ * @see	  <a href= "https://github.com/projectlombok/lombok/issues/1269">Implicit @RequiredArgsConstructor on @Data will be removed when using @NoArgsConstructor #1269</a>
+ */
+@RequiredArgsConstructor 
 @Table(name = "orders")
 public @Data class Order implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Byte 	  id;
+	private Byte id;
+	@UpdateTimestamp
 	@Column(name = "last_update")
 	private Timestamp lastUpdate;
+	@CreationTimestamp
 	@Column(name = "finished_in")
 	private Timestamp finishedIn;
-	@NotNull
 	@Column(name = "total_value")
-	private Float 	  totalValue;
+	private @NonNull Float totalValue;
 	@Column(name = "is_concluded")
-	private Boolean   isConcluded;
+	private Boolean isConcluded;
 	
 	@ManyToOne
-	private User 		  buyer;
+	private User buyer;
 	@ManyToMany(mappedBy = "ordersOfAProduct", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Product> productsOfAnOrder;
 	
