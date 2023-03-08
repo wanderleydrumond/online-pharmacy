@@ -21,7 +21,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProductDTO implements Serializable {
-	private Byte id;
+	private Short id;
 	private String name, section, image;
 	private Float price;
 	/**

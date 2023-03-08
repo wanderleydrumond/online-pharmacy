@@ -21,7 +21,7 @@ import lombok.Data;
 public @Data class Configuration implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Byte  id;
+	private Short  id;
 	@Column(name = "total_logins")
 	private Short totalLogins;
 	/**

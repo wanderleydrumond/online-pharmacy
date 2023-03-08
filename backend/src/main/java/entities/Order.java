@@ -40,7 +40,7 @@ import lombok.RequiredArgsConstructor;
 public @Data class Order implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Byte id;
+	private Short id;
 	@UpdateTimestamp
 	@Column(name = "last_update")
 	private Timestamp lastUpdate;

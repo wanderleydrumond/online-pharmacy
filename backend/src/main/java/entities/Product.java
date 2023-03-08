@@ -33,7 +33,7 @@ import lombok.RequiredArgsConstructor;
 public @Data class Product implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Byte id;
+	private Short id;
 	@NotBlank
 	private @NonNull String name;
 	@NotBlank

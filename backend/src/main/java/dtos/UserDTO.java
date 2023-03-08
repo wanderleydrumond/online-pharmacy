@@ -1,6 +1,7 @@
 package dtos;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -23,9 +24,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class UserDTO implements Serializable {
-	private @NonNull Byte id;
+	private @NonNull Short id;
 	private @NonNull String name, username, password;
-	private String token;
+	private UUID uuid;
 	private @NonNull Role role;
 	/**
 	 * <p>The serial version identifier for this class.<p>

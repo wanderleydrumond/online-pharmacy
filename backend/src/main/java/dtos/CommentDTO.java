@@ -21,7 +21,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class CommentDTO implements Serializable {
-	private Byte id;
+	private Short id;
 	private String content;
 	/**
 	 * <p>The serial version identifier for this class.<p>

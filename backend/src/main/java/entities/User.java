@@ -2,11 +2,13 @@ package entities;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,7 +23,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import mappers.RoleConverter;
 
 /**
  * User information type that backend consumes and produces.
@@ -45,15 +46,15 @@ import mappers.RoleConverter;
 public @Data class User implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Byte id;
+	private Short id;
 	@NotBlank
 	private @NonNull String name;
-	private String 	token;
+	private UUID uuid;
 	@NotBlank
 	private @NonNull String username;
 	@NotBlank
 	private @NonNull String password;
-	@Convert(converter = RoleConverter.class)
+	@Enumerated(EnumType.STRING)
 	private @NonNull Role role;
 	@Column(name = "is_deleted")
 	private Boolean isDeleted;

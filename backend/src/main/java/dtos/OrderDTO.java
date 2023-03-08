@@ -22,7 +22,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class OrderDTO implements Serializable {
-	private @NonNull Byte id;
+	private @NonNull Short id;
 	private @NonNull String lastUpdate, finishedIn;
 	private @NonNull Float totalValue;
 	/**

@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 public @Data class Comment implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Byte id;
+	private Short id;
 	private @NonNull String content;
 	
 	@ManyToOne
