@@ -24,8 +24,8 @@ public class UserMapper {
 	public User toEntity(UserDTO userDTO) {
 		User user = new User(userDTO.getName(), userDTO.getUsername(), userDTO.getPassword(), userDTO.getRole());
 		
-		if (userDTO.getUuid() != null) {
-			user.setUuid(userDTO.getUuid());
+		if (userDTO.getToken() != null) {
+			user.setToken(userDTO.getToken());
 		}
 		
 		return user;
@@ -40,8 +40,8 @@ public class UserMapper {
 	public UserDTO toDTO(User user) {
 		UserDTO userDTO = new UserDTO(user.getId(), user.getName(), user.getUsername(), user.getPassword(), user.getRole());
 		
-		if (user.getUuid() != null) {
-			userDTO.setUuid(user.getUuid());
+		if (user.getToken() != null) {
+			userDTO.setToken(user.getToken());
 		}
 		
 		return userDTO;

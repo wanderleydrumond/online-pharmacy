@@ -1,7 +1,11 @@
 package controllers;
 
+import java.util.UUID;
+
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -33,6 +37,16 @@ public class UserController {
 	@Inject
 	UserMapper userMapper;
 	
+	/**
+	 * Registers a new user in the system.
+	 * 
+	 * @param userDTO contains basic data to create the user (name, username, password and role)
+	 * @return HTTP response with status code:
+	 *      <ul>
+	 *         <li><strong>200 (OK)</strong> if the user was registered successfully</li>
+	 *         <li><strong>409 (CONFLICT)</strong> if already exists an user with the same credentials</li>
+	 *      </ul>
+	 */
 	@Path("/signup")
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -40,15 +54,72 @@ public class UserController {
 	public Response signUp(UserDTO userDTO) {
 		try {
 			User user = userMapper.toEntity(userDTO);
-			// Se eu quisesse retornar uma lista do UserService:
-			// return Response.ok(userService.signUp(user).stream().map(userMapper::toDTO).collect(Collectors.toList())).build(); // Sem usar um método
-			// return Response.ok(userMapper.toDTOs(userService.signUp(user))).build();	
-					
-			// return Response.ok(userService.signUp(user)).build();
 			
 			return Response.ok(userService.signUp(user)).build();
 		} catch (PharmacyException pharmacyException) {
-			return Response.status(pharmacyException.getHttpStatus()).header("Bad Request", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
+			return Response.status(pharmacyException.getHttpStatus()).header("Impossible to proceed", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
 	        }
+	}
+	
+	/**
+	 * Signs a user into the system.
+	 * 
+	 * @param username the username of the user
+	 * @param password the password of the user
+	 * @return HTTP response with status code:
+	 *      <ul>
+	 *         <li><strong>200 (OK)</strong> if the user was signed in successfully</li>
+	 *         <li><strong>401 (UNAUTHORISED)</strong> if the username or password is incorrect</li>
+	 *         <li><strong>400 (BAD REQUEST)</strong> if the username or password are null</li>
+	 *      </ul>
+	 */
+	@Path("/signin")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response signIn(@HeaderParam("username") String username, @HeaderParam("password") String password) {
+		try {
+			return Response.ok(userService.signIn(username, password)).build();
+		} catch (PharmacyException pharmacyException) {
+			System.err.println("Catch " + pharmacyException.getClass().getName() + " in signIn() in UserController");
+			pharmacyException.printStackTrace();
+			
+			return Response.status(pharmacyException.getHttpStatus()).header("Problem in database", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
+		}
+	}
+	
+	/**
+	 * Signs out the logged user from the system.
+	 * 
+	 * @param token logged user identifier key
+	 * @return
+	 * 		<ul>
+	 * 			<li>200 (OK) along with true, if the user was signed out</li>
+	 * 			<li>400 (BAD REQUEST) if:</li>
+	 * 			<ul>
+	 * 				<li>the user was already signed out</li>
+	 * 				<li>the given token is null</li>
+	 * 			</ul>
+	 * 		</ul>
+	 */
+	@Path("/signout")
+	@POST
+	public Response signOut(@HeaderParam("token") UUID token) {
+		try {
+			return Response.ok(userService.signOut(token)).build();
+		} catch (PharmacyException pharmacyException) {
+			// FIXME I cannot get the proper header value.
+			System.err.println("Catch " + pharmacyException.getClass().getName() + " in signOut() in UserController");
+			pharmacyException.printStackTrace();
+			
+			return Response.status(pharmacyException.getHttpStatus()).header("Request not done", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
+		}
+	}
+	
+	@Path("/test")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response teste(@HeaderParam("token") UUID token) {
+		User userToFind = userService.getByToken(token);
+		return Response.ok(userToFind).build();
 	}
 }

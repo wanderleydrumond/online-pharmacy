@@ -24,19 +24,31 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Table(name = "comments")
 public @Data class Comment implements Serializable {
+	/**
+	 * Comment identification in database.
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Short id;
+	/**
+	 * The text of the comment.
+	 */
 	private @NonNull String content;
 	
+	/**
+	 * Who made the comment.
+	 */
 	@ManyToOne
 	private User owner;
+	/**
+	 * Product about the comment is.
+	 */
 	@ManyToOne
 	private Product product;
 	
 	/**
 	 * <p>The serial version identifier for this class.<p>
-	 * <p>This identifier is used during deserialization to verify that the sender and receiver of a serialized object have loaded classes for that object that are compatible with respect to serialization.<p>
+	 * <p>This identifier is used during deserialisation to verify that the sender and receiver of a serialized object have loaded classes for that object that are compatible with respect to serialisation.<p>
 	 */
 	private static final long serialVersionUID = 1L;
 }

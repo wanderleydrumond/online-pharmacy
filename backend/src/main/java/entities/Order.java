@@ -38,28 +38,49 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor 
 @Table(name = "orders")
 public @Data class Order implements Serializable {
+	/**
+	 * Order identification in database.
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Short id;
+	/**
+	 * Last time this order was updated.
+	 */
 	@UpdateTimestamp
 	@Column(name = "last_update")
 	private Timestamp lastUpdate;
+	/**
+	 * When the order was concluded.
+	 */
 	@CreationTimestamp
 	@Column(name = "finished_in")
 	private Timestamp finishedIn;
+	/**
+	 * The sum of all products of this order.
+	 */
 	@Column(name = "total_value")
 	private @NonNull Float totalValue;
+	/**
+	 * State of this order.
+	 */
 	@Column(name = "is_concluded")
 	private Boolean isConcluded;
 	
+	/**
+	 * The user who made the order.
+	 */
 	@ManyToOne
 	private User buyer;
+	/**
+	 * The products to be bought.
+	 */
 	@ManyToMany(mappedBy = "ordersOfAProduct", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Product> productsOfAnOrder;
 	
 	/**
 	 * <p>The serial version identifier for this class.<p>
-	 * <p>This identifier is used during deserialization to verify that the sender and receiver of a serialized object have loaded classes for that object that are compatible with respect to serialization.<p>
+	 * <p>This identifier is used during deserialisation to verify that the sender and receiver of a serialized object have loaded classes for that object that are compatible with respect to serialisation.<p>
 	 */
 	private static final long serialVersionUID = 1L;
 }
