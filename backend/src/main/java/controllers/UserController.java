@@ -43,7 +43,7 @@ public class UserController {
 	 * Registers a new user in the system.
 	 * 
 	 * @param userDTO contains basic data to create the user (name, username, password and role)
-	 * @return HTTP response with status code:
+	 * @return {@link Response} with status code:
 	 *      <ul>
 	 *         <li><strong>200 (OK)</strong> if the user was registered successfully</li>
 	 *         <li><strong>409 (CONFLICT)</strong> if already exists an user with the same credentials</li>
@@ -68,7 +68,7 @@ public class UserController {
 	 * 
 	 * @param username the username of the user
 	 * @param password the password of the user
-	 * @return HTTP response with status code:
+	 * @return {@link Response} with status code:
 	 *      <ul>
 	 *         <li><strong>200 (OK)</strong> if the user was signed in successfully</li>
 	 *         <li><strong>401 (UNAUTHORISED)</strong> if the username or password is incorrect</li>
@@ -93,7 +93,7 @@ public class UserController {
 	 * Signs out the logged user from the system.
 	 * 
 	 * @param token logged user identifier key
-	 * @return
+	 * @return {@link Response} with status code:
 	 * 		<ul>
 	 * 			<li>200 (OK) along with true, if the user was signed out</li>
 	 * 			<li>400 (BAD REQUEST) if:</li>
@@ -117,6 +117,19 @@ public class UserController {
 		}
 	}
 	
+	/**
+	 * <p>Approves the user that owns the given id in the system.</p>
+	 * <p><em>Changes their role from VISITOR to  CLIENT</em></p>
+	 * 
+	 * @param token			  logged user identifier key
+	 * @param userToApproveId id of the user to be approved
+	 * @return {@link Response} with status code:
+	 *      <ul>
+	 *         <li><strong>200 (OK)</strong> if the user was approved successfully</li>
+	 *         <li><strong>400 (BAD REQUEST)</strong> if the user was not approved</li>
+	 *         <li><strong>403 (FORBIDDEN)</strong> if the user is not an administrator</li>
+	 *      </ul>
+	 */
 	@Path("/approve")
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)

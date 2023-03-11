@@ -175,6 +175,25 @@ public class UserService implements Serializable {
 		}
 	}
 
+	/**
+	 * <ol>
+	 * 	<li>Checks if the logged user has the ADMNINSTRATOR role</li>
+	 * 	<li>Approves the user</li>
+	 * </ol>
+	 * 
+	 * @param token			  logged user identifier key
+	 * @param userToApproveId id of the user to be approved
+	 * @return
+	 * 		<ul>
+	 * 			<li>True, if 1 row was affected in database</li>
+	 * 			<li>False, if 0 rows was affected in database (never happens)</li>
+	 * 		</ul>
+	 * @throws {@link PharmacyException} with status code:
+	 * 		<ul>
+	 * 			<li><strong>403 (FORBIDDEN)</strong> if the logged user has not the ADMINISTRATOR role</li>
+	 * 			<li><strong>400 (BAD REQUEST)</strong>if the amount of rows updated is 0</li>
+	 * 		</ul>
+	 */
 	public Boolean approve(UUID token, Integer userToApproveId) {
 		Boolean isAdmin = verifyIfIsAdmin(token);
 		

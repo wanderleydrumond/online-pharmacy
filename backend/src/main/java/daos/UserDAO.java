@@ -134,6 +134,14 @@ public class UserDAO extends GenericDAO<User> {
 		}
 	}
 
+	/**
+	 * <p>Changes the role of the user that owns the given id to VISITOR.</p>
+	 * <p><em>The logged user must be an administrator.</em></p>
+	 * 
+	 * @param userToApproveId primary key that identifies the user to be updated
+	 * @return the amount of rows affected
+	 * @throws {@link PharmacyException} with status code 503 (SERVICE UNAVAILABLE) if any errors occurs in database
+	 */
 	public Integer approve(Integer userToApproveId) {
 		try {
 			final CriteriaUpdate<User> CRITERIA_UPDATE;
