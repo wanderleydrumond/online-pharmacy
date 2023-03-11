@@ -7,8 +7,10 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -109,6 +111,20 @@ public class UserController {
 		} catch (PharmacyException pharmacyException) {
 			// FIXME I cannot get the proper header value.
 			System.err.println("Catch " + pharmacyException.getClass().getName() + " in signOut() in UserController");
+			pharmacyException.printStackTrace();
+			
+			return Response.status(pharmacyException.getHttpStatus()).header("Request not done", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
+		}
+	}
+	
+	@Path("/approve")
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response approve(@HeaderParam("token") UUID token, @QueryParam("id") String userToApproveId) {
+		try {
+			return Response.ok(userService.approve(token, Integer.valueOf(userToApproveId))).build();
+		} catch (PharmacyException pharmacyException) {
+			System.err.println("Catch " + pharmacyException.getClass().getName() + " in approve() in UserController");
 			pharmacyException.printStackTrace();
 			
 			return Response.status(pharmacyException.getHttpStatus()).header("Request not done", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();

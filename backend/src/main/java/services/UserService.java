@@ -174,4 +174,31 @@ public class UserService implements Serializable {
 			throw new PharmacyException(Response.Status.BAD_REQUEST, "Error", "Token cannot be null");
 		}
 	}
+
+	public Boolean approve(UUID token, Integer userToApproveId) {
+		Boolean isAdmin = verifyIfIsAdmin(token);
+		
+		if (Boolean.FALSE.equals(isAdmin)) {
+			throw new PharmacyException(Response.Status.FORBIDDEN, "insufficient privileges", "Only administrators can execute this action");
+		}
+		
+		Integer updatedRowsInUsersTable = userDAO.approve(userToApproveId);
+		
+		if (updatedRowsInUsersTable == 0) {
+			throw new PharmacyException(Response.Status.BAD_REQUEST, "Request not answered", "The requested row wasn't updated");
+		}
+		
+		return updatedRowsInUsersTable == 1 ? true : false;
+	}
+
+
+	private Boolean verifyIfIsAdmin(UUID token) {
+		Boolean isAdmin = userDAO.checkIfIsAdmin(token);
+		
+		if (isAdmin == null) {
+			throw new PharmacyException(Response.Status.SERVICE_UNAVAILABLE, "Error", "Error in database occured");
+		}
+		
+		return isAdmin;
+	}
 }

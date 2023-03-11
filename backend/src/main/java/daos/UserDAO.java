@@ -4,13 +4,18 @@ import java.util.Optional;
 import java.util.UUID;
 
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Subquery;
 import javax.ws.rs.core.Response;
 
 import entities.User;
+import enums.Role;
 import exceptions.PharmacyException;
 
 /**
@@ -86,6 +91,60 @@ public class UserDAO extends GenericDAO<User> {
 			
 			CRITERIA_UPDATE.set("token", null);
 			CRITERIA_UPDATE.where(criteriaBuilder.equal(userTable.get("token"), token));
+			
+			return entityManager.createQuery(CRITERIA_UPDATE).executeUpdate();
+		} catch (PharmacyException pharmacyException) {
+			System.err.println("Catch " + pharmacyException.getClass().getName() + " in signOut() in UserDAO");
+			pharmacyException.printStackTrace();
+			
+			throw new PharmacyException(Response.Status.SERVICE_UNAVAILABLE, "Error", "Error in database has occured");
+		}
+	}
+
+	public Boolean checkIfIsAdmin(UUID token) {
+		try {
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+
+			CriteriaQuery<Boolean> query = criteriaBuilder.createQuery(Boolean.class);
+			query.from(User.class);
+			query.select(criteriaBuilder.literal(true));
+
+			Subquery<User> subquery = query.subquery(User.class);
+			Root<User> subRootEntity = subquery.from(User.class);
+			subquery.select(subRootEntity);
+
+			Predicate checkToken = criteriaBuilder.equal(subRootEntity.get("token"), token);
+			Predicate checkIsDeleted = criteriaBuilder.equal(subRootEntity.get("isDeleted"), false);
+			
+			subquery.where(criteriaBuilder.and(checkToken, checkIsDeleted));
+			query.where(criteriaBuilder.exists(subquery));
+
+			TypedQuery<Boolean> typedQuery = entityManager.createQuery(query);
+			
+			return typedQuery.getSingleResult();
+		} catch (NoResultException noResultException) {
+			System.out.println("Catch " + noResultException.getClass().getName() + " in exists() in UserDAO.");
+			
+			return false;
+		} catch (Exception exception) {
+			System.err.println("Catch " + exception.getClass().getName() + " in exists() in UserDAO");
+			exception.printStackTrace();
+			
+			return null;
+		}
+	}
+
+	public Integer approve(Integer userToApproveId) {
+		try {
+			final CriteriaUpdate<User> CRITERIA_UPDATE;
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CRITERIA_UPDATE = criteriaBuilder.createCriteriaUpdate(User.class);
+			Root<User> userTable = CRITERIA_UPDATE.from(User.class);
+			
+			CRITERIA_UPDATE.set("role", Role.CLIENT);
+			CRITERIA_UPDATE.where(criteriaBuilder.and(
+					criteriaBuilder.equal(userTable.get("id"), userToApproveId),
+					criteriaBuilder.equal(userTable.get("role"), Role.VISITOR)));
 			
 			return entityManager.createQuery(CRITERIA_UPDATE).executeUpdate();
 		} catch (PharmacyException pharmacyException) {
