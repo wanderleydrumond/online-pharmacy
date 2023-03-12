@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +17,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
+import enums.Section;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -45,13 +49,13 @@ public @Data class Product implements Serializable {
 	/**
 	 * Product's price.
 	 */
-	@NotBlank
+	@NotNull
 	private @NonNull Float price;
 	/**
-	 * Which group this product belongs.
+	 * Which section this product belongs.
 	 */
-	@NotBlank
-	private @NonNull String section;
+	@Enumerated(EnumType.STRING)
+	private @NonNull Section section;
 	/**
 	 * Product image URI.
 	 */

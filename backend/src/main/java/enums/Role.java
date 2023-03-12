@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * Represents the different roles available in the system.
+ * Represents the different user roles available in the system.
  * 
  * <p>Each role has a role code and a role value.</p>
  * <ul>
@@ -15,7 +15,6 @@ import lombok.Getter;
  * 
  * @author Wanderley Drumond
  */
-
 @AllArgsConstructor
 @Getter
 public enum Role {

@@ -34,7 +34,7 @@ public class UserController {
 	UserService userService;
 	
 	/**
-	 * Object that contains methods from {@link User} object to switch it between Entity and DTO formats.
+	 * Object that contains method that allows to switch between {@link User} and {@link UserDTO}.
 	 */
 	@Inject
 	UserMapper userMapper;

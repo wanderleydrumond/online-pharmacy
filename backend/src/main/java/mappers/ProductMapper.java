@@ -32,7 +32,7 @@ public class ProductMapper {
 	 * @return the {@link ProductDTO} resultant object
 	 */
 	public ProductDTO toDTO(Product product) {
-		return new ProductDTO(product.getId(), product.getName(), product.getSection(), product.getImage(), product.getPrice());
+		return new ProductDTO(product.getId(), product.getName(), product.getImage(), product.getPrice(), product.getSection());
 	}
 	
 	/**

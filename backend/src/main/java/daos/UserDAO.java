@@ -101,6 +101,17 @@ public class UserDAO extends GenericDAO<User> {
 		}
 	}
 
+	/**
+	 * Checks if the user that holds the given token has the role of ADMINISTRATOR.
+	 * 
+	 * @param token logged user identifier key
+	 * @return
+	 * 		<ul>
+	 * 			<li>True, if the provided token belongs to an active administrator</li>
+	 * 			<li>False, if the provided token does not belong to an active administrator</li>
+	 * 			<li>Null, if any errors have occurred in the database.</li>
+	 * 		</ul>
+	 */
 	public Boolean checkIfIsAdmin(UUID token) {
 		try {
 			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();

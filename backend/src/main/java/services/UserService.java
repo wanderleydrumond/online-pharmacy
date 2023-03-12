@@ -211,7 +211,18 @@ public class UserService implements Serializable {
 	}
 
 
-	private Boolean verifyIfIsAdmin(UUID token) {
+	/**
+	 * <p>Verify if the logged user is an administrator.</p>
+	 * <p><em>Auxiliary method.</em></p>
+	 * 
+	 * @param token logged user identifier key
+	 * @return 
+	 * 		<ul>
+	 * 			<li>True, if the user is administrator</li>
+	 * 			<li>False, if the user is not an administrator</li>
+	 * 		</ul>
+	 */
+	protected Boolean verifyIfIsAdmin(UUID token) {
 		Boolean isAdmin = userDAO.checkIfIsAdmin(token);
 		
 		if (isAdmin == null) {
