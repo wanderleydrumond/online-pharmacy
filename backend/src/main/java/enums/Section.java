@@ -6,7 +6,7 @@ import lombok.Getter;
 /**
  * Represents the different product sections available in the system.
  * 
- * <p>Each role has a role code and a role value.</p>
+ * <p>Each section has a value.</p>
  * <ul>
  *   <li>BEAUTY: value = "beauty"</li>
  *   <li>HEALTH: value = "health"</li>

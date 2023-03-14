@@ -144,6 +144,30 @@ public class UserController {
 		}
 	}
 	
+	/**
+	 * Gets the logged user data.
+	 * 
+	 * @param token logged user identifier key
+	 * @return {@link Response} with status code:
+	 *      <ul>
+	 *         <li><strong>200 (OK)</strong> if the user was found</li>
+	 *         <li><strong>404 (NOT FOUND)</strong> if the given token does not exists in database</li>
+	 *      </ul>
+	 */
+	@Path("/data")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getData(@HeaderParam("token") UUID token) {
+		try {
+			return Response.ok(userService.getByToken(token)).build();
+		} catch (PharmacyException pharmacyException) {
+			System.err.println("Catch " + pharmacyException.getClass().getName() + " in getData() in UserController");
+			pharmacyException.printStackTrace();
+			
+			return Response.status(pharmacyException.getHttpStatus()).header("Request not done", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
+		}
+	}
+	
 	@Path("/test")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

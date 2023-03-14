@@ -6,7 +6,7 @@ import lombok.Getter;
 /**
  * Represents the different user roles available in the system.
  * 
- * <p>Each role has a role code and a role value.</p>
+ * <p>Each role has a value.</p>
  * <ul>
  *   <li>ADMINISTRATOR: value = "administrator"</li>
  *   <li>CLIENT: value = "client"</li>

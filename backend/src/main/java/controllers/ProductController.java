@@ -24,9 +24,15 @@ import services.ProductService;
  */
 @Path("/product")
 public class ProductController {
+	/**
+	 * Object that contains all product service methods.
+	 */
 	@Inject
 	ProductService productService;
 	
+	/**
+	 * Object that contains method that allows to switch between {@link Product} and {@link ProductDTO}.
+	 */
 	@Inject
 	ProductMapper productMapper;
 	
