@@ -64,7 +64,8 @@ public class UserDAO extends GenericDAO<User> {
 			Root<User> userTable = CRITERIA_QUERY.from(User.class);
 			
 			CRITERIA_QUERY.select(userTable).where(criteriaBuilder.and(
-					criteriaBuilder.equal(userTable.get("token"), token)));
+					criteriaBuilder.equal(userTable.get("token"), token),
+					criteriaBuilder.notEqual(userTable.get("role"), Role.VISITOR)));
 			
 			return Optional.ofNullable(entityManager.createQuery(CRITERIA_QUERY).getSingleResult());
 		} catch (Exception exception) {

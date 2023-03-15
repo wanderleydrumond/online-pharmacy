@@ -10,6 +10,7 @@ import javax.ws.rs.core.Response;
 
 import daos.ConfigurationDAO;
 import daos.UserDAO;
+import dtos.UserDTO;
 import entities.Configuration;
 import entities.User;
 import enums.Role;
@@ -113,11 +114,8 @@ public class UserService implements Serializable {
 	 * Gets the {@link User} that owns the given token.
 	 * 
 	 * @param token user identifier key
-	 * @return
-	 * 		<ul>
-	 * 			<li>The {@link User} that owns the given token </li>
-	 * 			<li>A {@link PharmacyException} with HTTP {@link Response} status 404 (NOT FOUND) if the given token does not exists in database</li>
-	 * 		</ul>
+	 * @return The {@link User} that owns the given token
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 404 (NOT FOUND) if the given token does not exists in database
 	 */
 	public User getByToken(UUID token) {
 		Optional<User> userToFind = userDAO.findByUUID(token);
@@ -230,5 +228,37 @@ public class UserService implements Serializable {
 		}
 		
 		return isAdmin;
+	}
+
+
+	public User editBytoken(UUID token, UserDTO requestBody) {
+		User userToEdit = getByToken(token);
+		
+		if (userToEdit.getIsDeleted()) {
+			throw new PharmacyException(Response.Status.FORBIDDEN, "Is not possible to edit this user", "User already deleted");
+		}
+		
+		if (!userToEdit.getRole().equals(requestBody.getRole())) {
+			throw new PharmacyException(Response.Status.FORBIDDEN, "Is not possible to edit this user", "Is forbidden to edit the role");
+		}
+		
+		if (!userToEdit.getUsername().equals(requestBody.getUsername())) {
+			throw new PharmacyException(Response.Status.FORBIDDEN, "Is not possible to edit this user", "Is forbidden to edit the username");
+		}
+		
+		if (!userToEdit.getToken().equals(requestBody.getToken())) {
+			throw new PharmacyException(Response.Status.FORBIDDEN, "Is not possible to edit this user", "Is forbidden to edit the token");
+		}
+		
+		if (userToEdit.getRole().equals(Role.VISITOR)) {
+			throw new PharmacyException(Response.Status.FORBIDDEN, "Is not possible to edit this user", "Wait until the administrator accept your registration before editing it");
+		}
+		
+		userToEdit.setName(requestBody.getName());
+		userToEdit.setPassword(requestBody.getPassword());
+		
+		userDAO.merge(userToEdit);
+		
+		return userToEdit;
 	}
 }

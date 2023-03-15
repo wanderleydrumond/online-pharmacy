@@ -168,6 +168,21 @@ public class UserController {
 		}
 	}
 	
+	@Path("/data")
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response editData(@HeaderParam("token") UUID token, UserDTO requestBody) {
+		try {
+			return Response.ok(userService.editBytoken(token, requestBody)).build();
+		} catch (PharmacyException pharmacyException) {
+			System.err.println("Catch " + pharmacyException.getClass().getName() + " in getData() in UserController");
+			pharmacyException.printStackTrace();
+			
+			return Response.status(pharmacyException.getHttpStatus()).header("Request not done", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
+		}
+	}
+	
 	@Path("/test")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
