@@ -132,4 +132,33 @@ public class ProductController {
 			return Response.status(pharmacyException.getHttpStatus()).header("Impossible to proceed", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
 		} 
 	}
+	
+	/**
+	 * Gets the product data by its id.
+	 * 
+	 * @param productId primary key that identifies the product to be found
+	 * @return {@link Response} with status code:
+	 *      <ul>
+	 *         <li><strong>200 (OK)</strong> if the product was found along with the {@link ProductDTO}</li>
+	 *         <li><strong>406 (NOT ACCEPTABLE)</strong> if the product id type is different then {@link Short}, {@link Integer} or {@link Byte}</li>
+	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
+	 *      </ul>
+	 */
+	@Path("/by")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getById(@QueryParam("id") String productId) {
+		try {
+			return Response.ok(productMapper.toDTO(productService.getById(Short.parseShort(productId)))).build();
+		} catch (NumberFormatException numberFormatException) {
+			System.err.println("Catch " + numberFormatException.getClass().getName() + " in getById() in ProductController");
+			numberFormatException.printStackTrace();
+			
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Incorrect number format for id").build();
+		} catch (PharmacyException pharmacyException) {
+			System.err.println("Catch " + pharmacyException.getClass().getName() + " in getById() in ProductController");
+			
+			return Response.status(pharmacyException.getHttpStatus()).header("Impossible to proceed", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
+		}
+	}
 }

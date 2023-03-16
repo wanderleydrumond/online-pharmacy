@@ -159,7 +159,7 @@ public class UserController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getData(@HeaderParam("token") UUID token) {
 		try {
-			return Response.ok(userService.getByToken(token)).build();
+			return Response.ok(userMapper.toDTO(userService.getByToken(token))).build();
 		} catch (PharmacyException pharmacyException) {
 			System.err.println("Catch " + pharmacyException.getClass().getName() + " in getData() in UserController");
 			pharmacyException.printStackTrace();
@@ -174,7 +174,7 @@ public class UserController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response editData(@HeaderParam("token") UUID token, UserDTO requestBody) {
 		try {
-			return Response.ok(userService.editBytoken(token, requestBody)).build();
+			return Response.ok(userMapper.toDTO(userService.editBytoken(token, requestBody))).build();
 		} catch (PharmacyException pharmacyException) {
 			System.err.println("Catch " + pharmacyException.getClass().getName() + " in getData() in UserController");
 			pharmacyException.printStackTrace();
@@ -187,7 +187,6 @@ public class UserController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response teste(@HeaderParam("token") UUID token) {
-		User userToFind = userService.getByToken(token);
-		return Response.ok(userToFind).build();
+		return Response.ok(userMapper.toDTO(userService.getByToken(token))).build();
 	}
 }

@@ -3,6 +3,7 @@ package services;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.enterprise.context.RequestScoped;
@@ -157,5 +158,29 @@ public class ProductService implements Serializable {
 		}
 		
 		return products;
+	}
+
+	/**
+	 * <ol>
+	 * 	<li>Gets the {@link Product} by its id.</li>
+	 * 	<li>Checks if product is null.</li>
+	 *  <li>Checks if the product is empty.</li>
+	 * </ol>
+	 * 
+	 * @param productId primary key that identifies the product to be found
+	 * @return the {@link Product} that owns the provided id
+	 */
+	public Product getById(Short productId) {
+		Optional<Product> productFound = productDAO.findById(productId);
+		
+		if (productFound == null) {
+			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		if (productFound.isEmpty()) {
+			throw new PharmacyException(Response.Status.NOT_FOUND, "Product not found", "There is not exists a product with the provided id");
+		}
+		
+		return productFound.get();
 	}
 }
