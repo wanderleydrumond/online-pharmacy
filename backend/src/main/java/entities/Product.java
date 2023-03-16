@@ -19,6 +19,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import enums.Section;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -65,23 +67,27 @@ public @Data class Product implements Serializable {
 	/**
 	 * All the comments that this products received from the users.
 	 */
+	@JsonIgnore
 	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	private List<Comment> comments;
 	/**
 	 * All users that liked this product.
 	 */
+	@JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "liked_products", joinColumns = @JoinColumn(name = "liked_product_id"), inverseJoinColumns = @JoinColumn(name = "user_that_liked_id"))
 	private List<User> 	  usersThatLiked;
 	/**
 	 * All users that marked this product as favourite.
 	 */
+	@JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "favorite_products", joinColumns = @JoinColumn(name = "favorite_product_id"), inverseJoinColumns = @JoinColumn(name = "user_that_favorited_id"))
 	private List<User> 	  usersThatFavorited;
 	/**
 	 * All orders from this product (concluded and on going).
 	 */
+	@JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "ordered_products", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "order_id"))
 	private List<Order>   ordersOfAProduct;

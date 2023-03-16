@@ -1,6 +1,8 @@
 package services;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import javax.enterprise.context.RequestScoped;
@@ -10,6 +12,7 @@ import javax.ws.rs.core.Response;
 import daos.ProductDAO;
 import dtos.ProductDTO;
 import entities.Product;
+import enums.Section;
 import exceptions.PharmacyException;
 import mappers.ProductMapper;
 
@@ -30,13 +33,13 @@ public class ProductService implements Serializable {
 	 * Object that contains all product service methods.
 	 */
 	@Inject
-	ProductDAO productDAO;
+	private ProductDAO productDAO;
 	
 	/**
 	 * Object that contains method that allows to switch between {@link Product} and {@link ProductDTO}.
 	 */
 	@Inject
-	ProductMapper productMapper;
+	private ProductMapper productMapper;
 
 	/**
 	 * <p>The serial version identifier for this class.<p>
@@ -69,4 +72,65 @@ public class ProductService implements Serializable {
 		return newProduct;
 	}
 
+	/**
+	 * <ol>
+	 * 	<li>Gets the list of products of the provided section</li>
+	 * 	<li>Checks if the product list is null</li>
+	 * 	<li>Checks if the product list is empty</li>
+	 * </ol>
+	 * 
+	 * @param section which the list of products belongs
+	 * @return the products list from the provided section
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 404 (NOT FOUND) if the provided enumerator value does not exists in database
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 502 (BAD GATEWAY) if some problem happened in database
+	 */
+	public List<Product> getAllBySection(String section) {
+		boolean exists = false;
+		for (Section sectionElement : Section.values()) {
+			if (sectionElement.name().equals(section)) {
+				exists = true;
+			}
+		}
+		
+		if (!exists) {
+			throw new PharmacyException(Response.Status.NOT_FOUND, "Section not found", "This section does not exists in our database, please try again with another value");
+		}
+
+		List<Product> productsOfThisSection = productDAO.findAllBySection(Section.valueOf(section));
+		
+		if (productsOfThisSection == null) {
+			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		if (productsOfThisSection.isEmpty()) {
+			throw new PharmacyException(Response.Status.NO_CONTENT, "Empty section", "This section do not have any products yet");
+		}
+		
+		return productsOfThisSection;
+	}
+
+	/**
+	 * <ol>
+	 * 	<li>Gets all product sections.</li>
+	 * 	<li>Checks if section list is null</li>
+	 *  <li>Checks if the section list is empty</li>
+	 * </ol>
+	 * 
+	 * @return the {@link Product} {@link ArrayList} with all sections inside of it
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 502 (BAD GATEWAY) if some problem happened in database
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 202 (NO CONTENT) if the {@link ArrayList} has no elements inside
+	 */
+	public List<Section> getAllSections() {
+		List<Section> sections = productDAO.findAllSections();
+		
+		if (sections == null) {
+			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		if (sections.isEmpty()) {
+			throw new PharmacyException(Response.Status.NO_CONTENT, "No content", "There are no sections yet");
+		}
+		
+		return sections;
+	}
 }
