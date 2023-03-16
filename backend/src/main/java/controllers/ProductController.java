@@ -111,4 +111,25 @@ public class ProductController {
 			return Response.status(pharmacyException.getHttpStatus()).header("Impossible to proceed", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
 		}
 	}
+	
+	/**
+	 * Gets all products.
+	 * 
+	 * @return {@link Response} with status code:
+	 *      <ul>
+	 *         <li><strong>200 (OK)</strong> if the product list was found and has elements</li>
+	 *         <li><strong>202 (NO CONTENT)</strong> if the product list was found and is empty</li>
+	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
+	 *      </ul>
+	 */
+	@Path("/all")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAll() {
+		try {
+			return Response.ok(productService.getAll()).build();
+		} catch (PharmacyException pharmacyException) {
+			return Response.status(pharmacyException.getHttpStatus()).header("Impossible to proceed", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
+		} 
+	}
 }
