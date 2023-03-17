@@ -233,21 +233,12 @@ public class UserService implements Serializable {
 
 	public User editBytoken(UUID token, UserDTO requestBody) {
 		User userToEdit = getByToken(token);
+		requestBody.setRole(userToEdit.getRole());
+		requestBody.setUsername(userToEdit.getUsername());
+		requestBody.setToken(userToEdit.getToken());
 		
 		if (userToEdit.getIsDeleted()) {
 			throw new PharmacyException(Response.Status.FORBIDDEN, "Is not possible to edit this user", "User already deleted");
-		}
-		
-		if (!userToEdit.getRole().equals(requestBody.getRole())) {
-			throw new PharmacyException(Response.Status.FORBIDDEN, "Is not possible to edit this user", "Is forbidden to edit the role");
-		}
-		
-		if (!userToEdit.getUsername().equals(requestBody.getUsername())) {
-			throw new PharmacyException(Response.Status.FORBIDDEN, "Is not possible to edit this user", "Is forbidden to edit the username");
-		}
-		
-		if (!userToEdit.getToken().equals(requestBody.getToken())) {
-			throw new PharmacyException(Response.Status.FORBIDDEN, "Is not possible to edit this user", "Is forbidden to edit the token");
 		}
 		
 		if (userToEdit.getRole().equals(Role.VISITOR)) {

@@ -176,7 +176,7 @@ public class UserController {
 		try {
 			return Response.ok(userMapper.toDTO(userService.editBytoken(token, requestBody))).build();
 		} catch (PharmacyException pharmacyException) {
-			System.err.println("Catch " + pharmacyException.getClass().getName() + " in getData() in UserController");
+			System.err.println("Catch " + pharmacyException.getClass().getName() + " in editData() in UserController");
 			pharmacyException.printStackTrace();
 			
 			return Response.status(pharmacyException.getHttpStatus()).header("Request not done", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
