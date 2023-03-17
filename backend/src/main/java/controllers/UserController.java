@@ -168,6 +168,21 @@ public class UserController {
 		}
 	}
 	
+	/**
+	 * Edits the name and/or password from the logged user.
+	 * 
+	 * @param token		  logged user identifier key
+	 * @param requestBody {@link UserDTO} containing only the data to be updated
+	 * @return {@link Response} with status code:
+	 *      <ul>
+	 *         <li><strong>200 (OK)</strong> if the user was successfully updated</li>
+	 *         <li><strong>403 (FORBIDDEN)</strong> if :</li>
+	 *         	<ul>
+	 *         		<li>the logged user is deleted</li>
+	 *         		<li>the logged user role is a visitor</li>
+	 *         	</ul>
+	 *      </ul>
+	 */
 	@Path("/data")
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)

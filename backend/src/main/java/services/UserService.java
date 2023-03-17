@@ -231,6 +231,34 @@ public class UserService implements Serializable {
 	}
 
 
+	/**
+	 * <ol>
+	 * 	<li>Gets the user to be updated.</li>
+	 * 	<li>fills the informations that cannot be updated:</li>
+	 * 		<ul>
+	 * 			<li>role</li>
+	 * 			<li>username</li>
+	 * 			<li>token</li>
+	 * 		</ul>
+	 * 	<li>Checks if the user is deleted</li>
+	 * 	<li>Checks if the user is a visitor</li>
+	 * 	<li>Updates the user data according to were given by {@link UserDTO}:</li>
+	 * 		<ul>
+	 * 			<li>name</li>
+	 * 			<li>password</li>
+	 * 		</ul>
+	 * 	<li>Save it in database</li>
+	 * </ol>
+	 * 
+	 * @param token		  logged user identifier key
+	 * @param requestBody {@link UserDTO} containing only the data to be updated
+	 * @return the updated {@link User}
+	 * @throws {@link PharmacyException} with status code <strong>403 (FORBIDDEN)</strong> if:
+	 * 		<ul>
+	 * 			<li>the logged user is deleted</li>
+	 * 			<li>the logged user role is VISITOR</li>
+	 * 		</ul>
+	 */
 	public User editBytoken(UUID token, UserDTO requestBody) {
 		User userToEdit = getByToken(token);
 		requestBody.setRole(userToEdit.getRole());
