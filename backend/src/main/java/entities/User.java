@@ -110,7 +110,7 @@ public @Data class User implements Serializable {
 	 * All products that the user marked as favourite.
 	 */
 	@JsonIgnore
-	@ManyToMany(mappedBy = "usersThatFavorited", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "usersThatFavorited", fetch = FetchType.LAZY)
 	private List<Product> favoriteProducts;
 	
 	/**

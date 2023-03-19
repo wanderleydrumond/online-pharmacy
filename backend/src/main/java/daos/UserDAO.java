@@ -266,4 +266,37 @@ public class UserDAO extends GenericDAO<User> {
 			return null;
 		}
 	}
+
+	/**
+	 * Finds all users that favourited the product which the provided id belongs.
+	 * 
+	 * @param productId primary key that identifies the product that contains the list of users that set it as favourite
+	 * @return
+	 * 		<ul>If:
+	 * 			<li>Exists, at least, one record, the list, already existent in database, of users that favourited this product</li>
+	 * 			<li>Not exists, a new list</li>
+	 * 			<li>Some problem happened, null</li>
+	 * 		</ul>
+	 */
+	public List<User> findAllThatFavouritedThisProduct(Short productId) {
+		try {
+			final CriteriaQuery<User> CRITERIA_QUERY;
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CRITERIA_QUERY = criteriaBuilder.createQuery(User.class);
+			Root<User> userTable = CRITERIA_QUERY.from(User.class);
+			Join<User, Product> productTable = userTable.join("favoriteProducts");
+			
+			CRITERIA_QUERY.select(userTable).where(criteriaBuilder.equal(productTable.get("id"), productId));
+			
+			return entityManager.createQuery(CRITERIA_QUERY).getResultList();
+		} catch (NoResultException noResultException) {
+			noResultException.printStackTrace();
+			
+			return new ArrayList<User>();
+		} catch (Exception exception) {
+			exception.printStackTrace();
+			
+			return null;
+		}
+	}
 }

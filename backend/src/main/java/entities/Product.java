@@ -74,7 +74,7 @@ public @Data class Product implements Serializable {
 	 * All users that liked this product.
 	 */
 	@JsonIgnore
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "liked_products", joinColumns = @JoinColumn(name = "liked_product_id"), inverseJoinColumns = @JoinColumn(name = "user_that_liked_id"))
 	private List<User> usersThatLiked;
 	/**

@@ -163,7 +163,12 @@ public class ProductController {
 	 * 
 	 * @param token		logged user identifier key
 	 * @param productId primary key that identifies the product to like
-	 * @return
+	 * @return {@link Response} with status code:
+	 *      <ul>
+	 *         <li><strong>200 (OK)</strong> if the user liked the product along with true {@link boolean} value</li>
+	 *         <li><strong>406 (NOT ACCEPTABLE)</strong> if the product id type is different then {@link Short}, {@link Integer} or {@link Byte}</li>
+	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
+	 *      </ul>
 	 */
 	@Path("/like")
 	@PUT
@@ -190,10 +195,16 @@ public class ProductController {
 	 * 
 	 * @param token		logged user identifier key
 	 * @param productId primary key that identifies the product to unlike
-	 * @return
+	 * @return {@link Response} with status code:
+	 *      <ul>
+	 *         <li><strong>200 (OK)</strong> if the user unliked the product along with true {@link boolean} value</li>
+	 *         <li><strong>406 (NOT ACCEPTABLE)</strong> if the product id type is different then {@link Short}, {@link Integer} or {@link Byte}</li>
+	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
+	 *      </ul>
 	 */
 	@Path("/unlike")
 	@PUT
+	@Produces(MediaType.APPLICATION_JSON)
 	public Response unlikeById(@HeaderParam("token") UUID token, @QueryParam("id") String productId) {
 		try {
 			return Response.ok(productService.unlikeById(token, Short.valueOf(productId))).build();
@@ -205,6 +216,70 @@ public class ProductController {
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Incorrect number format for id").build();
 		} catch (PharmacyException pharmacyException) {
 			System.err.println("Catch " + pharmacyException.getClass().getName() + " in unlikeById() in ProductController");
+			Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, "Database unavailable", pharmacyException);
+			
+			return Response.status(pharmacyException.getHttpStatus()).header("Impossible to proceed", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
+		}
+	}
+	
+	/**
+	 * The logged user favourited a product.
+	 * 
+	 * @param token		logged user identifier key
+	 * @param productId primary key that identifies the product to favourite
+	 * @return {@link Response} with status code:
+	 *      <ul>
+	 *         <li><strong>200 (OK)</strong> if the user favourited the product along with true {@link boolean} value</li>
+	 *         <li><strong>406 (NOT ACCEPTABLE)</strong> if the product id type is different then {@link Short}, {@link Integer} or {@link Byte}</li>
+	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
+	 *      </ul>
+	 */
+	@Path("/favorite")
+	@PUT
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response favoriteById(@HeaderParam("token") UUID token, @QueryParam("id") String productId) {
+		try {
+			return Response.ok(productService.favoriteById(token, Short.valueOf(productId))).build();
+		} catch (NumberFormatException numberFormatException) {
+			System.err.println("Catch " + numberFormatException.getClass().getName() + " in favoriteById() in ProductController");
+			Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, "Incorrect number format for id", numberFormatException);
+			numberFormatException.printStackTrace();
+			
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Incorrect number format for id").build();
+		} catch (PharmacyException pharmacyException) {
+			System.err.println("Catch " + pharmacyException.getClass().getName() + " in favoriteById() in ProductController");
+			Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, "Database unavailable", pharmacyException);
+			
+			return Response.status(pharmacyException.getHttpStatus()).header("Impossible to proceed", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
+		}
+	}
+	
+	/**
+	 * The logged user unfavourited a product.
+	 * 
+	 * @param token		logged user identifier key
+	 * @param productId primary key that identifies the product to unfavourite
+	 * @return {@link Response} with status code:
+	 *      <ul>
+	 *         <li><strong>200 (OK)</strong> if the user unfavourited the product along with true {@link boolean} value</li>
+	 *         <li><strong>406 (NOT ACCEPTABLE)</strong> if the product id type is different then {@link Short}, {@link Integer} or {@link Byte}</li>
+	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
+	 *      </ul>
+	 */
+	@Path("/unfavorite")
+	@PUT
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response unfavoriteById(@HeaderParam("token") UUID token, @QueryParam("id") String productId) {
+		try {
+			return Response.ok(productService.unfavoriteById(token, Short.valueOf(productId))).build();
+		} catch (NumberFormatException numberFormatException) {
+			System.err.println("Catch " + numberFormatException.getClass().getName() + " in unfavoriteById() in ProductController");
+			Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, "Incorrect number format for id", numberFormatException);
+			numberFormatException.printStackTrace();
+			
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Incorrect number format for id").build();
+		} catch (PharmacyException pharmacyException) {
+			System.err.println("Catch " + pharmacyException.getClass().getName() + " in unfavoriteById() in ProductController");
 			Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, "Database unavailable", pharmacyException);
 			
 			return Response.status(pharmacyException.getHttpStatus()).header("Impossible to proceed", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();

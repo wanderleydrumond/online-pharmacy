@@ -259,4 +259,82 @@ public class ProductService implements Serializable {
 		
 		return true;
 	}
+
+	/**
+	 * <ol>
+	 * 	<li>Gets the user who will favourited by their token.</li>
+	 * 	<li>Gets the product to be favourite by its id.</li>
+	 * 	<li>Gets the list of users that favourited this product.<em>({@link Product} attribute)</em> </li>
+	 * 	<li>Checks if this list is null.</li>
+	 * 	<li>Adds the logged user to this list.</li>
+	 * 	<li>Sets list of users that favourited this product with the above list</li>
+	 * 	<li>Save the product in database</li>
+	 * </ol>
+	 * 
+	 * @param token		logged user identifier key
+	 * @param productId	primary key that identifies the product to be favourited
+	 * @return true if the product was successfully saved
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 502 (BAD GATEWAY) if some problem happened in database
+	 */
+	public boolean favoriteById(UUID token, Short productId) {
+		User userWhoFavouritedTheProduct = userService.getByToken(token);
+		Product productToBeFavourited = getById(productId);
+		List<User> usersThatFavouritedThisProduct = userDAO.findAllThatFavouritedThisProduct(productId);
+		
+		if (usersThatFavouritedThisProduct == null) {
+			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		usersThatFavouritedThisProduct.add(userWhoFavouritedTheProduct);
+		productToBeFavourited.setUsersThatFavorited(usersThatFavouritedThisProduct);
+		
+		try {
+			productDAO.merge(productToBeFavourited);
+		} catch (Exception exception) {
+			System.err.println("Catch " + exception.getClass().getName() + " in favoriteById() in ProductService");
+			exception.printStackTrace();
+			throw new PharmacyException(Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		return true;
+	}
+
+	/**
+	 * <ol>
+	 * 	<li>Gets the user who will unfavourited by their token.</li>
+	 * 	<li>Gets the product to be favourite by its id.</li>
+	 * 	<li>Gets the list of users that favourited this product.<em>({@link Product} attribute)</em> </li>
+	 * 	<li>Checks if this list is null.</li>
+	 * 	<li>Adds the logged user to this list.</li>
+	 * 	<li>Sets list of users that unfavourited this product with the above list</li>
+	 * 	<li>Save the product in database</li>
+	 * </ol>
+	 * 
+	 * @param token		logged user identifier key
+	 * @param productId	primary key that identifies the product to be unfavourited
+	 * @return true if the product was successfully saved
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 502 (BAD GATEWAY) if some problem happened in database
+	 */
+	public boolean unfavoriteById(UUID token, Short productId) {
+		User userWhoUnfavouritedTheProduct = userService.getByToken(token);
+		Product productToBeUnfavourited = getById(productId);
+		List<User> usersThatUnfavouritedThisProduct = userDAO.findAllThatFavouritedThisProduct(productId);
+		
+		if (usersThatUnfavouritedThisProduct == null) {
+			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		usersThatUnfavouritedThisProduct.removeIf(userElement -> userWhoUnfavouritedTheProduct.getId().equals(userElement.getId()));
+		productToBeUnfavourited.setUsersThatFavorited(usersThatUnfavouritedThisProduct);
+		
+		try {
+			productDAO.merge(productToBeUnfavourited);
+		} catch (Exception exception) {
+			System.err.println("Catch " + exception.getClass().getName() + " in unfavoriteById() in ProductService");
+			exception.printStackTrace();
+			throw new PharmacyException(Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		return true;
+	}
 }
