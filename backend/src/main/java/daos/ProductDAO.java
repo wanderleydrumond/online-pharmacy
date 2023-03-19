@@ -67,39 +67,6 @@ public class ProductDAO extends GenericDAO<Product> {
 	}
 
 	/**
-	 * Finds in the database the list of product sections.
-	 * 
-	 * @return
-	 * 		<ul>If:
-	 * 			<li>at least one record, the List of the products that belongs to the provided section</li>
-	 * 			<li>no records, a new {@link ArrayList}</li>
-	 * 			<li>any errors happened in the database, null</li>
-	 * 		</ul>
-	 */
-	public List<Section> findAllSections() {
-		try {
-			final CriteriaQuery<Section> CRITERIA_QUERY;
-			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-			CRITERIA_QUERY = criteriaBuilder.createQuery(Section.class);
-			Root<Product> productTable = CRITERIA_QUERY.from(Product.class);
-			
-			CRITERIA_QUERY.select(productTable.get("section"));
-			
-			return entityManager.createQuery(CRITERIA_QUERY).getResultList();
-		} catch (NoResultException noResultException) {
-			System.err.println("Catch " + noResultException.getClass().getName() + " in findAllSections() in ProductDAO");
-			noResultException.printStackTrace();
-			
-			return new ArrayList<Section>();
-		} catch (Exception exception) {
-			System.err.println("Catch " + exception.getClass().getName() + " in findAllBySection() in ProductDAO");
-			exception.printStackTrace();
-			
-			return null;
-		}
-	}
-
-	/**
 	 * Finds the {@link Optional} {@link Product} by its id.
 	 * 
 	 * @param productId primary key that identifies the product to be found

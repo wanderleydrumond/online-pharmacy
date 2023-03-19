@@ -76,25 +76,25 @@ public @Data class Product implements Serializable {
 	@JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "liked_products", joinColumns = @JoinColumn(name = "liked_product_id"), inverseJoinColumns = @JoinColumn(name = "user_that_liked_id"))
-	private List<User> 	  usersThatLiked;
+	private List<User> usersThatLiked;
 	/**
 	 * All users that marked this product as favourite.
 	 */
 	@JsonIgnore
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinTable(name = "favorite_products", joinColumns = @JoinColumn(name = "favorite_product_id"), inverseJoinColumns = @JoinColumn(name = "user_that_favorited_id"))
-	private List<User> 	  usersThatFavorited;
+	private List<User> usersThatFavorited;
 	/**
 	 * All orders from this product (concluded and on going).
 	 */
 	@JsonIgnore
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "ordered_products", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "order_id"))
-	private List<Order>   ordersOfAProduct;
+	private List<Order> ordersOfAProduct;
 	
 	/**
 	 * <p>The serial version identifier for this class.<p>
-	 * <p>This identifier is used during deserialisation to verify that the sender and receiver of a serialized object have loaded classes for that object that are compatible with respect to serialisation.<p>
+	 * <p>This identifier is used during deserialisation to verify that the sender and receiver of a serialised object have loaded classes for that object that are compatible with respect to serialisation.<p>
 	 */
 	private static final long serialVersionUID = 1L;
 }

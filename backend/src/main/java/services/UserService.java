@@ -230,7 +230,6 @@ public class UserService implements Serializable {
 		return isAdmin;
 	}
 
-
 	/**
 	 * <ol>
 	 * 	<li>Gets the user to be updated.</li>

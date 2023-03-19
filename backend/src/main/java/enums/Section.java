@@ -8,9 +8,9 @@ import lombok.Getter;
  * 
  * <p>Each section has a value.</p>
  * <ul>
- *   <li>BEAUTY: value = "beauty"</li>
- *   <li>HEALTH: value = "health"</li>
- *   <li>SUPPLEMENTS: value = "supplements"</li>
+ *   <li>BEAUTY: value = "Beauty"</li>
+ *   <li>HEALTH: value = "Health"</li>
+ *   <li>SUPPLEMENTS: value = "Supplements"</li>
  * </ul>
  * 
  * @author Wanderley Drumond
@@ -18,9 +18,9 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum Section {
-	BEAUTY ("beauty"),
-	HEALTH ("health"), 
-	SUPPLEMENTS ("supplements");
+	BEAUTY ("Beauty"),
+	HEALTH ("Health"), 
+	SUPPLEMENTS ("Supplements");
 	
 	private final String VALUE;
 }

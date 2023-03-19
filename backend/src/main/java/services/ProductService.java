@@ -9,10 +9,13 @@ import java.util.UUID;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import daos.ProductDAO;
+import daos.UserDAO;
 import dtos.ProductDTO;
 import entities.Product;
+import entities.User;
 import enums.Section;
 import exceptions.PharmacyException;
 import mappers.ProductMapper;
@@ -35,6 +38,12 @@ public class ProductService implements Serializable {
 	 */
 	@Inject
 	private ProductDAO productDAO;
+	
+	/**
+	 * Object that contains all user service methods.
+	 */
+	@Inject
+	private UserDAO userDAO;
 	
 	/**
 	 * Object that contains method that allows to switch between {@link Product} and {@link ProductDTO}.
@@ -111,28 +120,17 @@ public class ProductService implements Serializable {
 	}
 
 	/**
-	 * <ol>
-	 * 	<li>Gets all product sections.</li>
-	 * 	<li>Checks if section list is null</li>
-	 *  <li>Checks if the section list is empty</li>
-	 * </ol>
+	 * Adds all enumeration values inside a new {@link String} {@link ArrayList}.
 	 * 
-	 * @return the {@link Product} {@link ArrayList} with all sections inside of it
-	 * @throws {@link PharmacyException} with HTTP {@link Response} status 502 (BAD GATEWAY) if some problem happened in database
-	 * @throws {@link PharmacyException} with HTTP {@link Response} status 202 (NO CONTENT) if the {@link ArrayList} has no elements inside
+	 * @return the {@link String} {@link ArrayList} with all section values inside of it
 	 */
-	public List<Section> getAllSections() {
-		List<Section> sections = productDAO.findAllSections();
-		
-		if (sections == null) {
-			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+	public List<String> getAllSections() {
+		List<String> descriptions = new ArrayList<>();
+		for (Section section : Section.values()) {
+			descriptions.add(section.getVALUE());
 		}
 		
-		if (sections.isEmpty()) {
-			throw new PharmacyException(Response.Status.NO_CONTENT, "No content", "There are no sections yet");
-		}
-		
-		return sections;
+		return descriptions;
 	}
 
 	/**
@@ -182,5 +180,83 @@ public class ProductService implements Serializable {
 		}
 		
 		return productFound.get();
+	}
+
+	/**
+	 * <ol>
+	 * 	<li>Gets the user who will do the like by their token.</li>
+	 * 	<li>Gets the product to like by its id.</li>
+	 * 	<li>Gets the list of users that liked this product. <em>({@link Product} attribute)</em> </li>
+	 * 	<li>Checks if this list is null.</li>
+	 * 	<li>Adds the logged user to this list.</li>
+	 * 	<li>Sets list of users that liked this product with the above list</li>
+	 * 	<li>Save the product in database</li>
+	 * </ol>
+	 * 
+	 * @param token		logged user identifier key
+	 * @param productId	primary key that identifies the product to like
+	 * @return true if the product was successfully saved
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 502 (BAD GATEWAY) if some problem happened in database
+	 */
+	public boolean likeById(UUID token, Short productId) {
+		User userWhoLikedTheProduct = userService.getByToken(token);
+		Product productToBeLiked = getById(productId);
+		List<User> usersThatLikedThisProduct = userDAO.findAllThatLikedThisProduct(productId);
+		
+		if (usersThatLikedThisProduct == null) {
+			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		usersThatLikedThisProduct.add(userWhoLikedTheProduct);
+		productToBeLiked.setUsersThatLiked(usersThatLikedThisProduct);
+		
+		try {
+			productDAO.merge(productToBeLiked);
+			
+			return true;
+		} catch (Exception exception) {
+			System.err.println("Catch " + exception.getClass().getName() + " in likeById() in ProductService");
+			exception.printStackTrace();
+			throw new PharmacyException(Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+	}
+
+	/**
+	 * <ol>
+	 * 	<li>Gets the user who will do the unlike by their token.</li>
+	 * 	<li>Gets the product to unlike by its id.</li>
+	 * 	<li>Gets the list of users that liked this product. <em>({@link Product} attribute)</em> </li>
+	 * 	<li>Checks if this list is null.</li>
+	 * 	<li>Adds the logged user to this list.</li>
+	 * 	<li>Sets list of users that liked this product with the above list</li>
+	 * 	<li>Save the product in database</li>
+	 * </ol>
+	 * 
+	 * @param token		logged user identifier key
+	 * @param productId	primary key that identifies the product to like
+	 * @return true if the product was successfully saved
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 502 (BAD GATEWAY) if some problem happened in database
+	 */
+	public boolean unlikeById(UUID token, Short productId) {
+		User userWhoUnlikedTheProduct = userService.getByToken(token);
+		Product productToBeUnliked = getById(productId);
+		List<User> usersThatLikedThisProduct = userDAO.findAllThatLikedThisProduct(productId);
+		
+		if (usersThatLikedThisProduct == null) {
+			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		usersThatLikedThisProduct.removeIf(userElement -> userWhoUnlikedTheProduct.getId().equals(userElement.getId()));
+		productToBeUnliked.setUsersThatLiked(usersThatLikedThisProduct);
+		
+		try {
+			productDAO.merge(productToBeUnliked);
+		} catch (Exception exception) {
+			System.err.println("Catch " + exception.getClass().getName() + " in likeById() in ProductService");
+			exception.printStackTrace();
+			throw new PharmacyException(Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		return true;
 	}
 }

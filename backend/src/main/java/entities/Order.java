@@ -54,8 +54,8 @@ public @Data class Order implements Serializable {
 	 * When the order was concluded.
 	 */
 	@CreationTimestamp
-	@Column(name = "finished_in")
-	private Timestamp finishedIn;
+	@Column(name = "created_in")
+	private Timestamp createdIn;
 	/**
 	 * The sum of all products of this order.
 	 */

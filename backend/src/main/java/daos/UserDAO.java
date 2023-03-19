@@ -1,5 +1,7 @@
 package daos;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -9,11 +11,13 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Subquery;
 import javax.ws.rs.core.Response;
 
+import entities.Product;
 import entities.User;
 import enums.Role;
 import exceptions.PharmacyException;
@@ -36,6 +40,17 @@ public class UserDAO extends GenericDAO<User> {
 		super(User.class);
 	}
 
+	/**
+	 * Finds a user that have the given username and password.
+	 * 
+	 * @param username
+	 * @param password
+	 * @return
+	 * 		<ul>
+	 * 			<li>The {@link Optional} {@link User} who own the match of the given parameters</li>
+	 * 			<li>{@link Optional} empty if no one was found with the given match</li>
+	 * 		</ul>
+	 */
 	public Optional<User> signIn(String username, String password) {
 		try {
 			final CriteriaQuery<User> CRITERIA_QUERY;
@@ -56,6 +71,16 @@ public class UserDAO extends GenericDAO<User> {
 		}
 	}
 
+	/**
+	 * Finds an user by their UUID.
+	 * 
+	 * @param token logged user identifier key
+	 * @return If:
+	 * 		<ul>
+	 * 			<li>Finds, {@link Optional} {@link User} corresponding </li>
+	 * 			<li>Does not find, {@link Optional} empty</li>
+	 * 		</ul>
+	 */
 	public Optional<User> findByUUID(UUID token) {
 		try {
 			final CriteriaQuery<User> CRITERIA_QUERY;
@@ -172,6 +197,73 @@ public class UserDAO extends GenericDAO<User> {
 			pharmacyException.printStackTrace();
 			
 			throw new PharmacyException(Response.Status.SERVICE_UNAVAILABLE, "Error", "Error in database has occured");
+		}
+	}
+
+	
+	/**
+	 * Finds all users that liked the product which the provided id belongs.
+	 * 
+	 * @param productId primary key that identifies the product that contains the list of users that likes it
+	 * @return
+	 * 		<ul>If:
+	 * 			<li>Exists, at least, one record, the list, already existent in database, of users that liked this product</li>
+	 * 			<li>Not exists, a new list</li>
+	 * 			<li>Some problem happened, null</li>
+	 * 		</ul>
+	 */
+	public List<User> findAllThatLikedThisProduct(Short productId) {
+		try {
+			final CriteriaQuery<User> CRITERIA_QUERY;
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CRITERIA_QUERY = criteriaBuilder.createQuery(User.class);
+			Root<User> userTable = CRITERIA_QUERY.from(User.class);
+			Join<User, Product> productTable = userTable.join("likedProducts");
+			
+			CRITERIA_QUERY.select(userTable).where(criteriaBuilder.equal(productTable.get("id"), productId));
+			
+			return entityManager.createQuery(CRITERIA_QUERY).getResultList();
+		} catch (NoResultException noResultException) {
+			noResultException.printStackTrace();
+			
+			return new ArrayList<User>();
+		} catch (Exception exception) {
+			exception.printStackTrace();
+			
+			return null;
+		}
+	}
+	
+	/**
+	 * Counts all likes the product which the provided id belongs.
+	 * 
+	 * @param productId primary key that identifies the product that contains the list of users that likes it
+	 * @return
+	 * 		<ul>If:
+	 * 			<li>Exists, at least, one record, the list size</li>
+	 * 			<li>Not exists, 0</li>
+	 * 			<li>Some problem happened, null</li>
+	 * 		</ul>
+	 */
+	public Short countTotalLikes(Short productId) {
+		try {
+			final CriteriaQuery<User> CRITERIA_QUERY;
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CRITERIA_QUERY = criteriaBuilder.createQuery(User.class);
+			Root<User> userTable = CRITERIA_QUERY.from(User.class);
+			Join<User, Product> productTable = userTable.join("likedProducts");
+			
+			CRITERIA_QUERY.multiselect(userTable).where(criteriaBuilder.equal(productTable.get("id"), productId));
+			
+			return (short) entityManager.createQuery(CRITERIA_QUERY).getResultList().size();
+		} catch (NoResultException noResultException) {
+			noResultException.printStackTrace();
+			
+			return 0;
+		} catch (Exception exception) {
+			exception.printStackTrace();
+			
+			return null;
 		}
 	}
 }

@@ -2,12 +2,15 @@ package controllers;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -94,22 +97,13 @@ public class ProductController {
 	/**
 	 * Gets all product sections.
 	 * 
-	 * @return {@link Response} with status code:
-	 *      <ul>
-	 *         <li><strong>200 (OK)</strong> if the section list was found and has elements</li>
-	 *         <li><strong>202 (NO CONTENT)</strong> if the section list was found and is empty</li>
-	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
-	 *      </ul>
+	 * @return {@link Response} with status code <strong>200 (OK)</strong> if the section list was found and has elements
 	 */
 	@Path("/all-sections")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllSections() {
-		try {
-			return Response.ok(productService.getAllSections()).build();
-		} catch (PharmacyException pharmacyException) {
-			return Response.status(pharmacyException.getHttpStatus()).header("Impossible to proceed", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
-		}
+		return Response.ok(productService.getAllSections()).build();
 	}
 	
 	/**
@@ -152,11 +146,66 @@ public class ProductController {
 			return Response.ok(productMapper.toDTO(productService.getById(Short.parseShort(productId)))).build();
 		} catch (NumberFormatException numberFormatException) {
 			System.err.println("Catch " + numberFormatException.getClass().getName() + " in getById() in ProductController");
+			Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, "Incorrect number format for id", numberFormatException);
 			numberFormatException.printStackTrace();
 			
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Incorrect number format for id").build();
 		} catch (PharmacyException pharmacyException) {
 			System.err.println("Catch " + pharmacyException.getClass().getName() + " in getById() in ProductController");
+			Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, "Database unavailable", pharmacyException);
+			
+			return Response.status(pharmacyException.getHttpStatus()).header("Impossible to proceed", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
+		}
+	}
+	
+	/**
+	 * The logged user likes a product.
+	 * 
+	 * @param token		logged user identifier key
+	 * @param productId primary key that identifies the product to like
+	 * @return
+	 */
+	@Path("/like")
+	@PUT
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response likeById(@HeaderParam("token") UUID token, @QueryParam("id") String productId) {
+		try {
+			return Response.ok(productService.likeById(token, Short.valueOf(productId))).build();
+		} catch (NumberFormatException numberFormatException) {
+			System.err.println("Catch " + numberFormatException.getClass().getName() + " in likeById() in ProductController");
+			Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, "Incorrect number format for id", numberFormatException);
+			numberFormatException.printStackTrace();
+			
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Incorrect number format for id").build();
+		} catch (PharmacyException pharmacyException) {
+			System.err.println("Catch " + pharmacyException.getClass().getName() + " in likeById() in ProductController");
+			Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, "Database unavailable", pharmacyException);
+			
+			return Response.status(pharmacyException.getHttpStatus()).header("Impossible to proceed", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
+		}
+	}
+	
+	/**
+	 * The logged user unlike a product.
+	 * 
+	 * @param token		logged user identifier key
+	 * @param productId primary key that identifies the product to unlike
+	 * @return
+	 */
+	@Path("/unlike")
+	@PUT
+	public Response unlikeById(@HeaderParam("token") UUID token, @QueryParam("id") String productId) {
+		try {
+			return Response.ok(productService.unlikeById(token, Short.valueOf(productId))).build();
+		} catch (NumberFormatException numberFormatException) {
+			System.err.println("Catch " + numberFormatException.getClass().getName() + " in unlikeById() in ProductController");
+			Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, "Incorrect number format for id", numberFormatException);
+			numberFormatException.printStackTrace();
+			
+			return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Incorrect number format for id").build();
+		} catch (PharmacyException pharmacyException) {
+			System.err.println("Catch " + pharmacyException.getClass().getName() + " in unlikeById() in ProductController");
+			Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, "Database unavailable", pharmacyException);
 			
 			return Response.status(pharmacyException.getHttpStatus()).header("Impossible to proceed", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
 		}

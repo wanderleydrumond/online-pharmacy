@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 
+import daos.UserDAO;
 import dtos.ProductDTO;
 import entities.Product;
 
@@ -15,6 +17,13 @@ import entities.Product;
  */
 @Stateless
 public class ProductMapper {
+	
+	/**
+	 * Object that contains all user service methods.
+	 */
+	@Inject
+	UserDAO userDAO;
+	
 	/**
 	 * Changes a {@link ProductDTO} object into a {@link Product} object.
 	 * 
@@ -32,7 +41,7 @@ public class ProductMapper {
 	 * @return the {@link ProductDTO} resultant object
 	 */
 	public ProductDTO toDTO(Product product) {
-		return new ProductDTO(product.getId(), product.getName(), product.getImage(), product.getPrice(), product.getSection());
+		return new ProductDTO(product.getId(), userDAO.countTotalLikes(product.getId()), product.getName(), product.getImage(), product.getPrice(), product.getSection());
 	}
 	
 	/**

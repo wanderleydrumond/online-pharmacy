@@ -32,7 +32,7 @@ public class OrderMapper {
 	 * @return the DTO resultant object
 	 */
 	public OrderDTO toDTO(Order order) {
-		return new OrderDTO(order.getId(), order.getFinishedIn().toString(), order.getLastUpdate().toString(), order.getTotalValue());
+		return new OrderDTO(order.getId(), order.getCreatedIn().toString(), order.getLastUpdate().toString(), order.getTotalValue());
 	}
 	
 	/**
