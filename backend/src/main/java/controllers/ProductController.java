@@ -285,4 +285,18 @@ public class ProductController {
 			return Response.status(pharmacyException.getHttpStatus()).header("Impossible to proceed", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
 		}
 	}
+	
+	@Path("/favorites")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllByToken(@HeaderParam("token") UUID token) {
+		try {
+			return Response.ok(productMapper.toDTOs(productService.getAllFavoritesByToken(token))).build();
+		} catch (PharmacyException pharmacyException) {
+			System.err.println("Catch " + pharmacyException.getClass().getName() + " in getAllByToken() in ProductController");
+			Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, "Database unavailable", pharmacyException);
+			
+			return Response.status(pharmacyException.getHttpStatus()).header("Impossible to proceed", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
+		}
+	}
 }

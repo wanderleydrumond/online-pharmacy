@@ -87,19 +87,21 @@ public class UserService implements Serializable {
 	 * 	<li>Updates the amount of system sign ins in the configurations table</li>
 	 * </ol>
 	 * 
-	 * @param username of the user to be signed in
-	 * @param password of the user to be signed in
-	 * @return
-	 * 		<ul>
-	 * 			<li>The {@link User} object if the user was signed in</li>
-	 * 			<li>A {@link PharmacyException} with response code 401 (UNAUTHORIZED) if username and/or password are not found in database.</li>
-	 * 		</ul>
+	 * @param username of the user to sign in
+	 * @param password of the user to sign in
+	 * @return The {@link User} object
+	 * @throws {@link PharmacyException} with response code 401 (UNAUTHORIZED) if username and/or password are not found in database.
+	 * @throws {@link PharmacyException} with response code 403 (FORBIDDEN) if user role is VISITOR
 	 */
 	public User signIn(String username, String password) {
 		Optional<User> user = userDAO.signIn(username, password);
 		
 		if (user.isEmpty()) {
 			throw new PharmacyException(Response.Status.UNAUTHORIZED, "User not found", "The given credentials are invalid");
+		}
+		
+		if (user.get().getRole().equals(Role.VISITOR)) {
+			throw new PharmacyException(Response.Status.FORBIDDEN, "A visitor cannot sign in the system", "Wait until the administrator approves your account");
 		}
 		
 		user.get().setToken(UUID.randomUUID());

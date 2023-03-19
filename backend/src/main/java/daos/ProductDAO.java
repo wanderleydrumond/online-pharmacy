@@ -3,14 +3,17 @@ package daos;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 
 import entities.Product;
+import entities.User;
 import enums.Section;
 
 /**
@@ -89,6 +92,30 @@ public class ProductDAO extends GenericDAO<Product> {
 			return Optional.empty();
 		} catch (Exception exception) {
 			System.err.println("Catch " + exception.getClass().getName() + " in findById() in ProductDAO");
+			exception.printStackTrace();
+			
+			return null;
+		}
+	}
+
+	public List<Product> findAllfavoritesByToken(UUID token) {
+		try {
+			final CriteriaQuery<Product> CRITERIA_QUERY;
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CRITERIA_QUERY = criteriaBuilder.createQuery(Product.class);
+			Root<Product> productTable = CRITERIA_QUERY.from(Product.class);
+			Join<Product, User> userTable = productTable.join("usersThatFavorited");
+			
+			CRITERIA_QUERY.select(productTable).where(criteriaBuilder.equal(userTable.get("token"), token));
+			
+			return entityManager.createQuery(CRITERIA_QUERY).getResultList();
+		} catch (NoResultException noResultException) {
+			System.err.println("Catch " + noResultException.getClass().getName() + " in findAllfavoritesByToken() in ProductDAO");
+			noResultException.printStackTrace();
+			
+			return new ArrayList<Product>();
+		} catch (Exception exception) {
+			System.err.println("Catch " + exception.getClass().getName() + " in findAllfavoritesByToken() in ProductDAO");
 			exception.printStackTrace();
 			
 			return null;

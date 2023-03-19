@@ -253,7 +253,7 @@ public class UserDAO extends GenericDAO<User> {
 			Root<User> userTable = CRITERIA_QUERY.from(User.class);
 			Join<User, Product> productTable = userTable.join("likedProducts");
 			
-			CRITERIA_QUERY.multiselect(userTable).where(criteriaBuilder.equal(productTable.get("id"), productId));
+			CRITERIA_QUERY.select(userTable).where(criteriaBuilder.equal(productTable.get("id"), productId));
 			
 			return (short) entityManager.createQuery(CRITERIA_QUERY).getResultList().size();
 		} catch (NoResultException noResultException) {

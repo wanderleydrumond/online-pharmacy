@@ -337,4 +337,18 @@ public class ProductService implements Serializable {
 		
 		return true;
 	}
+
+	public List<Product> getAllFavoritesByToken(UUID token) {
+		if (token == null) {
+			throw new PharmacyException(Response.Status.UNAUTHORIZED, "User not logged", "User must be logged to access this functionality");
+		}
+		
+		List<Product> favouriteProducts = productDAO.findAllfavoritesByToken(token);
+		
+		if (favouriteProducts == null) {
+			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		return favouriteProducts;
+	}
 }
