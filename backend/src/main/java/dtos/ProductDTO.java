@@ -22,7 +22,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProductDTO implements Serializable {
-	private Short id, totalLikes;
+	private Short id, totalLikes/*, amountComments*/;
 	private String name, image;
 	private Float price;
 	private Section section;

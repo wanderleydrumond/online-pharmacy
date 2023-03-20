@@ -4,9 +4,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 
 import dtos.CommentDTO;
 import entities.Comment;
+import entities.User;
+import services.UserService;
 
 /**
  * Class responsible by transform {@link Comment} data that transits between backend and frontend.
@@ -15,6 +18,8 @@ import entities.Comment;
  */
 @Stateless
 public class CommentMapper {
+	@Inject
+	UserService userService;
 	/**
 	 * Changes a {@link CommentDTO} object into a {@link Comment} object.
 	 * 
@@ -24,15 +29,14 @@ public class CommentMapper {
 	public Comment toEntity(CommentDTO commentDTO) {
 		return new Comment(commentDTO.getContent());
 	}
-	
 	/**
 	 * Changes a {@link Comment} object into a {@link CommentDTO} object.
 	 * 
 	 * @param comment the object that will be transformed into DTO object
 	 * @return the DTO resultant object
 	 */
-	public CommentDTO toDTO(Comment comment) {
-		return new CommentDTO(comment.getId(), comment.getContent());
+	public CommentDTO toDTO(Comment comment, User user) {
+		return new CommentDTO(comment.getId(), user.getId(), comment.getContent(), user.getName(), user.getToken());
 	}
 	
 	/**
@@ -43,15 +47,5 @@ public class CommentMapper {
 	 */
 	public List<Comment> toEntities(List<CommentDTO> commentsDTO) {
 		return commentsDTO.stream().map(this::toEntity).collect(Collectors.toList());
-	}
-	
-	/**
-	 * Changes a {@link Comment} objects list into a {@link CommentDTO} objects list.
-	 * 
-	 * @param comments the list that will be transformed into DTO list
-	 * @return the {@link CommentDTO} resultant objects list
-	 */
-	public List<CommentDTO> toDTOs(List<Comment> comments) {
-		return comments.stream().map(this::toDTO).collect(Collectors.toList());
 	}
 }

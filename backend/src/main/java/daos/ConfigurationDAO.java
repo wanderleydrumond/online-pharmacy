@@ -1,6 +1,8 @@
 package daos;
 
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -32,7 +34,8 @@ public class ConfigurationDAO extends GenericDAO<Configuration> {
 			
 			return Optional.ofNullable(entityManager.createQuery(CRITERIA_QUERY).getSingleResult());
 		} catch (Exception exception) {
-			System.err.println("Catch " + exception.getClass().getName() + " in sumSignIns() in ConfigurationDAO");
+			System.err.println("Catch " + exception.getClass().getName() + " in findValueByKeyWord() in ConfigurationDAO");
+			Logger.getLogger(ConfigurationDAO.class.getName()).log(Level.SEVERE, "in findValueByKeyWord()", exception);
 			exception.printStackTrace();
 			
 			return Optional.empty();

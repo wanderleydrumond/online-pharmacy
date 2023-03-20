@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -92,13 +91,13 @@ public @Data class User implements Serializable {
 	 * All the concluded orders made by the user. 
 	 */
 	@JsonIgnore
-	@OneToMany(mappedBy = "buyer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "buyer", fetch = FetchType.LAZY)
 	private List<Order> orders;
 	/**
 	 * All the comments made by the user.
 	 */
 	@JsonIgnore
-	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
 	private List<Comment> comments;
 	/**
 	 * All products that the user marked as like.

@@ -40,7 +40,7 @@ public class ProductService implements Serializable {
 	private ProductDAO productDAO;
 	
 	/**
-	 * Object that contains all user service methods.
+	 * Object that contains all methods to manipulates database regarding users table.
 	 */
 	@Inject
 	private UserDAO userDAO;

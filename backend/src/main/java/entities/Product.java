@@ -68,7 +68,7 @@ public @Data class Product implements Serializable {
 	 * All the comments that this products received from the users.
 	 */
 	@JsonIgnore
-	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
 	private List<Comment> comments;
 	/**
 	 * All users that liked this product.

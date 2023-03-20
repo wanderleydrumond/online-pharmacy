@@ -119,7 +119,7 @@ public class UserController {
 	
 	/**
 	 * <p>Approves the user that owns the given id in the system.</p>
-	 * <p><em>Changes their role from VISITOR to  CLIENT</em></p>
+	 * <p><em>Changes their role from VISITOR to CLIENT</em></p>
 	 * 
 	 * @param token			  logged user identifier key
 	 * @param userToApproveId id of the user to be approved
@@ -201,6 +201,7 @@ public class UserController {
 	@Path("/test")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
+	// TODO to be deleted
 	public Response teste(@HeaderParam("token") UUID token) {
 		return Response.ok(userMapper.toDTO(userService.getByToken(token))).build();
 	}
