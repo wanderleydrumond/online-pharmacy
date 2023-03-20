@@ -338,6 +338,14 @@ public class ProductService implements Serializable {
 		return true;
 	}
 
+	/**
+	 * Gets all favourite products from the logged user.
+	 * 
+	 * @param token	logged user identifier key
+	 * @return the favourite {@link Product} {@link List}
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 401 (UNAUTHORISED) if token is null
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 502 (BAD GATEWAY) if some problem happened in database
+	 */
 	public List<Product> getAllFavoritesByToken(UUID token) {
 		if (token == null) {
 			throw new PharmacyException(Response.Status.UNAUTHORIZED, "User not logged", "User must be logged to access this functionality");

@@ -286,6 +286,17 @@ public class ProductController {
 		}
 	}
 	
+	/**
+	 * Gets all favourite products from the logged user.
+	 * 
+	 * @param token	logged user identifier key
+	 * @return {@link Response} with status code:
+	 *      <ul>
+	 *         <li><strong>200 (OK)</strong> if the user was able to find their favourite products along with {@link ProductDTO} list</li>
+	 *         <li><strong>401 (UNAUTHORISED)</strong> if user is not logged</li>
+	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
+	 *      </ul>
+	 */
 	@Path("/favorites")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

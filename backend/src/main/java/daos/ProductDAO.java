@@ -41,8 +41,8 @@ public class ProductDAO extends GenericDAO<Product> {
 	 * @param section which the list of products belongs
 	 * @return
 	 * 		<ul>If:
-	 * 			<li>at least one record, the List of the products that belongs to the provided section</li>
-	 * 			<li>no records, a new {@link ArrayList}</li>
+	 * 			<li>at least one record, the {@link List} of the products that belongs to the provided section</li>
+	 * 			<li>Does not have any records, a new {@link ArrayList}</li>
 	 * 			<li>any errors happened in the database, null</li>
 	 * 		</ul>
 	 */
@@ -98,6 +98,17 @@ public class ProductDAO extends GenericDAO<Product> {
 		}
 	}
 
+	/**
+	 * Finds all favourite products of the logged user.
+	 * 
+	 * @param token logged user identifier key
+	 * @return
+	 * 		<ul>If:
+	 * 			<li>at least one record, the {@link List} of favourite products of the logged user</li>
+	 * 			<li>Does not have any records, a new {@link ArrayList}</li>
+	 * 			<li>any errors happened in the database, null</li>
+	 * 		</ul>
+	 */
 	public List<Product> findAllfavoritesByToken(UUID token) {
 		try {
 			final CriteriaQuery<Product> CRITERIA_QUERY;
