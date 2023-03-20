@@ -208,7 +208,7 @@ public class UserDAO extends GenericDAO<User> {
 	 * @return
 	 * 		<ul>If:
 	 * 			<li>Exists, at least, one record, the list, already existent in database, of users that liked this product</li>
-	 * 			<li>Not exists, a new list</li>
+	 * 			<li>Do not exists, a new list</li>
 	 * 			<li>Some problem happened, null</li>
 	 * 		</ul>
 	 */

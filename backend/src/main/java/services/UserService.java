@@ -84,7 +84,7 @@ public class UserService implements Serializable {
 	 * 	<li>Search for the user in database.</li>
 	 * 	<li>Sets a random UUID for this user.</li>
 	 * 	<li>Saves the UUID in the user table.</li>
-	 * 	<li>Updates the amount of system sign ins in the configurations table</li>
+	 * 	<li>Updates the amount of system sign ins in the configurations table for clients</li>
 	 * </ol>
 	 * 
 	 * @param username of the user to sign in
@@ -107,8 +107,9 @@ public class UserService implements Serializable {
 		user.get().setToken(UUID.randomUUID());
 		userDAO.merge(user.get());
 		
-		updateTotalSignIns();
-		
+		if (user.get().getRole().equals(Role.CLIENT)) {
+			updateTotalSignIns();
+		}
 		return user.get();
 	}
 	
@@ -140,7 +141,7 @@ public class UserService implements Serializable {
 		Optional<Configuration> configurationOptional = configurationDAO.findValueByKeyWord(keyword);
 		
 		configurationOptional.ifPresentOrElse(congigurationElement -> {
-			int amountOfSignIns = Integer.valueOf(configurationOptional.get().getValue());
+			short amountOfSignIns = Short.valueOf(configurationOptional.get().getValue());
 			configurationOptional.get().setValue(String.valueOf(++amountOfSignIns));
 			configurationDAO.merge(configurationOptional.get());
 			
