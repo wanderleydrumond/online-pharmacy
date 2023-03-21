@@ -23,6 +23,12 @@ public class ConfigurationDAO extends GenericDAO<Configuration> {
 		super(Configuration.class);
 	}
 
+	/**
+	 * Finds the value that the corresponding keyword cell contains.
+	 * 
+	 * @param keyword the cell that corresponds the value to be found
+	 * @return {@link Optional} that contains the value correspondent by the keyword
+	 */
 	public Optional<Configuration> findValueByKeyWord(String keyword) {
 		try {
 			final CriteriaQuery<Configuration> CRITERIA_QUERY;
