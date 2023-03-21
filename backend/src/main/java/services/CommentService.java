@@ -31,6 +31,12 @@ public class CommentService implements Serializable {
 	ProductService productService;
 	
 	/**
+	 * Object that contains all user service methods.
+	 */
+	@Inject
+	UserService userService;
+	
+	/**
 	 * Object that contains method that allows to switch between {@link Comment} and {@link CommentDTO}.
 	 */
 	@Inject
@@ -94,5 +100,29 @@ public class CommentService implements Serializable {
 		}
 		
 		return comment;
+	}
+
+	/**
+	 * <ol>
+	 * 	<li>Gets the comment made for this product by the logged user</li>
+	 * 	<li>Checks if there is a comment</li>
+	 * 	<li>Removes the comment in the database</li>
+	 * </ol>
+	 * 
+	 * @param token		logged user identifier key
+	 * @param productId	primary key that identifies the product to have the comment removed
+	 * @return true
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 404 (NOT FOUND) if no comment was found for this product by this user
+	 */
+	public boolean delete(UUID token, Short productId) {
+		Optional<Comment> comment = getByProductIdForLoggedUser(productId, token);
+		
+		if (comment.isEmpty()) {
+			throw new PharmacyException(Response.Status.NOT_FOUND, "Comment not found.", "Impossible to delete.");
+		}
+		
+		commentDAO.remove(comment.get());
+		
+		return true;
 	}
 }

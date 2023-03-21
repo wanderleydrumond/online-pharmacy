@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
@@ -83,7 +84,7 @@ public class CommentController {
 	 * @return {@link Response} with status code:
 	 *      <ul>
 	 *         <li><strong>200 (OK)</strong> if the comment was found along with the {@link ProductDTO}</li>
-	 *         <li><strong>404 (NOT FOUND)</strong> if if an invalid product id was provided</li>
+	 *         <li><strong>404 (NOT FOUND)</strong> if an invalid product id was provided</li>
 	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
 	 *      </ul>
 	 */
@@ -95,5 +96,22 @@ public class CommentController {
 		Comment comment = commentService.getByProductIdForLoggedUser(Short.valueOf(productId), token).get();
 		
 		return Response.ok(commentMapper.toDTO(comment, user)).build();
+	}
+	
+	/**
+	 * Removes a single comment for the provided product for the logged user.
+	 * 
+	 * @param token		logged user identifier key
+	 * @param productId primary key that identifies the product to have the comment removed
+	 * @return {@link Response} with status code:
+	 *      <ul>
+	 *         <li><strong>200 (OK)</strong> if the comment was found along with the true boolean value</li>
+	 *         <li><strong>404 (NOT FOUND)</strong> if an invalid product id was provided</li>
+	 *      </ul>
+	 */
+	@Path("/by")
+	@DELETE
+	public Response deleteByProductIdForLoggedUser(@HeaderParam("token") UUID token, @QueryParam("id") String productId) {
+		return Response.ok(commentService.delete(token, Short.valueOf(productId))).build();
 	}
 }
