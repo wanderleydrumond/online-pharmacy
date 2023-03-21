@@ -93,8 +93,7 @@ public class CommentController {
 	public Response getByProductIdForLoggedUser(@HeaderParam("token") UUID token, @QueryParam("id") String productId) {
 		User user = userService.getByToken(token);
 		Comment comment = commentService.getByProductIdForLoggedUser(Short.valueOf(productId), token).get();
-		// Se fosse para retornar uma lista de comentários DTO
-		// List<CommentDTO> commentsDTO = comment.stream().map(commentElement -> commentMapper.toDTO(commentElement, user)).collect(Collectors.toList());
+		
 		return Response.ok(commentMapper.toDTO(comment, user)).build();
 	}
 }
