@@ -56,19 +56,21 @@ public class CommentDAO extends GenericDAO<Comment> {
 			Join<Comment, User> userTable = commentTable.join("owner");
 			Join<Comment, Product> productTable = commentTable.join("product");
 			
-			CRITERIA_QUERY.select(commentTable).where(criteriaBuilder.and(criteriaBuilder.equal(userTable.get("token"), token), criteriaBuilder.equal(productTable.get("id"), productId)));
+			CRITERIA_QUERY.select(commentTable).where(criteriaBuilder.and(
+					criteriaBuilder.equal(userTable.get("token"), token), 
+					criteriaBuilder.equal(productTable.get("id"), productId)));
 			
 			return Optional.ofNullable(entityManager.createQuery(CRITERIA_QUERY).getSingleResult());
 		} catch (NoResultException noResultException) {
 			System.err.println("Catch " + noResultException.getClass().getName() + " in findByProductIdForLoggedUser() in CommentDAO");
-			Logger.getLogger(ConfigurationDAO.class.getName()).log(Level.SEVERE, "in findByProductIdForLoggedUser()", noResultException);
-			noResultException.printStackTrace();
+			Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, "in findByProductIdForLoggedUser()", noResultException);
+			// noResultException.printStackTrace();
 			
 			return Optional.empty();
 		} catch (Exception exception) {
 			System.err.println("Catch " + exception.getClass().getName() + " in findByProductIdForLoggedUser() in CommentDAO");
-			Logger.getLogger(ConfigurationDAO.class.getName()).log(Level.SEVERE, "in findByProductIdForLoggedUser()", exception);
-			exception.printStackTrace();
+			Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, "in findByProductIdForLoggedUser()", exception);
+			// exception.printStackTrace();
 			
 			return null;
 		}

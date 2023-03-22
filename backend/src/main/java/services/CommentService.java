@@ -28,25 +28,19 @@ public class CommentService implements Serializable {
 	 * Object that contains all product service methods.
 	 */
 	@Inject
-	ProductService productService;
-	
-	/**
-	 * Object that contains all user service methods.
-	 */
-	@Inject
-	UserService userService;
+	private ProductService productService;
 	
 	/**
 	 * Object that contains method that allows to switch between {@link Comment} and {@link CommentDTO}.
 	 */
 	@Inject
-	CommentMapper commentMapper;
+	private CommentMapper commentMapper;
 	
 	/**
 	 * Object that contains all methods to manipulates database regarding comments table.
 	 */
 	@Inject
-	CommentDAO commentDAO;
+	private CommentDAO commentDAO;
 
 	/**
 	 * <p>The serial version identifier for this class.<p>
@@ -95,8 +89,9 @@ public class CommentService implements Serializable {
 	 */
 	public Optional<Comment> getByProductIdForLoggedUser(Short productId, UUID token) {
 		Optional<Comment> comment = commentDAO.findByProductIdForLoggedUser(productId, token);
-		if (comment.isEmpty()) {
-			throw new PharmacyException(Status.NOT_FOUND, "Product not found", "There is no such product for the given id"); 
+		
+		if (comment == null) {
+			throw new PharmacyException(Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
 		}
 		
 		return comment;
@@ -112,17 +107,79 @@ public class CommentService implements Serializable {
 	 * @param token		logged user identifier key
 	 * @param productId	primary key that identifies the product to have the comment removed
 	 * @return true
-	 * @throws {@link PharmacyException} with HTTP {@link Response} status 404 (NOT FOUND) if no comment was found for this product by this user
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 403 (FORBIDDEN) if the comment does not belongs to the logged user
 	 */
-	public boolean delete(UUID token, Short productId) {
-		Optional<Comment> comment = getByProductIdForLoggedUser(productId, token);
-		
-		if (comment.isEmpty()) {
-			throw new PharmacyException(Response.Status.NOT_FOUND, "Comment not found.", "Impossible to delete.");
+	public boolean delete(UUID token, Short commentId) {
+		Comment comment = getById(commentId);
+
+		if (isCommentOwner(comment, token)) {
+			commentDAO.remove(comment);			
+		} else {
+			throw new PharmacyException(Response.Status.FORBIDDEN, "Action not allowed", "Only the owner can delete their comment.");
 		}
 		
-		commentDAO.remove(comment.get());
-		
 		return true;
+	}
+	
+	/**
+	 * <ol>
+	 * 	<li>Gets the comment that owns the given id</li>
+	 * 	<li>Checks if logged user is the one who created the comment</li>
+	 * 	<li>Sets the new content text</li>
+	 * 	<li>Saves the new comment in the database</li>
+	 * </ol>
+	 * 
+	 * @param token		  logged user identifier key
+	 * @param commentId	  primary key that identifies the comment to update
+	 * @param requestBody comment content text
+	 * @return the updated {@link Comment}
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 403 (FORBIDDEN) if the comment does not belongs to the logged user
+	 */
+	public Comment updateById(UUID token, Short commentId, CommentDTO requestBody) {
+		Comment comment = getById(commentId);
+		
+		if (isCommentOwner(comment, token)) {
+			comment.setContent(requestBody.getContent());
+			commentDAO.merge(comment);
+		} else {
+			throw new PharmacyException(Response.Status.FORBIDDEN, "Action not allowed", "Only the owner can update their comment.");
+		}
+		
+		return comment;
+	}
+
+	/**
+	 * <ol>
+	 * 	<li>Gets a comment by its id</li>
+	 * 	<li>Checks if comment exists in the database</li>
+	 * </ol>
+	 * 
+	 * @param commentId primary key that identifies the comment to find
+	 * @return the {@link Comment} that owns the provided id
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 404 (NOT FOUND) if no comment was found with the provided id
+	 */
+	private Comment getById(Short commentId) {
+		Optional<Comment> comment = commentDAO.find(commentId);
+		
+		if (comment.isEmpty()) {
+			throw new PharmacyException(Response.Status.NOT_FOUND, "Comment not found.", "The given id does not correspond to any comment existent in database for this user.");
+		}
+		
+		return comment.get();
+	}
+	
+	/**
+	 * Checks if the given comment belongs to the logged user.
+	 * 
+	 * @param comment {@link Comment} to be verified
+	 * @param token   logged user identifier key
+	 * @return
+	 * 		<ul>
+	 * 			<li>true, if the given comment belongs to the logged user</li>
+	 * 			<li>false, if the given comment does not belongs to the logged user</li>
+	 * 		</ul>
+	 */
+	private boolean isCommentOwner(Comment comment, UUID token) {
+		return comment.getOwner().getToken().equals(token) ? true : false;
 	}
 }

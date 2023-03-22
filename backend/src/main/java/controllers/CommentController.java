@@ -9,6 +9,7 @@ import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
@@ -35,19 +36,19 @@ public class CommentController {
 	 * Object that contains all comment service methods.
 	 */
 	@Inject
-	CommentService commentService;
+	private CommentService commentService;
 	
 	/**
 	 * Object that contains all user service methods.
 	 */
 	@Inject
-	UserService userService;
+	private UserService userService;
 	
 	/**
 	 * Object that contains method that allows to switch between {@link Comment} and {@link CommentDTO}.
 	 */
 	@Inject
-	CommentMapper commentMapper;
+	private CommentMapper commentMapper;
 	
 	/**
 	 * Creates a single comment for the provided product for the logged user.
@@ -99,19 +100,40 @@ public class CommentController {
 	}
 	
 	/**
-	 * Removes a single comment for the provided product for the logged user.
+	 * Removes a single comment its provided id.
 	 * 
 	 * @param token		logged user identifier key
-	 * @param productId primary key that identifies the product to have the comment removed
+	 * @param commentId primary key that identifies the comment to remove
 	 * @return {@link Response} with status code:
 	 *      <ul>
 	 *         <li><strong>200 (OK)</strong> if the comment was found along with the true boolean value</li>
-	 *         <li><strong>404 (NOT FOUND)</strong> if an invalid product id was provided</li>
+	 *         <li><strong>403 (FORBIDDEN)</strong> if the comment does not belongs to the logged user</li>
 	 *      </ul>
 	 */
 	@Path("/by")
 	@DELETE
-	public Response deleteByProductIdForLoggedUser(@HeaderParam("token") UUID token, @QueryParam("id") String productId) {
-		return Response.ok(commentService.delete(token, Short.valueOf(productId))).build();
+	public Response deleteById(@HeaderParam("token") UUID token, @QueryParam("id") String commentId) {
+		return Response.ok(commentService.delete(token, Short.valueOf(commentId))).build();
+	}
+	
+	/**
+	 * @param token		  logged user identifier key
+	 * @param commentId	  primary key that identifies the comment to update
+	 * @param requestBody comment content text
+	 * @return {@link Response} with status code:
+	 *      <ul>
+	 *         <li><strong>200 (OK)</strong> if the comment was found along with the {@link CommentDTO} which contains the updated comment content text</li>
+	 *         <li><strong>403 (FORBIDDEN)</strong> if the comment does not belongs to the logged user</li>
+	 *      </ul>
+	 */
+	@Path("/by")
+	@PUT
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response updateById(@HeaderParam("token") UUID token, @QueryParam("id") String commentId, CommentDTO requestBody) {
+		User user = userService.getByToken(token);
+		Comment comment = commentService.updateById(token, Short.valueOf(commentId), requestBody);
+		CommentDTO answerBody = commentMapper.toDTO(comment, user);
+		
+		return Response.ok(answerBody).build();
 	}
 }

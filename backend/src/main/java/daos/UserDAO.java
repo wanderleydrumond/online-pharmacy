@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
@@ -65,7 +67,8 @@ public class UserDAO extends GenericDAO<User> {
 			return Optional.ofNullable(entityManager.createQuery(CRITERIA_QUERY).getSingleResult());
 		} catch (Exception exception) {
 			System.err.println("Catch " + exception.getClass().getName() + " in signIn() in UserDAO");
-			exception.printStackTrace();
+			Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "in signIn()", exception);
+			// exception.printStackTrace();
 			
 			return Optional.empty();
 		}
@@ -95,7 +98,8 @@ public class UserDAO extends GenericDAO<User> {
 			return Optional.ofNullable(entityManager.createQuery(CRITERIA_QUERY).getSingleResult());
 		} catch (Exception exception) {
 			System.err.println("Catch " + exception.getClass().getName() + " in findByUUID() in UserDAO");
-			exception.printStackTrace();
+			Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "in findByUUID()", exception);
+			// exception.printStackTrace();
 			
 			return Optional.empty();
 		}
@@ -121,7 +125,8 @@ public class UserDAO extends GenericDAO<User> {
 			return entityManager.createQuery(CRITERIA_UPDATE).executeUpdate();
 		} catch (PharmacyException pharmacyException) {
 			System.err.println("Catch " + pharmacyException.getClass().getName() + " in signOut() in UserDAO");
-			pharmacyException.printStackTrace();
+			Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "in signOut()", pharmacyException);
+			//pharmacyException.printStackTrace();
 			
 			throw new PharmacyException(Response.Status.SERVICE_UNAVAILABLE, "Error", "Error in database has occured");
 		}
@@ -161,11 +166,13 @@ public class UserDAO extends GenericDAO<User> {
 			return typedQuery.getSingleResult();
 		} catch (NoResultException noResultException) {
 			System.out.println("Catch " + noResultException.getClass().getName() + " in exists() in UserDAO.");
-			
+			Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "in exists()", noResultException);
+
 			return false;
 		} catch (Exception exception) {
 			System.err.println("Catch " + exception.getClass().getName() + " in exists() in UserDAO");
-			exception.printStackTrace();
+			Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "in exists()", exception);
+			// exception.printStackTrace();
 			
 			return null;
 		}
@@ -193,8 +200,9 @@ public class UserDAO extends GenericDAO<User> {
 			
 			return entityManager.createQuery(CRITERIA_UPDATE).executeUpdate();
 		} catch (PharmacyException pharmacyException) {
-			System.err.println("Catch " + pharmacyException.getClass().getName() + " in signOut() in UserDAO");
-			pharmacyException.printStackTrace();
+			System.err.println("Catch " + pharmacyException.getClass().getName() + " in approve() in UserDAO");
+			Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "in approve()", pharmacyException);
+			// pharmacyException.printStackTrace();
 			
 			throw new PharmacyException(Response.Status.SERVICE_UNAVAILABLE, "Error", "Error in database has occured");
 		}
@@ -224,11 +232,15 @@ public class UserDAO extends GenericDAO<User> {
 			
 			return entityManager.createQuery(CRITERIA_QUERY).getResultList();
 		} catch (NoResultException noResultException) {
-			noResultException.printStackTrace();
+			System.err.println("Catch " + noResultException.getClass().getName() + " in findAllThatLikedThisProduct() in UserDAO");
+			Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "in findAllThatLikedThisProduct()", noResultException);
+			// noResultException.printStackTrace();
 			
 			return new ArrayList<User>();
 		} catch (Exception exception) {
-			exception.printStackTrace();
+			System.err.println("Catch " + exception.getClass().getName() + " in findAllThatLikedThisProduct() in UserDAO");
+			Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "in findAllThatLikedThisProduct()", exception);
+			// exception.printStackTrace();
 			
 			return null;
 		}
@@ -257,11 +269,15 @@ public class UserDAO extends GenericDAO<User> {
 			
 			return (short) entityManager.createQuery(CRITERIA_QUERY).getResultList().size();
 		} catch (NoResultException noResultException) {
-			noResultException.printStackTrace();
+			System.err.println("Catch " + noResultException.getClass().getName() + " in countTotalLikes() in UserDAO");
+			Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "in countTotalLikes()", noResultException);
+			// noResultException.printStackTrace();
 			
 			return 0;
 		} catch (Exception exception) {
-			exception.printStackTrace();
+			System.err.println("Catch " + exception.getClass().getName() + " in countTotalLikes() in UserDAO");
+			Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "in countTotalLikes()", exception);
+			// exception.printStackTrace();
 			
 			return null;
 		}
@@ -290,11 +306,15 @@ public class UserDAO extends GenericDAO<User> {
 			
 			return entityManager.createQuery(CRITERIA_QUERY).getResultList();
 		} catch (NoResultException noResultException) {
-			noResultException.printStackTrace();
+			System.err.println("Catch " + noResultException.getClass().getName() + " in findAllThatFavouritedThisProduct() in UserDAO");
+			Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "in findAllThatFavouritedThisProduct()", noResultException);
+			// noResultException.printStackTrace();
 			
 			return new ArrayList<User>();
 		} catch (Exception exception) {
-			exception.printStackTrace();
+			System.err.println("Catch " + exception.getClass().getName() + " in findAllThatFavouritedThisProduct() in UserDAO");
+			Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "in findAllThatFavouritedThisProduct()", exception);
+			// exception.printStackTrace();
 			
 			return null;
 		}
