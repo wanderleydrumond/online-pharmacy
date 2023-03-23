@@ -33,13 +33,13 @@ public class UserService implements Serializable {
 	 * Object that contains all methods to manipulates database regarding users table.
 	 */
 	@Inject
-	UserDAO userDAO;
+	private UserDAO userDAO;
 	
 	/**
 	 * Object that contains all methods to manipulates database regarding configurations table.
 	 */
 	@Inject
-	ConfigurationDAO configurationDAO;
+	private ConfigurationDAO configurationDAO;
 
 	/**
 	 * <ol>

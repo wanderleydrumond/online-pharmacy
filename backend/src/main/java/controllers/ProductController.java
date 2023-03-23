@@ -34,13 +34,13 @@ public class ProductController {
 	 * Object that contains all product service methods.
 	 */
 	@Inject
-	ProductService productService;
+	private ProductService productService;
 	
 	/**
 	 * Object that contains method that allows to switch between {@link Product} and {@link ProductDTO}.
 	 */
 	@Inject
-	ProductMapper productMapper;
+	private ProductMapper productMapper;
 	
 	/**
 	 * Creates a new product by an administrator.

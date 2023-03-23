@@ -31,13 +31,13 @@ public class UserController {
 	 * Object that contains all user service methods.
 	 */
 	@Inject
-	UserService userService;
+	private UserService userService;
 	
 	/**
 	 * Object that contains method that allows to switch between {@link User} and {@link UserDTO}.
 	 */
 	@Inject
-	UserMapper userMapper;
+	private UserMapper userMapper;
 	
 	/**
 	 * Registers a new user in the system.
