@@ -155,12 +155,6 @@ public class CommentController {
 		List<Comment> comments = commentService.getAllByProductId(Short.valueOf(productId));
 		List<CommentDTO> commentsDTO = new ArrayList<>();
 		
-		/*
-for (Comment commentElement : comments) {
-			CommentDTO commentDTO = commentMapper.toDTO(commentElement, commentElement.getOwner());
-			commentsDTO.add(commentDTO);
-		}
-*/
 		comments.forEach(commentElement -> commentsDTO.add(commentMapper.toDTO(commentElement, commentElement.getOwner())));
 		
 		return Response.ok(commentsDTO).build();
