@@ -310,4 +310,24 @@ public class ProductController {
 			return Response.status(pharmacyException.getHttpStatus()).header("Impossible to proceed", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
 		}
 	}
+	
+	/**
+	 * Gets all the products that contains the provided name.
+	 * 
+	 * @param productName the key search
+	 * @return {@link Response} with status code:
+	 *      <ul>
+	 *         <li><strong>200 (OK)</strong> if the products list was found and has elements</li>
+	 *         <li><strong>202 (NO CONTENT)</strong> if the products list was found and is empty</li>
+	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
+	 *      </ul>
+	 */
+	@Path("/all-by-")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllByName(@QueryParam("name") String productName) {
+		List<Product> productsFound = productService.getAllByName(productName);
+		
+		return Response.ok(productMapper.toDTOs(productsFound)).build();
+	}
 }

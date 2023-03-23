@@ -1,9 +1,10 @@
 package daos;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
@@ -41,8 +42,7 @@ public class ProductDAO extends GenericDAO<Product> {
 	 * @param section which the list of products belongs
 	 * @return
 	 * 		<ul>If:
-	 * 			<li>at least one record, the {@link List} of the products that belongs to the provided section</li>
-	 * 			<li>Does not have any records, a new {@link ArrayList}</li>
+	 * 			<li>the {@link List} of the products that belongs to the provided section</li>
 	 * 			<li>any errors happened in the database, null</li>
 	 * 		</ul>
 	 */
@@ -56,14 +56,10 @@ public class ProductDAO extends GenericDAO<Product> {
 			CRITERIA_QUERY.select(productTable).where(criteriaBuilder.equal(productTable.get("section"), section));
 			
 			return entityManager.createQuery(CRITERIA_QUERY).getResultList();
-		} catch (NoResultException noResultException) {
-			System.err.println("Catch " + noResultException.getClass().getName() + " in findAllBySection() in ProductDAO");
-			noResultException.printStackTrace();
-			
-			return new ArrayList<Product>();
 		} catch (Exception exception) {
-			System.err.println("Catch " + exception.getClass().getName() + " in findAllBySection() in ProductDAO");
-			exception.printStackTrace();
+			// System.err.println("Catch " + exception.getClass().getName() + " in findAllBySection() in ProductDAO");
+			Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, "in findAllBySection() in ProductDAO", exception);
+			// exception.printStackTrace();
 			
 			return null;
 		}
@@ -86,13 +82,15 @@ public class ProductDAO extends GenericDAO<Product> {
 			
 			return Optional.ofNullable(entityManager.createQuery(CRITERIA_QUERY).getSingleResult());
 		} catch (NoResultException noResultException) {
-			System.err.println("Catch " + noResultException.getClass().getName() + " in findById() in ProductDAO");
-			noResultException.printStackTrace();
+			Logger.getLogger(ProductDAO.class.getName()).log(Level.FINE, "in findById() in ProductDAO", noResultException);
+			// System.err.println("Catch " + noResultException.getClass().getName() + " in findById() in ProductDAO");
+			// noResultException.printStackTrace();
 			
 			return Optional.empty();
 		} catch (Exception exception) {
-			System.err.println("Catch " + exception.getClass().getName() + " in findById() in ProductDAO");
-			exception.printStackTrace();
+			// System.err.println("Catch " + exception.getClass().getName() + " in findById() in ProductDAO");
+			Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, "in findById() in ProductDAO", exception);			
+			// exception.printStackTrace();
 			
 			return null;
 		}
@@ -104,8 +102,7 @@ public class ProductDAO extends GenericDAO<Product> {
 	 * @param token logged user identifier key
 	 * @return
 	 * 		<ul>If:
-	 * 			<li>at least one record, the {@link List} of favourite products of the logged user</li>
-	 * 			<li>Does not have any records, a new {@link ArrayList}</li>
+	 * 			<li>the {@link List} of favourite products of the logged user</li>
 	 * 			<li>any errors happened in the database, null</li>
 	 * 		</ul>
 	 */
@@ -120,17 +117,44 @@ public class ProductDAO extends GenericDAO<Product> {
 			CRITERIA_QUERY.select(productTable).where(criteriaBuilder.equal(userTable.get("token"), token));
 			
 			return entityManager.createQuery(CRITERIA_QUERY).getResultList();
-		} catch (NoResultException noResultException) {
-			System.err.println("Catch " + noResultException.getClass().getName() + " in findAllfavoritesByToken() in ProductDAO");
-			noResultException.printStackTrace();
-			
-			return new ArrayList<Product>();
 		} catch (Exception exception) {
-			System.err.println("Catch " + exception.getClass().getName() + " in findAllfavoritesByToken() in ProductDAO");
-			exception.printStackTrace();
+			// System.err.println("Catch " + exception.getClass().getName() + " in findAllfavoritesByToken() in ProductDAO");
+			Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, "in findAllfavoritesByToken() in ProductDAO", exception);
+			// exception.printStackTrace();
 			
 			return null;
 		}
 	}
 
+	/**
+	 * Finds the list of products that contains the provided key search in their product names
+	 * 
+	 * @param keysearch the product name or part of it
+	 * @return
+	 * 		<ul>If:
+	 * 			<li>the {@link List} of the products that contains the provided key search in their names</li>
+	 * 			<li>any errors happened in the database, null</li>
+	 * 		</ul>
+	 */
+	public List<Product> findAllByName(String keysearch) {
+		try {
+			final CriteriaQuery<Product> CRITERIA_QUERY;
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CRITERIA_QUERY = criteriaBuilder.createQuery(Product.class);
+			Root<Product> productTable = CRITERIA_QUERY.from(Product.class);
+			
+			CRITERIA_QUERY.select(productTable).where(criteriaBuilder.or(
+					criteriaBuilder.like(productTable.get("name"), keysearch + '%'),
+					criteriaBuilder.like(productTable.get("name"), '%' + keysearch + '%'),
+					criteriaBuilder.like(productTable.get("name"), '%' + keysearch)));
+			
+			return entityManager.createQuery(CRITERIA_QUERY).getResultList();
+		} catch (Exception exception) {
+			// System.err.println("Catch " + exception.getClass().getName() + " in findAllByName() in ProductDAO");
+			Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, "in findAllByName() in ProductDAO", exception);
+			// exception.printStackTrace();
+			
+			return null;
+		}
+	}
 }
