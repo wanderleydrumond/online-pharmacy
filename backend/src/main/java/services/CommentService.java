@@ -1,6 +1,7 @@
 package services;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -181,5 +182,26 @@ public class CommentService implements Serializable {
 	 */
 	private boolean isCommentOwner(Comment comment, UUID token) {
 		return comment.getOwner().getToken().equals(token) ? true : false;
+	}
+
+	/**
+	 * <ol>
+	 * 	<li>Gets the list of comments of the given product id</li>
+	 * 	<li>Checks if the list is null</li>
+	 * </ol>
+	 * 
+	 * @param productId primary key that identifies the product to find all comments
+	 * @return the {@link Comment} {@link List}
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 502 (BAD GATEWAY) if some problem happened in database
+	 * 
+	 */
+	public List<Comment> getAllByProductId(Short productId) {
+		List<Comment> comments = commentDAO.findAllByProductId(productId);
+		
+		if (comments == null) {
+			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		return comments;
 	}
 }

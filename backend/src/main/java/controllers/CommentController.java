@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -135,5 +136,33 @@ public class CommentController {
 		CommentDTO answerBody = commentMapper.toDTO(comment, user);
 		
 		return Response.ok(answerBody).build();
+	}
+	
+	/**
+	 * Gets all comments made from all users of the given product.
+	 * 
+	 * @param productId primary key that identifies the product to find all comments
+	 * @return {@link Response} with status code:
+	 *      <ul>
+	 *         <li><strong>200 (OK)</strong> if the product was found along with the {@link CommentDTO} {@link List} from it</li>
+	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
+	 *      </ul>
+	 */
+	@Path("all-by")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllByProductId(@QueryParam("id") String productId) {
+		List<Comment> comments = commentService.getAllByProductId(Short.valueOf(productId));
+		List<CommentDTO> commentsDTO = new ArrayList<>();
+		
+		/*
+for (Comment commentElement : comments) {
+			CommentDTO commentDTO = commentMapper.toDTO(commentElement, commentElement.getOwner());
+			commentsDTO.add(commentDTO);
+		}
+*/
+		comments.forEach(commentElement -> commentsDTO.add(commentMapper.toDTO(commentElement, commentElement.getOwner())));
+		
+		return Response.ok(commentsDTO).build();
 	}
 }

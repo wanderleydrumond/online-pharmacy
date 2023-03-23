@@ -1,5 +1,7 @@
 package daos;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -76,4 +78,40 @@ public class CommentDAO extends GenericDAO<Comment> {
 		}
 	}
 
+	/**
+	 * Finds the list of comments made from all users from the given product.
+	 * 
+	 * @param productId	primary key that identifies the product to find all comments
+	 * @return
+	 * 		<ul>
+	 * 			<li>The {@link Comment} {@link List} that belongs to the identified product</li>
+	 * 			<li>new {@link ArrayList} if no comment was found with the given match</li>
+	 * 			<li>null, if some problem happened in database</li>
+	 * 		</ul>
+	 */
+	public List<Comment> findAllByProductId(Short productId) {
+		try {
+			final CriteriaQuery<Comment> CRITERIA_QUERY;
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CRITERIA_QUERY = criteriaBuilder.createQuery(Comment.class);
+			Root<Comment> commentTable = CRITERIA_QUERY.from(Comment.class);
+			Join<Comment, Product> productTable = commentTable.join("product");
+			
+			CRITERIA_QUERY.select(commentTable).where(criteriaBuilder.equal(productTable.get("id"), productId));
+			
+			return entityManager.createQuery(CRITERIA_QUERY).getResultList();
+		} catch (NoResultException noResultException) {
+			System.err.println("Catch " + noResultException.getClass().getName() + " in findAllByProductId() in CommentDAO");
+			Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, "in findAllByProductId()", noResultException);
+			// noResultException.printStackTrace();
+			
+			return new ArrayList<Comment>();
+		} catch (Exception exception) {
+			System.err.println("Catch " + exception.getClass().getName() + " in findAllByProductId() in CommentDAO");
+			Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, "in findAllByProductId()", exception);
+			// exception.printStackTrace();
+			
+			return null;
+		}
+	}
 }
