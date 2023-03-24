@@ -13,6 +13,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 
+import entities.Order;
 import entities.Product;
 import entities.User;
 import enums.Section;
@@ -152,6 +153,25 @@ public class ProductDAO extends GenericDAO<Product> {
 		} catch (Exception exception) {
 			// System.err.println("Catch " + exception.getClass().getName() + " in findAllByName() in ProductDAO");
 			Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, "in findAllByName() in ProductDAO", exception);
+			// exception.printStackTrace();
+			
+			return null;
+		}
+	}
+
+	public List<Product> findAllByOrderId(Short orderId) {
+		try {
+			final CriteriaQuery<Product> CRITERIA_QUERY;
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CRITERIA_QUERY = criteriaBuilder.createQuery(Product.class);
+			Root<Product> productTable = CRITERIA_QUERY.from(Product.class);
+			Join<Product, Order> orderTable = productTable.join("ordersOfAProduct");
+			
+			CRITERIA_QUERY.select(productTable).where(criteriaBuilder.equal(orderTable.get("id"), orderId));
+			
+			return entityManager.createQuery(CRITERIA_QUERY).getResultList();
+		} catch (Exception exception) {
+			Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, "in findAllByOrderId() in ProductDAO", exception);
 			// exception.printStackTrace();
 			
 			return null;
