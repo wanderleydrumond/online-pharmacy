@@ -386,4 +386,14 @@ public class ProductService implements Serializable {
 		
 		return productsFound;
 	}
+
+	public List<Product> getAllByOrderId(Short orderId) {
+		List<Product> products = productDAO.findAllByOrderId(orderId);
+		
+		if (products == null) {
+			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		return products;
+	}
 }

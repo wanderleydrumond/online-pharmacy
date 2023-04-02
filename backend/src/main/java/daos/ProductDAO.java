@@ -1,5 +1,6 @@
 package daos;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -170,6 +171,12 @@ public class ProductDAO extends GenericDAO<Product> {
 			CRITERIA_QUERY.select(productTable).where(criteriaBuilder.equal(orderTable.get("id"), orderId));
 			
 			return entityManager.createQuery(CRITERIA_QUERY).getResultList();
+		} catch (NoResultException noResultException) {
+			System.err.println("Catch " + noResultException.getClass().getName() + " in findAllThatFavouritedThisProduct() in UserDAO");
+			Logger.getLogger(ProductDAO.class.getName()).log(Level.FINE, "in findAllThatFavouritedThisProduct()", noResultException);
+			// noResultException.printStackTrace();
+			
+			return new ArrayList<Product>();
 		} catch (Exception exception) {
 			Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, "in findAllByOrderId() in ProductDAO", exception);
 			// exception.printStackTrace();

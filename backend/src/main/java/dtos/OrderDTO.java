@@ -25,7 +25,7 @@ public class OrderDTO implements Serializable {
 	private @NonNull Short id;
 	private @NonNull String lastUpdate;
 	private @NonNull Float totalValue;
-	private Boolean isConcluded;
+	private @NonNull Boolean isConcluded;
 	private List<ProductDTO> productsDTO;
 	/**
 	 * <p>The serial version identifier for this class.<p>

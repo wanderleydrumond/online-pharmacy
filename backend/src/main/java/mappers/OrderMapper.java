@@ -32,7 +32,8 @@ public class OrderMapper {
 	 * @return the DTO resultant object
 	 */
 	public OrderDTO toDTO(Order order) {
-		return new OrderDTO(order.getId(), order.getLastUpdate().toString(), order.getTotalValue());
+		// FIXME include product list
+		return new OrderDTO(order.getId(), order.getLastUpdate().toString(), order.getTotalValue(), order.getIsConcluded());
 	}
 	
 	/**

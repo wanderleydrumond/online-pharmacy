@@ -88,8 +88,7 @@ public @Data class Product implements Serializable {
 	 * All orders from this product (concluded and on going).
 	 */
 	@JsonIgnore
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "ordered_products", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "order_id"))
+	@ManyToMany(mappedBy = "productsOfAnOrder", fetch = FetchType.LAZY)
 	private List<Order> ordersOfAProduct;
 	
 	/**
