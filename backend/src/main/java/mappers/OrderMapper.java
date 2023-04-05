@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
+import javax.inject.Inject;
 
 import dtos.OrderDTO;
+import dtos.ProductDTO;
 import entities.Order;
 
 /**
@@ -15,6 +17,9 @@ import entities.Order;
  */
 @Stateless
 public class OrderMapper {
+	@Inject
+	ProductMapper productMapper;
+	
 	/**
 	 * Changes a {@link OrderDTO} object into a {@link Order} object.
 	 * 
@@ -32,8 +37,8 @@ public class OrderMapper {
 	 * @return the DTO resultant object
 	 */
 	public OrderDTO toDTO(Order order) {
-		// FIXME include product list
-		return new OrderDTO(order.getId(), order.getLastUpdate().toString(), order.getTotalValue(), order.getIsConcluded());
+		List<ProductDTO> productsDTO = order.getProductsOfAnOrder().stream().map(productElement -> productMapper.toDTO(productElement)).collect(Collectors.toList());
+		return new OrderDTO(order.getId(), order.getLastUpdate().toString(), order.getTotalValue(), order.getIsConcluded(), productsDTO);
 	}
 	
 	/**

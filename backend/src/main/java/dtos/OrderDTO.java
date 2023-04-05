@@ -5,10 +5,9 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 /**
@@ -18,14 +17,14 @@ import lombok.Setter;
  */
 @XmlRootElement
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 public class OrderDTO implements Serializable {
-	private @NonNull Short id;
-	private @NonNull String lastUpdate;
-	private @NonNull Float totalValue;
-	private @NonNull Boolean isConcluded;
+	private Short id;
+	private String lastUpdate;
+	private Float totalValue;
+	private Boolean isConcluded;
 	private List<ProductDTO> productsDTO;
 	/**
 	 * <p>The serial version identifier for this class.<p>

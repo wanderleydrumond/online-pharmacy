@@ -143,4 +143,13 @@ public class OrderService implements Serializable {
 		
 		return order.get();
 	}
+
+	public Order removeProductByOrderId(UUID token, Short orderId, Short productId) {
+		Order order = getById(token, orderId);
+		order.getProductsOfAnOrder().removeIf(productElement -> productElement.getId().equals(productId));
+		
+		orderDAO.merge(order);
+		
+		return order;
+	}
 }
