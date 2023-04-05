@@ -37,7 +37,7 @@ public class OrderMapper {
 	 * @return the DTO resultant object
 	 */
 	public OrderDTO toDTO(Order order) {
-		List<ProductDTO> productsDTO = order.getProductsOfAnOrder().stream().map(productElement -> productMapper.toDTO(productElement)).collect(Collectors.toList());
+		List<ProductDTO> productsDTO = order.getProductsOfAnOrder().stream().map(productMapper::toDTO).collect(Collectors.toList());
 		return new OrderDTO(order.getId(), order.getLastUpdate().toString(), order.getTotalValue(), order.getIsConcluded(), productsDTO);
 	}
 	

@@ -144,9 +144,36 @@ public class OrderService implements Serializable {
 		return order.get();
 	}
 
+	/**
+	 * <ol>
+	 * 	<li>Gets the {@link Order} to be updated</li>
+	 * 	<li>Gets the {@link Product} to remove</li>
+	 * 	<li>Remove the product from the order</li>
+	 * 	<li>Sets the order total value conditionally</li>
+	 * 	<li>Updates the order in the database</li>
+	 * </ol>
+	 * 
+	 * @param token		logged user identifier key
+	 * @param orderId	primary key that identifies the order to find
+	 * @param productId	primary key that identifies the product to remove to the current order
+	 * @return the updated {@link Order}
+	 */
 	public Order removeProductByOrderId(UUID token, Short orderId, Short productId) {
 		Order order = getById(token, orderId);
-		order.getProductsOfAnOrder().removeIf(productElement -> productElement.getId().equals(productId));
+		
+		Product product = order.getProductsOfAnOrder()
+			    .stream()
+			    .filter(productElement -> productElement.getId().equals(productId))
+			    .findFirst()
+			    .orElse(null);
+
+		order.getProductsOfAnOrder().remove(product);
+		
+		if (order.getTotalValue() == null) {
+			order.setTotalValue(product.getPrice());
+		} else {
+			order.setTotalValue(order.getTotalValue() - product.getPrice());
+		}
 		
 		orderDAO.merge(order);
 		
