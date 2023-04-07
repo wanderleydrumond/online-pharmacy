@@ -103,11 +103,12 @@ public class OrderService implements Serializable {
 		productsInThisCart.add(product);
 		order.setProductsOfAnOrder(productsInThisCart);
 		
-		if (order.getTotalValue() == null) {
-			order.setTotalValue(product.getPrice());
-		} else {
-			order.setTotalValue(product.getPrice() + order.getTotalValue());
-		}
+		order.setTotalValue(
+			    Optional.ofNullable(order.getTotalValue())
+			        .map(totalValue -> totalValue + product.getPrice())
+			        .orElse(product.getPrice())
+			);
+
 		orderDAO.merge(order);
 		
 		return order;
@@ -169,14 +170,46 @@ public class OrderService implements Serializable {
 
 		order.getProductsOfAnOrder().remove(product);
 		
-		if (order.getTotalValue() == null) {
-			order.setTotalValue(product.getPrice());
-		} else {
-			order.setTotalValue(order.getTotalValue() - product.getPrice());
-		}
+		order.setTotalValue(
+			    Optional.ofNullable(order.getTotalValue())
+			        .map(totalValue -> totalValue - product.getPrice())
+			        .orElse(product.getPrice())
+			);
 		
 		orderDAO.merge(order);
 		
 		return order;
+	}
+
+	/**
+	 * <ol>
+	 * 	<li>Gets concluded orders list</li>
+	 * 	<li>Checks if this list is null</li>
+	 * 	<li>Checks if this list is empty</li>
+	 * 	<li>Inserts on each concluded order element a list of products</li>
+	 * </ol>
+	 * 
+	 * @param token logged user identifier key
+	 * @return the concluded {@link Order} {@link List}
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 502 (BAD GATEWAY) if some problem happened in database
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 204 (NO CONTENT) if the logged user has no concluded orders
+	 */
+	public List<Order> getAllConcluded(UUID token) {
+		List<Order> concludedOrders = orderDAO.findAllConcluded(token);
+		
+		if (concludedOrders == null) {
+			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		if (concludedOrders.size() == 0) {
+			throw new PharmacyException(Response.Status.NO_CONTENT, "No content", "The current user did not concluded any orders yet");
+		}
+		
+		concludedOrders.forEach(orderElement -> {
+		    List<Product> productsOfThisOrder = productService.getAllByOrderId(orderElement.getId());
+		    orderElement.setProductsOfAnOrder(productsOfThisOrder);
+		});
+		
+		return concludedOrders;
 	}
 }

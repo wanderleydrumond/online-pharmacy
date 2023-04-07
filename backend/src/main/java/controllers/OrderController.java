@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -145,5 +146,27 @@ public class OrderController {
 		OrderDTO orderDTO = orderMapper.toDTO(order);
 		
 		return Response.ok(orderDTO).build();
+	}
+	
+	/**
+	 * Gets all concluded orders.
+	 * 
+	 * @param token	logged user identifier key
+	 * @return {@link Response} with status code:
+	 *      <ul>
+	 *         <li><strong>200 (OK)</strong> if the product was removed along with the updated {@link OrderDTO}</li>
+	 *         <li><strong>202 (NO CONTENT)</strong> if the provided id belongs to an user with no concluded orders</li>
+	 *         <li><strong>401 (UNAUTHORIZED)</strong> if a non logged user tries to access this functionality</li>
+	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
+	 *      </ul>
+	 */
+	@Path("/all")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAllConcludedOrders(@HeaderParam("token") UUID token) {
+		List<Order> orders = orderService.getAllConcluded(token);
+		List<OrderDTO> ordersDTO = orderMapper.toDTOs(orders);
+		
+		return Response.ok(ordersDTO).build();
 	}
 }

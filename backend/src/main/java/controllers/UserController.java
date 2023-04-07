@@ -197,12 +197,4 @@ public class UserController {
 			return Response.status(pharmacyException.getHttpStatus()).header("Request not done", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
 		}
 	}
-	
-	@Path("/test")
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	// TODO to be deleted
-	public Response teste(@HeaderParam("token") UUID token) {
-		return Response.ok(userMapper.toDTO(userService.getByToken(token))).build();
-	}
 }

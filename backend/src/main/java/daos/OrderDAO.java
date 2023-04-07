@@ -1,6 +1,8 @@
 package daos;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -8,9 +10,11 @@ import javax.ejb.Stateless;
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 
 import entities.Order;
+import entities.User;
 
 /**
  * Class that makes the database communication layer role in relation with of the orders table.
@@ -62,5 +66,35 @@ public class OrderDAO extends GenericDAO<Order> {
 			
 			return null;
 		} 
+	}
+
+	/**
+	 * Finds the list of orders from the logged user which has the isConcluded column marked as true
+	 * 
+	 * @param token logged user identifier key
+	 * @return If:
+	 * 		<ul>
+	 * 			<li>Finds, {@link Order} {@link List} corresponding</li>
+	 * 			<li>Something goes wrong with the database, null</li>
+	 * 		</ul>
+	 */
+	public List<Order> findAllConcluded(UUID token) {
+		try {
+			final CriteriaQuery<Order> CRITERIA_QUERY;
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CRITERIA_QUERY = criteriaBuilder.createQuery(Order.class);
+			Root<Order> orderTable = CRITERIA_QUERY.from(Order.class);
+			Join<Order, User> userTable = orderTable.join("buyer");
+			
+			CRITERIA_QUERY.select(orderTable).where(criteriaBuilder.and(
+					criteriaBuilder.equal(userTable.get("token"), token), 
+					criteriaBuilder.equal(orderTable.get("isConcluded"), true)));
+			
+			return entityManager.createQuery(CRITERIA_QUERY).getResultList();
+		} catch (Exception exception) {
+			Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, "in findAllConcluded() in OrderDAO", exception);
+			
+			return null;
+		}
 	}
 }
