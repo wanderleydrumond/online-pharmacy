@@ -212,4 +212,56 @@ public class OrderService implements Serializable {
 		
 		return concludedOrders;
 	}
+
+	/**
+	 * <ol>
+	 * 	<li>Gets the order</li>
+	 * 	<li>Sets isConcluded conditionally</li>
+	 * 	<li>Updates the database</li>
+	 * </ol>
+	 * 
+	 * @param token	  logged user identifier key
+	 * @param orderId primary key that identifies the order to update
+	 * @return the updated {@link Order}
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 403 (FORBIDDEN) if the found order is already set as concluded
+	 */
+	public Order concludeOrder(UUID token, Short orderId) {
+		Order order = getById(token, orderId);
+		
+		if (order.getId() == null) {
+			throw new PharmacyException(Response.Status.FORBIDDEN, "Was not possible to conclude the provided order", "Order not found");
+		}
+		
+		Optional.ofNullable(order.getIsConcluded()).ifPresentOrElse(
+	        isConcluded -> {
+	        	throw new PharmacyException(Response.Status.FORBIDDEN, "Order already concluded", "It's not possible to conclude an order already concluded");
+	        }, () -> order.setIsConcluded(true));
+		
+		orderDAO.merge(order);
+		
+		return order;
+	}
+
+	/**
+	 * Deletes the provided non concluded order for the logged user.
+	 * 
+	 * @param token	  logged user identifier key
+	 * @param orderId primary key that identifies the order to delete
+	 * @return true
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 502 (BAD GATEWAY) if some problem happened in database
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 404 (NOT FOUND) if the provided order id was not found in the database
+	 */
+	public Boolean deleteNonConcludedById(UUID token, Short orderId) {
+		Boolean isDeleted = orderDAO.deleteNonConcluded(token, orderId);
+		
+		if (isDeleted == null) {
+			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		if (!isDeleted) {
+			throw new PharmacyException(Response.Status.NOT_FOUND, "Impossible to delete order", "Order not found");
+		}
+		
+		return isDeleted;
+	}
 }

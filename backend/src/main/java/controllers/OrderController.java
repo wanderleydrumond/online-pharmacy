@@ -50,7 +50,7 @@ public class OrderController {
 	private OrderMapper orderMapper; 
 	
 	/**
-	 * Adds a new item to the cart.
+	 * Creates a cart and Add a new item to it.
 	 * 
 	 * @param token		logged user identifier key
 	 * @param productId	primary key that identifies the product to add to the current order
@@ -138,7 +138,7 @@ public class OrderController {
 	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
 	 *      </ul>
 	 */
-	@Path("/by")
+	@Path("/product-by")
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response removeProductById(@HeaderParam("token") UUID token, @QueryParam("orderId") String orderId, @QueryParam("productId") String productId) {
@@ -168,5 +168,47 @@ public class OrderController {
 		List<OrderDTO> ordersDTO = orderMapper.toDTOs(orders);
 		
 		return Response.ok(ordersDTO).build();
+	}
+	
+	/**
+	 * Concludes an order.
+	 * 
+	 * @param token	  logged user identifier key
+	 * @param orderId primary key that identifies the order to update
+	 * @return {@link Response} with status code:
+	 *      <ul>
+	 *         <li><strong>200 (OK)</strong> if the order was concluded along with the updated {@link OrderDTO}</li>
+	 *         <li><strong>204 (NO CONTENT)</strong> if the order was not found {@link OrderDTO}</li>
+	 *         <li><strong>401 (UNAUTHORIZED)</strong> if a non logged user tries to access this functionality</li>
+	 *         <li><strong>403 (FORBIDDEN)</strong> if the provided id belongs to an order already concluded</li>
+	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
+	 *      </ul>
+	 */
+	@Path("/finish")
+	@PUT
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response concludeOrder(@HeaderParam("token") UUID token, @QueryParam("id") String orderId) {
+		Order order = orderService.concludeOrder(token, Short.valueOf(orderId));
+		OrderDTO orderDTO = orderMapper.toDTO(order);
+		
+		return Response.ok(orderDTO).build();
+	}
+	
+	/**
+	 * Cleans the cart for the logged user.
+	 * 
+	 * @param token	  logged user identifier key
+	 * @param orderId primary key that identifies the order to delete
+	 * @return {@link Response} with status code:
+	 *      <ul>
+	 *         <li><strong>200 (OK)</strong> if the order was removed {@link OrderDTO}</li>
+	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
+	 *      </ul>
+	 */
+	@Path("/by")
+	@DELETE
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response deleteNonConcludedById(@HeaderParam("token") UUID token, @QueryParam("id") String orderId) {
+		return Response.ok(orderService.deleteNonConcludedById(token, Short.valueOf(orderId))).build();
 	}
 }
