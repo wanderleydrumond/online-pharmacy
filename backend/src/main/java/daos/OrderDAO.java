@@ -57,12 +57,10 @@ public class OrderDAO extends GenericDAO<Order> {
 			return Optional.ofNullable(entityManager.createQuery(CRITERIA_QUERY).getSingleResult());
 		} catch (NoResultException noResultException) {
 			Logger.getLogger(OrderDAO.class.getName()).log(Level.FINE, "in findById() in OrderDAO", noResultException);
-			// noResultException.printStackTrace();
 			
 			return Optional.empty();
 		} catch (Exception exception) {
 			Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, "in findById() in OrderDAO", exception);
-			// exception.printStackTrace();
 			
 			return null;
 		} 
@@ -93,49 +91,6 @@ public class OrderDAO extends GenericDAO<Order> {
 			return entityManager.createQuery(CRITERIA_QUERY).getResultList();
 		} catch (Exception exception) {
 			Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, "in findAllConcluded() in OrderDAO", exception);
-			
-			return null;
-		}
-	}
-
-	/**
-	 * Deletes from the database the provided order if its isConcluded status is false.
-	 * 
-	 * @param token	  logged user identifier key
-	 * @param orderId primary key that identifies the order to update
-	 * @return If:
-	 * 		<ul>
-	 * 			<li>Finds and removes, true</li>
-	 * 			<li>Does not finds, so, do not removes, false</li>
-	 * 			<li>Something goes wrong with the database, null</li>
-	 * 		</ul>
-	 */
-	public Boolean deleteNonConcluded(UUID token, Short orderId) {
-	    try {
-			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-			CriteriaQuery<Order> criteriaQuery = criteriaBuilder.createQuery(Order.class);
-			Root<Order> orderTable = criteriaQuery.from(Order.class);
-			Join<Order, User> userTable = orderTable.join("buyer");
-
-			criteriaQuery.select(orderTable).where(
-			    criteriaBuilder.and(
-			        criteriaBuilder.equal(userTable.get("token"), token),
-			        criteriaBuilder.equal(orderTable.get("id"), orderId),
-			        criteriaBuilder.equal(orderTable.get("isConcluded"), false)
-			    )
-			);
-
-			Order orderToDelete = entityManager.createQuery(criteriaQuery).getSingleResult();
-
-			entityManager.remove(orderToDelete);
-			
-			return true;
-		} catch (NoResultException noResultException) {
-			Logger.getLogger(OrderDAO.class.getName()).log(Level.FINE, "in deleteNonConcluded() in OrderDAO", noResultException);
-			
-			return false;
-		} catch (Exception exception) {
-			Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, "in deleteNonConcluded() in OrderDAO", exception);
 			
 			return null;
 		}

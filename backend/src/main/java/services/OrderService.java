@@ -1,6 +1,7 @@
 package services;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -263,26 +264,54 @@ public class OrderService implements Serializable {
 	}
 
 	/**
-	 * Deletes the provided non concluded order for the logged user.
+	 * Deletes all products from the provided non concluded order of the logged user.
 	 * 
 	 * @param token	  logged user identifier key
 	 * @param orderId primary key that identifies the order to delete
 	 * @return true
 	 * @throws {@link PharmacyException} with HTTP {@link Response} status 502 (BAD GATEWAY) if some problem happened in database
 	 * @throws {@link PharmacyException} with HTTP {@link Response} status 404 (NOT FOUND) if the provided order id was not found in the database
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 403 (FORBIDDEN) if the user that is trying to perform this action is not logged
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 401 (UNAUTHORIZED) if the logged user tries to delete an order from another client
 	 */
-	public Boolean deleteNonConcludedById(UUID token, Short orderId) {
-		Boolean isDeleted = orderDAO.deleteNonConcluded(token, orderId);
+	public synchronized Boolean emptyCart(UUID token, Short orderId) {
+		Optional<Order> optionalOrder = orderDAO.findById(orderId);
 		
-		if (isDeleted == null) {
+		Order order = optionalOrder.get();
+		
+		if (order == null) {
 			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
 		}
 		
-		if (!isDeleted) {
+		if (optionalOrder.isEmpty()) {
 			throw new PharmacyException(Response.Status.NOT_FOUND, "Impossible to delete order", "Order not found");
 		}
 		
-		return isDeleted;
+		if (order.getBuyer().getToken() == null) {
+			throw new PharmacyException(Response.Status.FORBIDDEN, "Access denied", "Client must be logged to perform this action");
+		}
+		
+		if (!order.getBuyer().getToken().equals(token)) {
+			throw new PharmacyException(Response.Status.UNAUTHORIZED, "Access denied", "Order does not belogs to logged user");
+		}
+		
+		order.setProductsOfAnOrder(new ArrayList<Product>());
+		
+		orderDAO.merge(order);
+		
+		return remove(order);
+	}
+	
+	/**
+	 * Deletes the provided order
+	 * 
+	 * @param orderToRemove order to remove
+	 * @return true
+	 */
+	public Boolean remove(Order orderToRemove) {
+		orderDAO.remove(orderToRemove);
+		
+		return true;
 	}
 
 	/**
@@ -305,8 +334,7 @@ public class OrderService implements Serializable {
 			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
 		}
 		
-		Order order = optionalOrder.get(); 
-		
+		Order order = optionalOrder.get();
 		List<Product> products = productDAO.findAllByOrderId(order.getId());
 		
 		order.setProductsOfAnOrder(products);

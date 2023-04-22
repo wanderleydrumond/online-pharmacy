@@ -1,6 +1,8 @@
 package services;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -12,6 +14,7 @@ import daos.ConfigurationDAO;
 import daos.UserDAO;
 import dtos.UserDTO;
 import entities.Configuration;
+import entities.Order;
 import entities.User;
 import enums.Role;
 import exceptions.PharmacyException;
@@ -40,6 +43,9 @@ public class UserService implements Serializable {
 	 */
 	@Inject
 	private ConfigurationDAO configurationDAO;
+	
+	@Inject
+	private OrderService orderService;
 
 	/**
 	 * <ol>
@@ -85,6 +91,20 @@ public class UserService implements Serializable {
 	 * 	<li>Sets a random UUID for this user.</li>
 	 * 	<li>Saves the UUID in the user table.</li>
 	 * 	<li>Updates the amount of system sign ins in the configurations table for clients</li>
+	 *  <li>Checks if the logged user has the client role</li>
+	 *  <li>Gets the non concluded order from the logged user</li>
+	 *  <li>
+	 *  	Checks if this there is a cart
+	 *  	<ol>
+	 *  		<li>Gets the time of two days ago</li>
+	 *  		<ol>
+	 *  			<li>Checks if the order last update is equal to two days ago</li>
+	 *  				<ol>
+	 *  					<li>Deletes the cart</li>
+	 *  				</ol> 
+	 *  		</ol>
+	 *  	</ol>
+	 *  </li>
 	 * </ol>
 	 * 
 	 * @param username of the user to sign in
@@ -94,23 +114,34 @@ public class UserService implements Serializable {
 	 * @throws {@link PharmacyException} with response code 403 (FORBIDDEN) if user role is VISITOR
 	 */
 	public User signIn(String username, String password) {
-		Optional<User> user = userDAO.signIn(username, password);
+		Optional<User> optionalUser = userDAO.signIn(username, password);
 		
-		if (user.isEmpty()) {
+		if (optionalUser.isEmpty()) {
 			throw new PharmacyException(Response.Status.UNAUTHORIZED, "User not found", "The given credentials are invalid");
 		}
 		
-		if (user.get().getRole().equals(Role.VISITOR)) {
+		User user = optionalUser.get();
+		
+		if (user.getRole().equals(Role.VISITOR)) {
 			throw new PharmacyException(Response.Status.FORBIDDEN, "A visitor cannot sign in the system", "Wait until the administrator approves your account");
 		}
 		
-		user.get().setToken(UUID.randomUUID());
-		userDAO.merge(user.get());
+		user.setToken(UUID.randomUUID());
+		userDAO.merge(user);
 		
-		if (user.get().getRole().equals(Role.CLIENT)) {
+		if (user.getRole().equals(Role.CLIENT)) {
 			updateTotalSignIns();
 		}
-		return user.get();
+		
+		Order order = orderService.getNonConcludedOrder(user.getToken());
+		
+		if (order != null) {
+			Timestamp twoDaysAgo = Timestamp.valueOf(LocalDateTime.now().minusDays(2L));
+			if (order.getLastUpdate().before(twoDaysAgo)) {
+				orderService.emptyCart(user.getToken(), order.getId());
+			}
+		}
+		return user;
 	}
 	
 	/**

@@ -57,7 +57,7 @@ public class OrderController {
 	@Path("/by")
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addProduct(@HeaderParam("token") UUID token, @QueryParam("orderId") String orderId, @QueryParam("productId") String productId) {
+	public Response addProduct(@HeaderParam("token") UUID token, @QueryParam("productId") String productId) {
 		Order order = orderService.manage(token, Short.valueOf(productId));
 		OrderDTO orderDTO = orderMapper.toDTO(order);
 		
@@ -172,7 +172,7 @@ public class OrderController {
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response deleteNonConcludedById(@HeaderParam("token") UUID token, @QueryParam("id") String orderId) {
-		return Response.ok(orderService.deleteNonConcludedById(token, Short.valueOf(orderId))).build();
+		return Response.ok(orderService.emptyCart(token, Short.valueOf(orderId))).build();
 	}
 	
 	/**
