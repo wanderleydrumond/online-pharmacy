@@ -40,7 +40,7 @@ public class OrderController {
 	private OrderMapper orderMapper;
 
 	/**
-	 * Adds the provided product to the provided order from the logged user.
+	 * Adds the provided product to the provided order from the logged user if an order already exists, otherwise, creates an order before.
 	 * 
 	 * @param token		logged user identifier key
 	 * @param orderId	primary key that identifies the order to update
@@ -57,7 +57,7 @@ public class OrderController {
 	@Path("/by")
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addProductById(@HeaderParam("token") UUID token, @QueryParam("orderId") String orderId, @QueryParam("productId") String productId) {
+	public Response addProduct(@HeaderParam("token") UUID token, @QueryParam("orderId") String orderId, @QueryParam("productId") String productId) {
 		Order order = orderService.manage(token, Short.valueOf(productId));
 		OrderDTO orderDTO = orderMapper.toDTO(order);
 		

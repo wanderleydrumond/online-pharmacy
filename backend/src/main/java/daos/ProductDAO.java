@@ -175,28 +175,4 @@ public class ProductDAO extends GenericDAO<Product> {
 			return null;
 		}
 	}
-
-	public Optional<Order> findNonConcludedOrder(UUID token) {
-		try {
-			final CriteriaQuery<Order> CRITERIA_QUERY;
-			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-			CRITERIA_QUERY = criteriaBuilder.createQuery(Order.class);
-			Root<Order> orderTable = CRITERIA_QUERY.from(Order.class);
-			Join<Order, User> userTable = orderTable.join("buyer");
-			
-			CRITERIA_QUERY.select(orderTable).where(criteriaBuilder.and(
-					criteriaBuilder.equal(orderTable.get("isConcluded"), false), 
-					criteriaBuilder.equal(userTable.get("token"), token)));
-			
-			return Optional.ofNullable(entityManager.createQuery(CRITERIA_QUERY).getSingleResult());
-		} catch (NoResultException noResultException) {
-			Logger.getLogger(OrderDAO.class.getName()).log(Level.FINE, "in findNonConcludedOrder()", noResultException);
-			
-			return Optional.empty();
-		} catch (Exception exception) {
-			Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, "in findNonConcludedOrder()", exception);
-			
-			return null;
-		}
-	}
 }

@@ -52,9 +52,24 @@ public class OrderService implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Manages adding products to an order.
+	 * <ol>
+	 * 	<li>Gets the product to insert into the order</li>
+	 * 	<li>Checks if exists an order with the status non concluded false, if it does, gets it</li>
+	 * </ol>
+	 * 
+	 * @param token		logged user identifier key
+	 * @param productId	primary key that identifies the product to add to the the order
+	 * @return if:
+	 * <ul>
+	 * 	<li>the order does not exists, {@linkplain OrderService#create(UUID, Product) create} call</li>
+	 * 	<li>the order exists, {@linkplain OrderService#addProducts addProducts} call</li>
+	 * </ul>
+	 */
 	public Order manage(UUID token, Short productId) {
 		Product product = productService.getById(productId);
-		Optional<Order> order = productDAO.findNonConcludedOrder(token);
+		Optional<Order> order = orderDAO.findNonConcludedOrder(token);
 		
 		return order.isPresent() ? addProducts(product, order.get()) : create(token, product);	
 	}

@@ -103,6 +103,12 @@ public class OrderDAO extends GenericDAO<Order> {
 	 * 
 	 * @param token	  logged user identifier key
 	 * @param orderId primary key that identifies the order to update
+	 * @return If:
+	 * 		<ul>
+	 * 			<li>Finds and removes, true</li>
+	 * 			<li>Does not finds, so, do not removes, false</li>
+	 * 			<li>Something goes wrong with the database, null</li>
+	 * 		</ul>
 	 */
 	public Boolean deleteNonConcluded(UUID token, Short orderId) {
 	    try {
@@ -130,6 +136,41 @@ public class OrderDAO extends GenericDAO<Order> {
 			return false;
 		} catch (Exception exception) {
 			Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, "in deleteNonConcluded() in OrderDAO", exception);
+			
+			return null;
+		}
+	}
+
+	/**
+	 * Finds a non concluded order that belongs to the logged user.
+	 * 
+	 * @param token logged user identifier key
+	 * @return If:
+	 * 		<ul>
+	 * 			<li>Finds, {@link Optional} {@link Order} corresponding </li>
+	 * 			<li>Does not find, {@link Optional} empty</li>
+	 * 			<li>Something goes wrong with the database, null</li>
+	 * 		</ul>
+	 */
+	public Optional<Order> findNonConcludedOrder(UUID token) {
+		try {
+			final CriteriaQuery<Order> CRITERIA_QUERY;
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CRITERIA_QUERY = criteriaBuilder.createQuery(Order.class);
+			Root<Order> orderTable = CRITERIA_QUERY.from(Order.class);
+			Join<Order, User> userTable = orderTable.join("buyer");
+			
+			CRITERIA_QUERY.select(orderTable).where(criteriaBuilder.and(
+					criteriaBuilder.equal(orderTable.get("isConcluded"), false), 
+					criteriaBuilder.equal(userTable.get("token"), token)));
+			
+			return Optional.ofNullable(entityManager.createQuery(CRITERIA_QUERY).getSingleResult());
+		} catch (NoResultException noResultException) {
+			Logger.getLogger(OrderDAO.class.getName()).log(Level.FINE, "in findNonConcludedOrder()", noResultException);
+			
+			return Optional.empty();
+		} catch (Exception exception) {
+			Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, "in findNonConcludedOrder()", exception);
 			
 			return null;
 		}
