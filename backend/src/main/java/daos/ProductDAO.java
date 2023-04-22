@@ -85,14 +85,10 @@ public class ProductDAO extends GenericDAO<Product> {
 			return Optional.ofNullable(entityManager.createQuery(CRITERIA_QUERY).getSingleResult());
 		} catch (NoResultException noResultException) {
 			Logger.getLogger(ProductDAO.class.getName()).log(Level.FINE, "in findById() in ProductDAO", noResultException);
-			// System.err.println("Catch " + noResultException.getClass().getName() + " in findById() in ProductDAO");
-			// noResultException.printStackTrace();
 			
 			return Optional.empty();
 		} catch (Exception exception) {
-			// System.err.println("Catch " + exception.getClass().getName() + " in findById() in ProductDAO");
 			Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, "in findById() in ProductDAO", exception);			
-			// exception.printStackTrace();
 			
 			return null;
 		}
@@ -120,9 +116,7 @@ public class ProductDAO extends GenericDAO<Product> {
 			
 			return entityManager.createQuery(CRITERIA_QUERY).getResultList();
 		} catch (Exception exception) {
-			// System.err.println("Catch " + exception.getClass().getName() + " in findAllfavoritesByToken() in ProductDAO");
 			Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, "in findAllfavoritesByToken() in ProductDAO", exception);
-			// exception.printStackTrace();
 			
 			return null;
 		}
@@ -172,14 +166,35 @@ public class ProductDAO extends GenericDAO<Product> {
 			
 			return entityManager.createQuery(CRITERIA_QUERY).getResultList();
 		} catch (NoResultException noResultException) {
-			System.err.println("Catch " + noResultException.getClass().getName() + " in findAllThatFavouritedThisProduct() in UserDAO");
 			Logger.getLogger(ProductDAO.class.getName()).log(Level.FINE, "in findAllThatFavouritedThisProduct()", noResultException);
-			// noResultException.printStackTrace();
 			
 			return new ArrayList<Product>();
 		} catch (Exception exception) {
 			Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, "in findAllByOrderId() in ProductDAO", exception);
-			// exception.printStackTrace();
+			
+			return null;
+		}
+	}
+
+	public Optional<Order> findNonConcludedOrder(UUID token) {
+		try {
+			final CriteriaQuery<Order> CRITERIA_QUERY;
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CRITERIA_QUERY = criteriaBuilder.createQuery(Order.class);
+			Root<Order> orderTable = CRITERIA_QUERY.from(Order.class);
+			Join<Order, User> userTable = orderTable.join("buyer");
+			
+			CRITERIA_QUERY.select(orderTable).where(criteriaBuilder.and(
+					criteriaBuilder.equal(orderTable.get("isConcluded"), false), 
+					criteriaBuilder.equal(userTable.get("token"), token)));
+			
+			return Optional.ofNullable(entityManager.createQuery(CRITERIA_QUERY).getSingleResult());
+		} catch (NoResultException noResultException) {
+			Logger.getLogger(OrderDAO.class.getName()).log(Level.FINE, "in findNonConcludedOrder()", noResultException);
+			
+			return Optional.empty();
+		} catch (Exception exception) {
+			Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, "in findNonConcludedOrder()", exception);
 			
 			return null;
 		}

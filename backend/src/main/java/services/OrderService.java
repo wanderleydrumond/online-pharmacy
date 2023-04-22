@@ -52,6 +52,13 @@ public class OrderService implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	public Order manage(UUID token, Short productId) {
+		Product product = productService.getById(productId);
+		Optional<Order> order = productDAO.findNonConcludedOrder(token);
+		
+		return order.isPresent() ? addProducts(product, order.get()) : create(token, product);	
+	}
+
 	/**
 	 * <ol>
 	 * 	<li>Gets the logged user who will make the order</li>
@@ -68,14 +75,12 @@ public class OrderService implements Serializable {
 	 * @return {@linkplain OrderService#addProducts addProducts} call
 	 * @throws {@link PharmacyException} with HTTP {@link Response} status 401 (UNAUTHORIZED) if a non logged user tries to access this functionality
 	 */
-	public synchronized Order create(UUID token, Short productId) {
-		
+	public synchronized Order create(UUID token, Product product) {
 		if (token == null) {
 			throw new PharmacyException(Response.Status.UNAUTHORIZED, "User not logged", "User must be logged to access this functionality");
 		}
 		
 		User buyer = userService.getByToken(token);
-		Product product = productService.getById(productId);
 		Order order = new Order();
 		
 		order.setBuyer(buyer);
