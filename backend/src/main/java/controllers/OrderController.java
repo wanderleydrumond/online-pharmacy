@@ -174,4 +174,23 @@ public class OrderController {
 	public Response deleteNonConcludedById(@HeaderParam("token") UUID token, @QueryParam("id") String orderId) {
 		return Response.ok(orderService.deleteNonConcludedById(token, Short.valueOf(orderId))).build();
 	}
+	
+	/**
+	 * Gets the cart for the logged user.
+	 * 
+	 * @param token logged user identifier key
+	 * @return {@link Response} with status code:
+	 *      <ul>
+	 *         <li><strong>200 (OK)</strong> if the order was found {@link OrderDTO}</li>
+	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
+	 *      </ul>
+	 */
+	@Path("/cart")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getOrderByToken(@HeaderParam("token") UUID token) {
+		Order order = orderService.getNonConcludedOrder(token);
+		OrderDTO orderDTO = orderMapper.toDTO(order);
+		return Response.ok(orderDTO).build();
+	}
 }

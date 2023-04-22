@@ -284,4 +284,33 @@ public class OrderService implements Serializable {
 		
 		return isDeleted;
 	}
+
+	/**
+	 * <ol>
+	 * 	<li>Gets the non concluded order that belongs to the logged user inside an {@link Optional}</li>
+	 * 	<li>Checks if the {@link Optional} is null</li>
+	 * 	<li>Extracts the {@link Order} from the {@link Optional}</li>
+	 * 	<li>Gets the {@link Product} {@link List} from this {@link Order}</li>
+	 * 	<li>Sets the {@link Product} {@link List} inside this {@link Order}</li>
+	 * </ol>
+	 * 
+	 * @param token logged user identifier key
+	 * @return the corresponding {@link Order}
+	 * @throws {@link PharmacyException} with HTTP {@link Response} status 502 (BAD GATEWAY) if some problem happened in database
+	 */
+	public Order getNonConcludedOrder(UUID token) {
+		Optional<Order> optionalOrder = orderDAO.findNonConcludedOrder(token);
+		
+		if (optionalOrder == null) {
+			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		Order order = optionalOrder.get(); 
+		
+		List<Product> products = productDAO.findAllByOrderId(order.getId());
+		
+		order.setProductsOfAnOrder(products);
+		
+		return order;
+	}
 }
