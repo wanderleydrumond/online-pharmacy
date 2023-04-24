@@ -121,7 +121,10 @@ public class ProductController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAll() {
 		try {
-			return Response.ok(productService.getAll()).build();
+			List<Product> products = productService.getAll();
+			List<ProductDTO> productsDTO = productMapper.toDTOs(products);
+			
+			return Response.ok(productsDTO).build();
 		} catch (PharmacyException pharmacyException) {
 			return Response.status(pharmacyException.getHttpStatus()).header("Impossible to proceed", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
 		} 
