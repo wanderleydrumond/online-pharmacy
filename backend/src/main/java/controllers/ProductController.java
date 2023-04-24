@@ -85,8 +85,9 @@ public class ProductController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAllBySection(@QueryParam("section") String section) {
 		List<Product> products = productService.getAllBySection(section);
+		List<ProductDTO> productsDTO = productMapper.toDTOs(products);
 		try {
-			return Response.ok(products).build();
+			return Response.ok(productsDTO).build();
 		} catch (PharmacyException pharmacyException) {
 			// FIXME I cannot get the proper header value.
 

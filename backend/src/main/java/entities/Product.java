@@ -37,6 +37,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Table(name = "products")
 public @Data class Product implements Serializable {
+	
+
 	/**
 	 * Product identification in database.
 	 */

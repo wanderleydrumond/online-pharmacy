@@ -4,7 +4,6 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-import enums.Section;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,9 +22,8 @@ import lombok.Setter;
 @Setter
 public class ProductDTO implements Serializable {
 	private Short id, totalLikes/*, amountComments*/;
-	private String name, image;
+	private String name, image, section;
 	private Float price;
-	private Section section;
 	/**
 	 * <p>The serial version identifier for this class.<p>
 	 * <p>This identifier is used during deserialisation to verify that the sender and receiver of a serialised object have loaded classes for that object that are compatible with respect to serialisation.<p>

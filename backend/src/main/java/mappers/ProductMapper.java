@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import daos.UserDAO;
 import dtos.ProductDTO;
 import entities.Product;
+import enums.Section;
 
 /**
  * Class responsible by transform {@link Product} data that transits between backend and frontend.
@@ -31,7 +32,7 @@ public class ProductMapper {
 	 * @return the {@link Product} resultant object
 	 */
 	public Product toEntity(ProductDTO productDTO) {
-		return new Product(productDTO.getName(), productDTO.getPrice(), productDTO.getSection(), productDTO.getImage());
+		return new Product(productDTO.getName(), productDTO.getPrice(), Section.valueOf(productDTO.getSection()), productDTO.getImage());
 	}
 	
 	/**
@@ -41,7 +42,7 @@ public class ProductMapper {
 	 * @return the {@link ProductDTO} resultant object
 	 */
 	public ProductDTO toDTO(Product product) {
-		return new ProductDTO(product.getId(), userDAO.countTotalLikes(product.getId()), product.getName(), product.getImage(), product.getPrice(), product.getSection());
+		return new ProductDTO(product.getId(), userDAO.countTotalLikes(product.getId()), product.getName(), product.getImage(), product.getSection().getVALUE(), product.getPrice());
 	}
 	
 	/**
