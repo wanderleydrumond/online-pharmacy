@@ -116,4 +116,14 @@ public abstract class GenericDAO<T extends Serializable> implements Serializable
 		return entityManager.createQuery(criteriaQuery).getResultList();
 	}
 
+	/**
+	 * Counts all results from a determined query.
+	 * 
+	 * @return the result count
+	 */
+	public Short countAll() {
+		final CriteriaQuery<T> criteriaQuery = entityManager.getCriteriaBuilder().createQuery(CLAZZ);
+		criteriaQuery.select(criteriaQuery.from(CLAZZ));
+		return (short) entityManager.createQuery(criteriaQuery).getResultList().size();
+	}
 }

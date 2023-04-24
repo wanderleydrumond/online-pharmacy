@@ -28,7 +28,6 @@ import exceptions.PharmacyException;
  * Class that makes the database communication layer role in relation with of the users table.
  * 
  * @author Wanderley Drumond
- *
  */
 @Stateless
 public class UserDAO extends GenericDAO<User> {
@@ -308,13 +307,55 @@ public class UserDAO extends GenericDAO<User> {
 		} catch (NoResultException noResultException) {
 			System.err.println("Catch " + noResultException.getClass().getName() + " in findAllThatFavouritedThisProduct() in UserDAO");
 			Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "in findAllThatFavouritedThisProduct()", noResultException);
-			// noResultException.printStackTrace();
 			
 			return new ArrayList<User>();
 		} catch (Exception exception) {
 			System.err.println("Catch " + exception.getClass().getName() + " in findAllThatFavouritedThisProduct() in UserDAO");
 			Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "in findAllThatFavouritedThisProduct()", exception);
-			// exception.printStackTrace();
+			
+			return null;
+		}
+	}
+
+	/**
+	 * Counts all users that has the CLIENT role.
+	 * 
+	 * @return The amount of clients of the system
+	 */
+	public Short countAllClients() {
+		try {
+			final CriteriaQuery<User> CRITERIA_QUERY;
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CRITERIA_QUERY = criteriaBuilder.createQuery(User.class);
+			Root<User> userTable = CRITERIA_QUERY.from(User.class);
+			
+			CRITERIA_QUERY.select(userTable).where(criteriaBuilder.equal(userTable.get("role"), Role.CLIENT));
+			
+			return (short) entityManager.createQuery(CRITERIA_QUERY).getResultList().size();
+		} catch (Exception exception) {
+			Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "in countAllClients()", exception);
+			
+			return null;
+		}
+	}
+
+	/**
+	 * Finds the list of users that have their role as VISITOR. 
+	 * 
+	 * @return the {@link List} of {@link User} that contains their role as VISITOR
+	 */
+	public List<User> findAllVisitors() {
+		try {
+			final CriteriaQuery<User> CRITERIA_QUERY;
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CRITERIA_QUERY = criteriaBuilder.createQuery(User.class);
+			Root<User> userTable = CRITERIA_QUERY.from(User.class);
+			
+			CRITERIA_QUERY.select(userTable).where(criteriaBuilder.equal(userTable.get("role"), Role.VISITOR));
+			
+			return entityManager.createQuery(CRITERIA_QUERY).getResultList();
+		} catch (Exception exception) {
+			Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "in findAllVisitors()", exception);
 			
 			return null;
 		}

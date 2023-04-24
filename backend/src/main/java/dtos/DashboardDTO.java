@@ -11,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class DashboardDTO {
-	Short totalClients, totalProducts, totalOngoingOrders;
-	Float totalValueConcludedOrders, totalValueConcludedOrdersCurrentMonth, totalValueConcludedOrdersLastMonth;
-	List<UserDTO> usersDTO;
+	private Short totalClients, totalProducts, totalCarts;
+	private Float totalValueConcludedOrders, totalValueConcludedOrdersCurrentMonth, totalValueConcludedOrdersLastMonth;
+	private List<UserDTO> visitorsDTO;
 }

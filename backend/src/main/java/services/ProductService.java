@@ -387,6 +387,14 @@ public class ProductService implements Serializable {
 		return productsFound;
 	}
 
+	/**
+	 * <ol>
+	 * 	<li>Gets all products of this order</li>
+	 *  <li>Verifies if this list is null</li>
+	 * </ol>
+	 * @param orderId primary key that identifies the order that contains the products list 
+	 * @return the {@link Product} {@link List} of the given order
+	 */
 	public List<Product> getAllByOrderId(Short orderId) {
 		List<Product> products = productDAO.findAllByOrderId(orderId);
 		
@@ -395,5 +403,23 @@ public class ProductService implements Serializable {
 		}
 		
 		return products;
+	}
+
+	/**
+	 * <ol>
+	 * 	<li>Gets the amount of products existent in database</li>
+	 * 	<li>Verifies if that number is null</li>
+	 * </ol>
+	 * 
+	 * @return
+	 */
+	public Short countAll() {
+		Short amountProducts = productDAO.countAll();
+		
+		if (amountProducts == null) {
+			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		return amountProducts;
 	}
 }

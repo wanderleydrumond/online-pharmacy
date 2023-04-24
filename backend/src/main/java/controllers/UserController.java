@@ -14,6 +14,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import dtos.DashboardDTO;
 import dtos.UserDTO;
 import entities.User;
 import exceptions.PharmacyException;
@@ -196,5 +197,18 @@ public class UserController {
 			
 			return Response.status(pharmacyException.getHttpStatus()).header("Request not done", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
 		}
+	}
+	
+	/**
+	 * Gets some informations that will be displayed in the administrator's dashboard.
+	 * 
+	 * @param token logged administrator identifier key
+	 * @return the {@link DashboardDTO} containing all data to be displayed filled
+	 */
+	@Path("/dashboard")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response dashboard(@HeaderParam("token") UUID token) {
+		return Response.ok(userService.dashboard(token)).build();
 	}
 }

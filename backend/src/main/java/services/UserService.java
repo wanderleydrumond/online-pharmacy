@@ -3,6 +3,7 @@ package services;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -12,12 +13,14 @@ import javax.ws.rs.core.Response;
 
 import daos.ConfigurationDAO;
 import daos.UserDAO;
+import dtos.DashboardDTO;
 import dtos.UserDTO;
 import entities.Configuration;
 import entities.Order;
 import entities.User;
 import enums.Role;
 import exceptions.PharmacyException;
+import mappers.UserMapper;
 
 /**
  * Class that contains all the programmatic logic regarding the user.
@@ -28,7 +31,7 @@ import exceptions.PharmacyException;
 public class UserService implements Serializable {
 	/**
 	 * <p>The serial version identifier for this class.<p>
-	 * <p>This identifier is used during deserialisation to verify that the sender and receiver of a serialized object have loaded classes for that object that are compatible with respect to serialisation.<p>
+	 * <p>This identifier is used during deserialisation to verify that the sender and receiver of a serialised object have loaded classes for that object that are compatible with respect to serialisation.<p>
 	 */
 	private static final long serialVersionUID = 1L;
 	
@@ -44,8 +47,17 @@ public class UserService implements Serializable {
 	@Inject
 	private ConfigurationDAO configurationDAO;
 	
+	/**
+	 * Object that contains all order service methods.
+	 */
 	@Inject
 	private OrderService orderService;
+	
+	@Inject
+	private ProductService productService;
+	
+	@Inject
+	private UserMapper userMapper;
 
 	/**
 	 * <ol>
@@ -133,7 +145,7 @@ public class UserService implements Serializable {
 			updateTotalSignIns();
 		}
 		
-		Order order = orderService.getNonConcludedOrder(user.getToken());
+		Order order = orderService.getNonConcluded(user.getToken());
 		
 		if (order != null) {
 			Timestamp twoDaysAgo = Timestamp.valueOf(LocalDateTime.now().minusDays(2L));
@@ -254,7 +266,7 @@ public class UserService implements Serializable {
 	 * 			<li>False, if the user is not an administrator</li>
 	 * 		</ul>
 	 */
-	protected Boolean verifyIfIsAdmin(UUID token) {
+	public Boolean verifyIfIsAdmin(UUID token) {
 		Boolean isAdmin = userDAO.checkIfIsAdmin(token);
 		
 		if (isAdmin == null) {
@@ -312,5 +324,73 @@ public class UserService implements Serializable {
 		userDAO.merge(userToEdit);
 		
 		return userToEdit;
+	}
+
+
+	/**
+	 * Gets the amount of users that contains the CLIENT role.
+	 * 
+	 * @return the amount of clients
+	 */
+	private Short countAllClients() {
+		Short amountClients = userDAO.countAllClients();
+		
+		if (amountClients == null) {
+			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		return amountClients;
+	}
+
+	/**
+	 *  Gets all users that contains the VISITOR role.
+	 * 
+	 * @return the {@link List} of {@link User} containing all clients
+	 */
+	private List<UserDTO> getAllVisitors() {
+		List<User> visitors = userDAO.findAllVisitors();
+		List<UserDTO> visitorsDTO = userMapper.toDTOs(visitors);
+		
+		return visitorsDTO;
+	}
+
+	/**
+	 * Mounts the administrator dashboard.
+	 * <ol>
+	 * 	<li>Verifies if the user that is trying to access this method is logged</li>
+	 * 	<li>Verifies if the logged user has the ADMINISTRATOR role</li>
+	 * 	<li>Creates a new {@link DashboardDTO} instance</li>
+	 * 	<li>Sets into {@link DashboardDTO} the amount of users with CLIENT role</li>
+	 * 	<li>Sets into {@link DashboardDTO} the amount of products</li>
+	 * 	<li>Sets into {@link DashboardDTO} the amount of non concluded orders</li>
+	 * 	<li>Sets into {@link DashboardDTO} the sum of all concluded orders</li>
+	 * 	<li>Sets into {@link DashboardDTO} the sum of all concluded orders</li>
+	 * 	<li>Sets into {@link DashboardDTO} the sum of all concluded orders from current month</li>
+	 * 	<li>Sets into {@link DashboardDTO} the sum of all concluded orders from last month</li>
+	 * 	<li>Sets into {@link DashboardDTO} the list of users with registration pending</li>
+	 * </ol>
+	 * 
+	 * @param token logged administrator identifier key
+	 * @return the {@link DashboardDTO} containing all data to be displayed filled
+	 */
+	public DashboardDTO dashboard(UUID token) {
+		if (token == null) {
+			throw new PharmacyException(Response.Status.UNAUTHORIZED, "Access denied", "It must be logged to access this feature");
+		}
+		
+		if (!verifyIfIsAdmin(token)) {
+			throw new PharmacyException(Response.Status.FORBIDDEN, "Access denied", "This feature is only available to administrators");
+		}
+		
+		DashboardDTO dashboardDTO = new DashboardDTO();
+		dashboardDTO.setTotalClients(countAllClients());
+		dashboardDTO.setTotalProducts(productService.countAll());
+		dashboardDTO.setTotalCarts(orderService.countAllNonConcluded());
+		dashboardDTO.setTotalValueConcludedOrders(orderService.sumTotalValue());
+		dashboardDTO.setTotalValueConcludedOrdersCurrentMonth(orderService.sumTotalValueConcludedOrdersCurrentMonth());
+		dashboardDTO.setTotalValueConcludedOrdersLastMonth(orderService.sumTotalValueConcludedOrdersLastMonth());
+		dashboardDTO.setVisitorsDTO(getAllVisitors());
+		
+		return dashboardDTO;
 	}
 }

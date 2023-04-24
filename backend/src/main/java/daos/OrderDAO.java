@@ -1,5 +1,11 @@
 package daos;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -11,6 +17,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import entities.Order;
@@ -129,5 +136,95 @@ public class OrderDAO extends GenericDAO<Order> {
 			
 			return null;
 		}
+	}
+
+	public Short countAllNonConcluded() {
+		try {
+			final CriteriaQuery<Order> CRITERIA_QUERY;
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CRITERIA_QUERY = criteriaBuilder.createQuery(Order.class);
+			Root<Order> orderTable = CRITERIA_QUERY.from(Order.class);
+			
+			CRITERIA_QUERY.select(orderTable).where(criteriaBuilder.equal(orderTable.get("isConcluded"), false));
+			
+			return (short) entityManager.createQuery(CRITERIA_QUERY).getResultList().size();
+		} catch (Exception exception) {
+			Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, "in countAllNonConcluded()", exception);
+			
+			return null;
+		}
+	}
+
+	/**
+	 * Sums the total value from all orders.
+	 * 
+	 * @return the sum of total value from all orders existent in database
+	 */
+	public Float sumTotalValue() {
+		try {
+			final CriteriaQuery<Float> CRITERIA_QUERY;
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CRITERIA_QUERY = criteriaBuilder.createQuery(Float.class);
+			Root<Order> orderTable = CRITERIA_QUERY.from(Order.class);
+			
+			CRITERIA_QUERY.multiselect(criteriaBuilder.sum(orderTable.<BigDecimal>get("totalValue"))).where(criteriaBuilder.equal(orderTable.get("isConcluded"), true));
+			
+			return entityManager.createQuery(CRITERIA_QUERY).getSingleResult();
+		} catch (NoResultException noResultException) {
+			Logger.getLogger(OrderDAO.class.getName()).log(Level.FINE, "in sumTotalValue()", noResultException);
+			return 0F;
+		} catch (Exception exception) {
+			Logger.getLogger(OrderDAO.class.getName()).log(Level.SEVERE, "in sumTotalValue()", exception);
+			return null;
+		}
+	}
+
+	/**
+	 * Sums the total value from all orders from current month.
+	 * 
+	 * @return the sum of the total value from all orders from current month
+	 */
+	public Float sumTotalValueConcludedOrdersCurrentMonth() {
+		final CriteriaQuery<Float> CRITERIA_QUERY;
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CRITERIA_QUERY = criteriaBuilder.createQuery(Float.class);
+		Root<Order> orderTable = CRITERIA_QUERY.from(Order.class);
+		
+		Timestamp firstDayOfMonth = Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0, 0)).with(TemporalAdjusters.firstDayOfMonth()));
+		Timestamp lastDayOfMonth = Timestamp.valueOf(LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59, 59)).with(TemporalAdjusters.lastDayOfMonth()));
+		
+		Predicate currentMonth = criteriaBuilder.between(orderTable.get("lastUpdate"), firstDayOfMonth, lastDayOfMonth);
+	
+		CRITERIA_QUERY.multiselect(criteriaBuilder.sum(
+				orderTable.<BigDecimal>get("totalValue"))).where(
+						criteriaBuilder.and(
+								criteriaBuilder.equal(orderTable.get("isConcluded"), true), 
+								currentMonth));
+		return entityManager.createQuery(CRITERIA_QUERY).getSingleResult();
+	}
+
+	/**
+	 * Sums the total value from all orders from last month.
+	 * 
+	 * @return the sum of the total value from all orders from last month month
+	 */
+	public Float sumTotalValueConcludedOrdersLastMonth() {
+		final CriteriaQuery<Float> CRITERIA_QUERY;
+		CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+		CRITERIA_QUERY = criteriaBuilder.createQuery(Float.class);
+		Root<Order> orderTable = CRITERIA_QUERY.from(Order.class);
+		
+		Timestamp firstDayOfMonth = Timestamp.valueOf(LocalDateTime.of(LocalDate.now().minusMonths(1L), LocalTime.of(0, 0, 0)).with(TemporalAdjusters.firstDayOfMonth()));
+		Timestamp lastDayOfMonth = Timestamp.valueOf(LocalDateTime.of(LocalDate.now().minusMonths(1L), LocalTime.of(23, 59, 59)).with(TemporalAdjusters.lastDayOfMonth()));
+		
+		Predicate currentMonth = criteriaBuilder.between(orderTable.get("lastUpdate"), firstDayOfMonth, lastDayOfMonth);
+	
+		CRITERIA_QUERY.multiselect(criteriaBuilder.sum(
+				orderTable.<BigDecimal>get("totalValue"))).where(
+						criteriaBuilder.and(
+								criteriaBuilder.equal(orderTable.get("isConcluded"), true), 
+								currentMonth));
+
+		return entityManager.createQuery(CRITERIA_QUERY).getSingleResult();
 	}
 }

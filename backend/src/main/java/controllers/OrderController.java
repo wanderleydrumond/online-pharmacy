@@ -151,7 +151,7 @@ public class OrderController {
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response concludeOrder(@HeaderParam("token") UUID token, @QueryParam("id") String orderId) {
-		Order order = orderService.concludeOrder(token, Short.valueOf(orderId));
+		Order order = orderService.conclude(token, Short.valueOf(orderId));
 		OrderDTO orderDTO = orderMapper.toDTO(order);
 		
 		return Response.ok(orderDTO).build();
@@ -189,7 +189,7 @@ public class OrderController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getOrderByToken(@HeaderParam("token") UUID token) {
-		Order order = orderService.getNonConcludedOrder(token);
+		Order order = orderService.getNonConcluded(token);
 		OrderDTO orderDTO = orderMapper.toDTO(order);
 		return Response.ok(orderDTO).build();
 	}

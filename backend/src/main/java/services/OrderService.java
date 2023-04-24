@@ -246,18 +246,18 @@ public class OrderService implements Serializable {
 	 * @return the updated {@link Order}
 	 * @throws {@link PharmacyException} with HTTP {@link Response} status 403 (FORBIDDEN) if the found order is already set as concluded
 	 */
-	public Order concludeOrder(UUID token, Short orderId) {
+	public Order conclude(UUID token, Short orderId) {
 		Order order = getById(token, orderId);
 		
 		if (order.getId() == null) {
 			throw new PharmacyException(Response.Status.FORBIDDEN, "Was not possible to conclude the provided order", "Order not found");
 		}
 		
-		Optional.ofNullable(order.getIsConcluded()).ifPresentOrElse(
-	        isConcluded -> {
-	        	throw new PharmacyException(Response.Status.FORBIDDEN, "Order already concluded", "It's not possible to conclude an order already concluded");
-	        }, () -> order.setIsConcluded(true));
-		
+		if (order.getIsConcluded()) {
+			throw new PharmacyException(Response.Status.FORBIDDEN, "Order already concluded", "It's not possible to conclude an order already concluded");
+		}
+		order.setIsConcluded(true);
+
 		orderDAO.merge(order);
 		
 		return order;
@@ -327,7 +327,7 @@ public class OrderService implements Serializable {
 	 * @return the corresponding {@link Order}
 	 * @throws {@link PharmacyException} with HTTP {@link Response} status 502 (BAD GATEWAY) if some problem happened in database
 	 */
-	public Order getNonConcludedOrder(UUID token) {
+	public Order getNonConcluded(UUID token) {
 		Optional<Order> optionalOrder = orderDAO.findNonConcludedOrder(token);
 		
 		if (optionalOrder == null) {
@@ -340,5 +340,81 @@ public class OrderService implements Serializable {
 		order.setProductsOfAnOrder(products);
 		
 		return order;
+	}
+
+	/**
+	 * Counts all carts.
+	 * <ol>
+	 * 	<li>Gets the amount of all non concluded orders</li>
+	 * 	<li>Verifies if this amount is null</li>
+	 * </ol>
+	 * 
+	 * @return the amount of carts
+	 */
+	public Short countAllNonConcluded() {
+		Short amountNonConcluded = orderDAO.countAllNonConcluded();
+		
+		if (amountNonConcluded == null) {
+			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		return amountNonConcluded;
+	}
+
+	/**
+	 * Sums the total value from all orders.
+	 * <ol>
+	 * 	<li>Gets the sum of all concluded orders</li>
+	 * 	<li>Verifies if this amount is null</li>
+	 * </ol>
+	 * 
+	 * @return the sum of all orders
+	 */
+	public Float sumTotalValue() {
+		Float totalValue = orderDAO.sumTotalValue();
+		
+		if (totalValue == null) {
+			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		return totalValue;
+	}
+
+	/**
+	 * Sums the total value from all orders from current month.
+	 * <ol>
+	 * 	<li>Gets the sum of all concluded orders from current month</li>
+	 * 	<li>Verifies if this amount is null</li>
+	 * </ol>
+	 * 
+	 * @return the sum of all orders from current month
+	 */
+	public Float sumTotalValueConcludedOrdersCurrentMonth() {
+		Float currentTotalValue = orderDAO.sumTotalValueConcludedOrdersCurrentMonth();
+		
+		if (currentTotalValue == null) {
+			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		return currentTotalValue;
+	}
+
+	/**
+	 * Sums the total value from all orders from last month.
+	 * <ol>
+	 * 	<li>Gets the sum of all concluded orders from last month</li>
+	 * 	<li>Verifies if this amount is null</li>
+	 * </ol>
+	 * 
+	 * @return the sum of all orders from last month
+	 */
+	public Float sumTotalValueConcludedOrdersLastMonth() {
+		Float lastTotalValue = orderDAO.sumTotalValueConcludedOrdersLastMonth();
+		
+		if (lastTotalValue == null) {
+			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
+		}
+		
+		return lastTotalValue;
 	}
 }
