@@ -386,6 +386,7 @@ public class UserService implements Serializable {
 		dashboardDTO.setTotalClients(countAllClients());
 		dashboardDTO.setTotalProducts(productService.countAll());
 		dashboardDTO.setTotalCarts(orderService.countAllNonConcluded());
+		dashboardDTO.setTotalSignIns(Short.valueOf(configurationDAO.findValueByKeyWord("total of sign ins").get().getValue()));
 		dashboardDTO.setTotalValueConcludedOrders(orderService.sumTotalValue());
 		dashboardDTO.setTotalValueConcludedOrdersCurrentMonth(orderService.sumTotalValueConcludedOrdersCurrentMonth());
 		dashboardDTO.setTotalValueConcludedOrdersLastMonth(orderService.sumTotalValueConcludedOrdersLastMonth());
