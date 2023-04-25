@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>backend</name>
+	<name>frontend</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -61,7 +61,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1682422734013</id>
+			<id>1682422734030</id>
 			<name></name>
 			<type>30</type>
 			<matcher>
