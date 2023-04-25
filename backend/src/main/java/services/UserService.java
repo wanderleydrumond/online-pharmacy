@@ -362,8 +362,8 @@ public class UserService implements Serializable {
 	 * 	<li>Creates a new {@link DashboardDTO} instance</li>
 	 * 	<li>Sets into {@link DashboardDTO} the amount of users with CLIENT role</li>
 	 * 	<li>Sets into {@link DashboardDTO} the amount of products</li>
-	 * 	<li>Sets into {@link DashboardDTO} the amount of non concluded orders</li>
-	 * 	<li>Sets into {@link DashboardDTO} the sum of all concluded orders</li>
+	 * 	<li>Sets into {@link DashboardDTO} the amount of carts</li>
+	 * 	<li>Sets into {@link DashboardDTO} the amount of sign ins</li>
 	 * 	<li>Sets into {@link DashboardDTO} the sum of all concluded orders</li>
 	 * 	<li>Sets into {@link DashboardDTO} the sum of all concluded orders from current month</li>
 	 * 	<li>Sets into {@link DashboardDTO} the sum of all concluded orders from last month</li>
