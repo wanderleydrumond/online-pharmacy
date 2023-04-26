@@ -53,9 +53,15 @@ public class UserService implements Serializable {
 	@Inject
 	private OrderService orderService;
 	
+	/**
+	 * Object that contains all product service methods.
+	 */
 	@Inject
 	private ProductService productService;
 	
+	/**
+	 * Object that contains method that allows to switch between {@link User} and {@link UserDTO}.
+	 */
 	@Inject
 	private UserMapper userMapper;
 

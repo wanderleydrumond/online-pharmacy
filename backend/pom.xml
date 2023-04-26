@@ -208,11 +208,11 @@
 		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-jpamodelgen -->
 		<!-- https://stackoverflow.com/questions/41270316/eclipse-jboss-developer-studio-not-automatically-building-jpa-metamodel-classe -->
 		<!-- https://www.baeldung.com/hibernate-criteria-queries-metamodel -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-jpamodelgen</artifactId>
 			<version>5.3.7.Final</version>
-		</dependency>
+		</dependency> -->
 	</dependencies>
 
 	<build>

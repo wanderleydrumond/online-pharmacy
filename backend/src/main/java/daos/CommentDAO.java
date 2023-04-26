@@ -64,15 +64,11 @@ public class CommentDAO extends GenericDAO<Comment> {
 			
 			return Optional.ofNullable(entityManager.createQuery(CRITERIA_QUERY).getSingleResult());
 		} catch (NoResultException noResultException) {
-			System.err.println("Catch " + noResultException.getClass().getName() + " in findByProductIdForLoggedUser() in CommentDAO");
 			Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, "in findByProductIdForLoggedUser()", noResultException);
-			// noResultException.printStackTrace();
 			
 			return Optional.empty();
 		} catch (Exception exception) {
-			System.err.println("Catch " + exception.getClass().getName() + " in findByProductIdForLoggedUser() in CommentDAO");
 			Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, "in findByProductIdForLoggedUser()", exception);
-			// exception.printStackTrace();
 			
 			return null;
 		}
@@ -101,15 +97,11 @@ public class CommentDAO extends GenericDAO<Comment> {
 			
 			return entityManager.createQuery(CRITERIA_QUERY).getResultList();
 		} catch (NoResultException noResultException) {
-			System.err.println("Catch " + noResultException.getClass().getName() + " in findAllByProductId() in CommentDAO");
 			Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, "in findAllByProductId()", noResultException);
-			// noResultException.printStackTrace();
 			
 			return new ArrayList<Comment>();
 		} catch (Exception exception) {
-			System.err.println("Catch " + exception.getClass().getName() + " in findAllByProductId() in CommentDAO");
 			Logger.getLogger(CommentDAO.class.getName()).log(Level.SEVERE, "in findAllByProductId()", exception);
-			// exception.printStackTrace();
 			
 			return null;
 		}
