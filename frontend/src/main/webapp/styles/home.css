@@ -1,8 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600&display=swap");
 
 :root {
-	--orange: #ff7800;
-	--black: #130f40;
+	--green: #76BD22;
+	--black: #1B5633;
 	--light-color: #666;
 	--box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
 	--border: 0.2rem solid rgba(0, 0, 0, 0.1);
@@ -46,8 +46,8 @@ section {
 }
 
 .heading span {
-	background: var(--orange);
-	color: #fff;
+	background: var(--green);
+	color: white;
 	display: inline-block;
 	padding: 0.5rem 3rem;
 	clip-path: polygon(100% 0, 93% 50%, 100% 99%, 0% 100%, 7% 50%, 0% 0%);
@@ -66,8 +66,8 @@ section {
 }
 
 .btn:hover {
-	background: var(--orange);
-	color: #fff;
+	background: var(--green);
+	color: white;
 }
 
 .header {
@@ -80,7 +80,7 @@ section {
 	align-items: center;
 	justify-content: space-between;
 	padding: 2rem 9%;
-	background: #fff;
+	background: white;
 	box-shadow: var(--box-shadow);
 }
 
@@ -91,7 +91,7 @@ section {
 }
 
 .header .logo i {
-	color: var(--orange);
+	color: var(--green);
 }
 
 .header .navbar a {
@@ -101,7 +101,7 @@ section {
 }
 
 .header .navbar a:hover {
-	color: var(--orange);
+	color: var(--green);
 }
 
 .header .icons div {
@@ -118,8 +118,8 @@ section {
 }
 
 .header .icons div:hover {
-	background: var(--orange);
-	color: #fff;
+	background: var(--green);
+	color: white;
 }
 
 #menu-btn {
@@ -132,7 +132,7 @@ section {
 	right: -110%;
 	width: 50rem;
 	height: 5rem;
-	background: #fff;
+	background: white;
 	border-radius: 0.5rem;
 	overflow: hidden;
 	display: flex;
@@ -149,7 +149,6 @@ section {
 	height: 100%;
 	width: 100%;
 	background: none;
-	text-transform: none;
 	font-size: 1.6rem;
 	color: var(--black);
 	padding: 0 1.5rem;
@@ -163,7 +162,7 @@ section {
 }
 
 .header .search-form label:hover {
-	color: var(--orange);
+	color: var(--green);
 }
 
 .header .shopping-cart {
@@ -174,7 +173,7 @@ section {
 	border-radius: 0.5rem;
 	box-shadow: var(--black);
 	width: 35rem;
-	background: #fff;
+	background: white;
 }
 
 .header .shopping-cart.active {
@@ -206,7 +205,7 @@ section {
 }
 
 .header .shopping-cart .box .fa-trash:hover {
-	color: var(--orange);
+	color: var(--green);
 }
 
 .header .shopping-cart .box .content h3 {
@@ -245,7 +244,7 @@ section {
 	box-shadow: var(--box-shadow);
 	padding: 2rem;
 	border-radius: 0.5rem;
-	background: #fff;
+	background: white;
 	text-align: center;
 }
 
@@ -278,7 +277,7 @@ section {
 }
 
 .header .login-form p a {
-	color: var(--orange);
+	color: var(--green);
 	text-decoration: underline;
 }
 
@@ -286,7 +285,7 @@ section {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: url(../images/vegetables-top-view-on-kitchen-table-white-wooden-natural-vegetable-M1B9AF.jpg)
+	background: url(../images/medicines-top-view.jpg)
 		no-repeat;
 	background-position: center;
 	background-size: cover;
@@ -305,7 +304,7 @@ section {
 }
 
 .home .content h3 span {
-	color: var(--orange);
+	color: var(--green);
 }
 
 .home .content p {
@@ -323,7 +322,7 @@ section {
 
 .features .box-container .box {
 	padding: 3rem 2rem;
-	background: #fff;
+	background: white;
 	outline: var(--outline);
 	outline-offset: -1rem;
 	text-align: center;
@@ -362,7 +361,7 @@ section {
 }
 
 .products .product-slider .box {
-	background: #fff;
+	background: white;
 	border-radius: 0.5rem;
 	text-align: center;
 	padding: 3rem 2rem;
@@ -396,7 +395,7 @@ section {
 /* Possivelmente será removido junto com as estrelas. Pois usarei o like */
 .products .product-slider .box .stars i {
 	font-size: 1.7rem;
-	color: var(--orange);
+	color: var(--green);
 	padding: 0.5rem 0;
 }
 
@@ -409,7 +408,7 @@ section {
 .categories .box-container .box {
 	padding: 3rem 2rem;
 	border-radius: 0.5rem;
-	background: #fff;
+	background: white;
 	box-shadow: var(--box-shadow);
 	outline: var(--outline);
 	outline-offset: -1rem;
@@ -445,7 +444,7 @@ section {
 }
 
 .review .review-slider .box {
-	background: #fff;
+	background: white;
 	border-radius: 0.5rem;
 	text-align: center;
 	padding: 3rem 2rem;
@@ -481,7 +480,7 @@ section {
 
 /* Não usarei estrelas. Pode ser deletado */
 .review .review-slider .box .stars i {
-	color: var(--orange);
+	color: var(--green);
 	font-size: 1.7rem;
 }
 
@@ -495,7 +494,7 @@ section {
 	overflow: hidden;
 	border-radius: .5rem;
 	box-shadow: var(--box-shadow);
-	background: #fff;
+	background: white;
 }
 
 .blogs .box-container .box img {
@@ -527,7 +526,7 @@ section {
 }
 
 .blogs .box-container .box .content .icons a i {
-	color: var(--orange);
+	color: var(--green);
 	padding-right: .5rem;
 }
 
@@ -546,7 +545,7 @@ section {
 }
 
 .footer {
-	background: #fff;
+	background: white;
 }
 
 .footer .box-container {
@@ -562,7 +561,7 @@ section {
 }
 
 .footer .box-container .box h3 i {
-	color: var(--orange);
+	color: var(--green);
 }
 
 .footer .box-container .box .links {
@@ -573,7 +572,7 @@ section {
 }
 
 .footer .box-container .box .links i {
-	color: var(--orange);
+	color: var(--green);
 	padding-right: 0.5rem;
 }
 
@@ -601,8 +600,8 @@ section {
 }
 
 .footer .box-container .box .share a:hover {
-	background: var(--orange);
-	color: #fff;
+	background: var(--green);
+	color: white;
 }
 
 .footer .box-container .box .email {
@@ -632,7 +631,11 @@ section {
 }
 
 .footer .credit span {
-	color: var(--orange);
+	color: var(--green);
+}
+
+.original {
+	text-transform: none;
 }
 
 /* Media Queries */
@@ -666,7 +669,7 @@ section {
 		width: 30rem;
 		box-shadow: var(--box-shadow);
 		border-radius: 0.5rem;
-		background: #fff;
+		background: white;
 	}
 
 	.header .navbar.active {
