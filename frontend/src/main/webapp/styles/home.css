@@ -1,13 +1,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;400;500;600&display=swap");
 
 :root {
-	--green: #76BD22;
-	--black: #1B5633;
+	--light-green: #76BD22;
+	--dark-green: #1B5633;
 	--light-color: #666;
 	--box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
 	--border: 0.2rem solid rgba(0, 0, 0, 0.1);
 	--outline: 0.1rem solid rgba(0, 0, 0, 0.1);
-	--outline-hover: 0.2rem solid var(--black);
+	--outline-hover: 0.2rem solid var(--dark-green);
 }
 
 * {
@@ -42,11 +42,11 @@ section {
 	padding: 2rem 0;
 	padding-bottom: 3rem;
 	font-size: 3.5rem;
-	color: var(--black);
+	color: var(--dark-green);
 }
 
 .heading span {
-	background: var(--green);
+	background: var(--light-green);
 	color: white;
 	display: inline-block;
 	padding: 0.5rem 3rem;
@@ -59,14 +59,14 @@ section {
 	padding: 0.8rem 3rem;
 	font-size: 1.7rem;
 	border-radius: 0.5rem;
-	border: 0.2rem solid var(--black);
-	color: var(--black);
+	border: 0.2rem solid var(--dark-green);
+	color: var(--dark-green);
 	cursor: pointer;
 	background: none;
 }
 
 .btn:hover {
-	background: var(--green);
+	background: var(--light-green);
 	color: white;
 }
 
@@ -87,21 +87,21 @@ section {
 .header .logo {
 	font-size: 2.5rem;
 	font-weight: bolder;
-	color: var(--black);
+	color: var(--dark-green);
 }
 
 .header .logo i {
-	color: var(--green);
+	color: var(--light-green);
 }
 
 .header .navbar a {
 	font-size: 1.7rem;
 	margin: 0 1rem;
-	color: var(--black);
+	color: var(--dark-green);
 }
 
 .header .navbar a:hover {
-	color: var(--green);
+	color: var(--light-green);
 }
 
 .header .icons div {
@@ -110,7 +110,7 @@ section {
 	line-height: 4.5rem;
 	border-radius: 0.5rem;
 	background: #eee;
-	color: var(--black);
+	color: var(--dark-green);
 	font-size: 2rem;
 	margin-right: 3rem;
 	cursor: pointer;
@@ -118,7 +118,7 @@ section {
 }
 
 .header .icons div:hover {
-	background: var(--green);
+	background: var(--light-green);
 	color: white;
 }
 
@@ -150,19 +150,19 @@ section {
 	width: 100%;
 	background: none;
 	font-size: 1.6rem;
-	color: var(--black);
+	color: var(--dark-green);
 	padding: 0 1.5rem;
 }
 
 .header .search-form label {
 	font-size: 2.2rem;
 	padding-left: 1.5rem;
-	color: var(--black);
+	color: var(--dark-green);
 	cursor: pointer;
 }
 
 .header .search-form label:hover {
-	color: var(--green);
+	color: var(--light-green);
 }
 
 .header .shopping-cart {
@@ -171,7 +171,7 @@ section {
 	right: -110%;
 	padding: 1rem;
 	border-radius: 0.5rem;
-	box-shadow: var(--black);
+	box-shadow: var(--dark-green);
 	width: 35rem;
 	background: white;
 }
@@ -205,11 +205,11 @@ section {
 }
 
 .header .shopping-cart .box .fa-trash:hover {
-	color: var(--green);
+	color: var(--light-green);
 }
 
 .header .shopping-cart .box .content h3 {
-	color: var(--black);
+	color: var(--dark-green);
 	font-size: 1.7rem;
 	padding-bottom: 1.7rem;
 }
@@ -227,7 +227,7 @@ section {
 	font-size: 2.5rem;
 	padding: 1rem 0;
 	text-align: center;
-	color: var(--black);
+	color: var(--dark-green);
 }
 
 .header .shopping-cart .btn {
@@ -256,7 +256,7 @@ section {
 .header .login-form h3 {
 	font-size: 2.5rem;
 	text-transform: uppercase;
-	color: var(--black);
+	color: var(--dark-green);
 }
 
 .header .login-form .box {
@@ -266,7 +266,7 @@ section {
 	border-radius: 0.5rem;
 	padding: 1rem;
 	font-size: 1.6rem;
-	color: var(--black);
+	color: var(--dark-green);
 	text-transform: none;
 }
 
@@ -277,7 +277,7 @@ section {
 }
 
 .header .login-form p a {
-	color: var(--green);
+	color: var(--light-green);
 	text-decoration: underline;
 }
 
@@ -299,12 +299,12 @@ section {
 }
 
 .home .content h3 {
-	color: var(--black);
+	color: var(--dark-green);
 	font-size: 3rem;
 }
 
 .home .content h3 span {
-	color: var(--green);
+	color: var(--light-green);
 }
 
 .home .content p {
@@ -342,7 +342,7 @@ section {
 .features .box-container .box h3 {
 	font-size: 2.5rem;
 	line-height: 1.8;
-	color: var(--black);
+	color: var(--dark-green);
 }
 
 .features .box-container .box p {
@@ -383,7 +383,7 @@ section {
 
 .products .product-slider .box h3 {
 	font-size: 2.5rem;
-	color: var(--black);
+	color: var(--dark-green);
 }
 
 .products .product-slider .box .price {
@@ -393,9 +393,9 @@ section {
 }
 
 /* Possivelmente será removido junto com as estrelas. Pois usarei o like */
-.products .product-slider .box .stars i {
+.products .product-slider .box .likes i {
 	font-size: 1.7rem;
-	color: var(--green);
+	color: var(--light-green);
 	padding: 0.5rem 0;
 }
 
@@ -428,7 +428,7 @@ section {
 
 .categories .box-container .box h3 {
 	font-size: 2rem;
-	color: var(--black);
+	color: var(--dark-green);
 	line-height: 1.8;
 }
 
@@ -474,13 +474,13 @@ section {
 
 .review .review-slider .box h3 {
 	padding-bottom: 0.5rem;
-	color: var(--black);
+	color: var(--dark-green);
 	font-size: 2.2rem;
 }
 
 /* Não usarei estrelas. Pode ser deletado */
-.review .review-slider .box .stars i {
-	color: var(--green);
+.review .review-slider .box .likes i {
+	color: var(--light-green);
 	font-size: 1.7rem;
 }
 
@@ -522,17 +522,17 @@ section {
 }
 
 .blogs .box-container .box .content .icons a:hover {
-	color: var(--black);
+	color: var(--dark-green);
 }
 
 .blogs .box-container .box .content .icons a i {
-	color: var(--green);
+	color: var(--light-green);
 	padding-right: .5rem;
 }
 
 .blogs .box-container .box .content h3 {
 	line-height: 1.8;
-	color: var(--black);
+	color: var(--dark-green);
 	font-size: 2.2rem;
 	padding: .5rem 0;
 }
@@ -556,12 +556,12 @@ section {
 
 .footer .box-container .box h3 {
 	font-size: 2.5rem;
-	color: var(--black);
+	color: var(--dark-green);
 	padding: 1rem 0;
 }
 
 .footer .box-container .box h3 i {
-	color: var(--green);
+	color: var(--light-green);
 }
 
 .footer .box-container .box .links {
@@ -572,7 +572,7 @@ section {
 }
 
 .footer .box-container .box .links i {
-	color: var(--green);
+	color: var(--light-green);
 	padding-right: 0.5rem;
 }
 
@@ -593,14 +593,14 @@ section {
     line-height: 4rem;
     border-radius: .5rem;
     font-size: 2rem;
-    color: var(--black);
+    color: var(--dark-green);
     margin-left: .2rem;
     background: #eee;
     text-align: center;
 }
 
 .footer .box-container .box .share a:hover {
-	background: var(--green);
+	background: var(--light-green);
 	color: white;
 }
 
@@ -611,7 +611,7 @@ section {
 	border-radius: .5rem;
 	background: #eee;
 	font-size: 1.6rem;
-	color: var(--black);
+	color: var(--dark-green);
 	text-transform: none;
 }
 
@@ -626,12 +626,12 @@ section {
 	padding: 1rem;
 	padding-top: 2.5rem;
 	font-size: 2rem;
-	color: var(--black);
+	color: var(--dark-green);
 	border-top: var(--border);
 }
 
 .footer .credit span {
-	color: var(--green);
+	color: var(--light-green);
 }
 
 .original {
