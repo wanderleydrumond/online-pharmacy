@@ -3,11 +3,12 @@
 :root {
 	--light-green: #76BD22;
 	--dark-green: #1B5633;
-	--light-color: #666;
-	--box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.1);
-	--border: 0.2rem solid rgba(0, 0, 0, 0.1);
-	--outline: 0.1rem solid rgba(0, 0, 0, 0.1);
-	--outline-hover: 0.2rem solid var(--dark-green);
+	--light-grey: #666;
+	--white : #EEE;
+	--box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .1);
+	--border: .2rem solid rgba(0, 0, 0, .1);
+	--outline: .1rem solid rgba(0, 0, 0, .1);
+	--outline-hover: .2rem solid var(--dark-green);
 }
 
 * {
@@ -19,7 +20,7 @@
 	border: none;
 	text-decoration: none;
 	text-transform: capitalize;
-	transition: all 0.2s linear;
+	transition: all .2s linear;
 }
 
 html {
@@ -30,7 +31,7 @@ html {
 }
 
 body {
-	background: #eee;
+	background: var(--white);
 }
 
 section {
@@ -49,17 +50,17 @@ section {
 	background: var(--light-green);
 	color: white;
 	display: inline-block;
-	padding: 0.5rem 3rem;
+	padding: .5rem 3rem;
 	clip-path: polygon(100% 0, 93% 50%, 100% 99%, 0% 100%, 7% 50%, 0% 0%);
 }
 
 .btn {
 	margin-top: 1rem;
 	display: inline-block;
-	padding: 0.8rem 3rem;
+	padding: .8rem 3rem;
 	font-size: 1.7rem;
-	border-radius: 0.5rem;
-	border: 0.2rem solid var(--dark-green);
+	border-radius: .5rem;
+	border: .2rem solid var(--dark-green);
 	color: var(--dark-green);
 	cursor: pointer;
 	background: none;
@@ -108,8 +109,8 @@ section {
 	height: 4.5rem;
 	width: 4.5rem;
 	line-height: 4.5rem;
-	border-radius: 0.5rem;
-	background: #eee;
+	border-radius: .5rem;
+	background: var(--white);
 	color: var(--dark-green);
 	font-size: 2rem;
 	margin-right: 3rem;
@@ -133,7 +134,7 @@ section {
 	width: 50rem;
 	height: 5rem;
 	background: white;
-	border-radius: 0.5rem;
+	border-radius: .5rem;
 	overflow: hidden;
 	display: flex;
 	align-items: center;
@@ -142,7 +143,7 @@ section {
 
 .header .search-form.active {
 	right: 2rem;
-	transition: 0.4s linear;
+	transition: .4s linear;
 }
 
 .header .search-form input {
@@ -156,7 +157,7 @@ section {
 
 .header .search-form label {
 	font-size: 2.2rem;
-	padding-left: 1.5rem;
+	padding: 0 1.5rem;
 	color: var(--dark-green);
 	cursor: pointer;
 }
@@ -170,7 +171,7 @@ section {
 	top: 110%;
 	right: -110%;
 	padding: 1rem;
-	border-radius: 0.5rem;
+	border-radius: .5rem;
 	box-shadow: var(--dark-green);
 	width: 35rem;
 	background: white;
@@ -178,7 +179,7 @@ section {
 
 .header .shopping-cart.active {
 	right: 2rem;
-	transition: 0.4s linear;
+	transition: .4s linear;
 }
 
 .header .shopping-cart .box {
@@ -200,7 +201,7 @@ section {
 	top: 50%;
 	right: 2rem;
 	cursor: pointer;
-	color: var(--light-color);
+	color: var(--light-grey);
 	transform: translateY(-50%);
 }
 
@@ -215,7 +216,7 @@ section {
 }
 
 .header .shopping-cart .box .content span {
-	color: var(--light-color);
+	color: var(--light-grey);
 	font-size: 1.6rem;
 }
 
@@ -243,14 +244,14 @@ section {
 	width: 30rem;
 	box-shadow: var(--box-shadow);
 	padding: 2rem;
-	border-radius: 0.5rem;
+	border-radius: .5rem;
 	background: white;
 	text-align: center;
 }
 
 .header .login-form.active {
 	right: 2rem;
-	transition: 0.4s linear;
+	transition: .4s linear;
 }
 
 .header .login-form h3 {
@@ -261,9 +262,9 @@ section {
 
 .header .login-form .box {
 	width: 100%;
-	margin: 0.7rem 0;
-	background: #eee;
-	border-radius: 0.5rem;
+	margin: .7rem 0;
+	background: var(--white);
+	border-radius: .5rem;
 	padding: 1rem;
 	font-size: 1.6rem;
 	color: var(--dark-green);
@@ -272,8 +273,8 @@ section {
 
 .header .login-form p {
 	font-size: 1.4rem;
-	padding: 0.5rem;
-	color: var(--light-color);
+	padding: .5rem;
+	color: var(--light-grey);
 }
 
 .header .login-form p a {
@@ -285,8 +286,7 @@ section {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	background: url(../images/medicines-top-view.jpg)
-		no-repeat;
+	background: url(../images/medicines-top-view.jpg) no-repeat;
 	background-position: center;
 	background-size: cover;
 	padding-top: 17rem;
@@ -308,7 +308,7 @@ section {
 }
 
 .home .content p {
-	color: var(--light-color);
+	color: var(--light-grey);
 	font-size: 1.7rem;
 	padding: 1rem 0;
 	line-height: 1.8;
@@ -348,7 +348,7 @@ section {
 .features .box-container .box p {
 	font-size: 1.5rem;
 	line-height: 1.8;
-	color: var(--light-color);
+	color: var(--light-grey);
 	padding: 1rem 0;
 }
 
@@ -362,13 +362,13 @@ section {
 
 .products .product-slider .box {
 	background: white;
-	border-radius: 0.5rem;
+	border-radius: .5rem;
 	text-align: center;
 	padding: 3rem 2rem;
 	outline-offset: -1rem;
 	outline: var(--outline);
 	box-shadow: var(--box-shadow);
-	transition: 0.2s linear;
+	transition: .2s linear;
 }
 
 .products .product-slider .box:hover {
@@ -388,15 +388,15 @@ section {
 
 .products .product-slider .box .price {
 	font-size: 2rem;
-	color: var(--light-color);
-	padding: 0.5rem 0;
+	color: var(--light-grey);
+	padding: .5rem 0;
 }
 
 /* Possivelmente será removido junto com as estrelas. Pois usarei o like */
 .products .product-slider .box .likes i {
 	font-size: 1.7rem;
 	color: var(--light-green);
-	padding: 0.5rem 0;
+	padding: .5rem 0;
 }
 
 .categories .box-container {
@@ -407,7 +407,7 @@ section {
 
 .categories .box-container .box {
 	padding: 3rem 2rem;
-	border-radius: 0.5rem;
+	border-radius: .5rem;
 	background: white;
 	box-shadow: var(--box-shadow);
 	outline: var(--outline);
@@ -434,7 +434,7 @@ section {
 
 .categories .box-container .box p {
 	font-size: 1.7rem;
-	color: var(--light-color);
+	color: var(--light-grey);
 	line-height: 1.8;
 	padding: 1rem 0;
 }
@@ -445,13 +445,13 @@ section {
 
 .review .review-slider .box {
 	background: white;
-	border-radius: 0.5rem;
+	border-radius: .5rem;
 	text-align: center;
 	padding: 3rem 2rem;
 	outline-offset: -1rem;
 	outline: var(--outline);
 	box-shadow: var(--box-shadow);
-	transition: 0.2s linear;
+	transition: .2s linear;
 }
 
 .review .review-slider .box:hover {
@@ -468,12 +468,12 @@ section {
 .review .review-slider .box p {
 	padding: 1rem 0;
 	line-height: 1.8;
-	color: var(--light-color);
+	color: var(--light-grey);
 	font-size: 1.5rem;
 }
 
 .review .review-slider .box h3 {
-	padding-bottom: 0.5rem;
+	padding-bottom: .5rem;
 	color: var(--dark-green);
 	font-size: 2.2rem;
 }
@@ -517,7 +517,7 @@ section {
 }
 
 .blogs .box-container .box .content .icons a {
-	color: var(--light-color);
+	color: var(--light-grey);
 	font-size: 1.5rem;
 }
 
@@ -539,7 +539,7 @@ section {
 
 .blogs .box-container .box .content p {
 	line-height: 1.8;
-	color: var(--light-color);
+	color: var(--light-grey);
 	font-size: 1.5rem;
 	padding: .5rem 0;
 }
@@ -567,13 +567,13 @@ section {
 .footer .box-container .box .links {
 	display: block;
 	font-size: 1.5rem;
-	color: var(--light-color);
+	color: var(--light-grey);
 	padding: 1rem 0;
 }
 
 .footer .box-container .box .links i {
 	color: var(--light-green);
-	padding-right: 0.5rem;
+	padding-right: .5rem;
 }
 
 .footer .box-container .box .links:hover i {
@@ -583,7 +583,7 @@ section {
 .footer .box-container .box p {
 	line-height: 1.8;
 	font-size: 1.5rem;
-	color: var(--light-color);
+	color: var(--light-grey);
 	padding: 1rem 0;
 }
 
@@ -595,7 +595,7 @@ section {
     font-size: 2rem;
     color: var(--dark-green);
     margin-left: .2rem;
-    background: #eee;
+    background: var(--white);
     text-align: center;
 }
 
@@ -609,7 +609,7 @@ section {
 	margin: .7rem 0;
 	padding: 1rem;
 	border-radius: .5rem;
-	background: #eee;
+	background: var(--white);
 	font-size: 1.6rem;
 	color: var(--dark-green);
 	text-transform: none;
@@ -668,13 +668,13 @@ section {
 		right: -110%;
 		width: 30rem;
 		box-shadow: var(--box-shadow);
-		border-radius: 0.5rem;
+		border-radius: .5rem;
 		background: white;
 	}
 
 	.header .navbar.active {
 		right: 2rem;
-		transition: 0.4s linear;
+		transition: .4s linear;
 	}
 
 	.header .navbar a {
