@@ -20,6 +20,7 @@
    outline: none; 
    border: none;
    text-decoration: none;
+   color: var(--dark-green);
 }
 
 .form-container {
@@ -45,7 +46,6 @@
    font-size: 30px;
    text-transform: uppercase;
    margin-bottom: 10px;
-   color:var(--black);
 }
 
 .form-container form input {
@@ -82,4 +82,8 @@
 
 .form-container form p a {
    color:var(--dark-green);
+}
+
+.form-container form p a:hover {
+   color:var(--light-green);
 }
