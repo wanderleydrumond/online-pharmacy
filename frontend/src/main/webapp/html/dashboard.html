@@ -13,39 +13,79 @@
 </head>
 
 <body>
-    <div class="side-menu">
-        <div class="brand-name">
-            <a href="../html/home.html" class="logo">
-                <i class="fa-solid fa-laptop-medical"></i> online pharmacy </a>
+    <!-- header section start -->
+    <header class="header">
+        <a href="#" class="logo"><i class="fa-solid fa-laptop-medical"></i></i> online pharmacy </a>
+
+        <nav class="navbar">
+            <a href="#home">home</a>
+            <a href="#features">features</a>
+            <a href="../html/products.html">products</a>
+            <a href="#categories">categories</a>
+            <a href="#review">review</a>
+            <a href="#blogs">blogs</a>
+        </nav>
+
+        <div class="icons">
+            <div class="fa-solid fa-square-poll-vertical" id="dashboard-btn">
+                <a href="../html/dashboard.html"></a>
+            </div>
+            <div class="fas fa-bars" id="menu-btn"></div>
+            <div class="fas fa-search" id="search-btn"></div>
+            <div class="fas fa-shopping-cart" id="cart-btn"></div>
+            <div class="fas fa-user" id="login-btn"></div>
         </div>
-        <ul>
-            <li><i class="fa-solid fa-house-user"></i>&ensp;<span>home</span></li>
-            <li><i class="fa-solid fa-users"></i>&ensp;<span>clients</span> </li>
-            <li><i class="fa-solid fa-cart-shopping"></i>&ensp;<span>carts</span> </li>
-            <li><i class="fa-solid fa-capsules"></i>&ensp;<span>products</span> </li>
-            <li><i class="fa-solid fa-calculator"></i>&ensp;<span>logins</span> </li>
-            <li><i class="fa-solid fa-vault"></i>&ensp;<span>total purchase</span> </li>
-            <li><i class="fa-solid fa-money-bill"></i>&ensp;<span>current month</span> </li>
-            <li><i class="fa-solid fa-money-bill-trend-up"></i>&ensp;<span>last month</span> </li>
-        </ul>
-    </div>
-    <div class="container">
-        <div class="header">
-            <div class="nav">
-                <div class="search">
-                    <input type="text" placeholder="Search...">
-                    <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
-                </div>
-                <div class="user">
-                    <a href="#" class="btn">Add New</a>
-                    <i class="fa-solid fa-bell"></i>
-                    <div class="img-case">
-                        <img src="../images/dashboard/user.png" alt="">
-                    </div>
+
+        <form class="search-form">
+            <input type="search" id="search-box" placeholder="search here" class="original">
+            <label for="search-box" class="fas fa-search"></label>
+        </form>
+
+        <div class="shopping-cart">
+            <div class="box">
+                <i class="fas fa-trash"></i>
+                <img src="../images/national-watermelon-day(sm).png" alt="">
+                <div class="content-1">
+                    <h3>watermelon</h3>
+                    <span class="price">€4.99/-</span>
+                    <span class="quantity">qty : 1</span>
                 </div>
             </div>
+            <div class="box">
+                <i class="fas fa-trash"></i>
+                <img src="../images/RED_ONION_TREBOLE_FONIO05(sm).png" alt="">
+                <div class="content-1">
+                    <h3>onion</h3>
+                    <span class="price">€4.99/-</span>
+                    <span class="quantity">qty : 1</span>
+                </div>
+            </div>
+            <div class="box">
+                <i class="fas fa-trash"></i>
+                <img src="../images/Website_Chicken_Tenders_3PC(sm).png" alt="">
+                <div class="content-1">
+                    <h3>chicken</h3>
+                    <span class="price">€4.99/-</span>
+                    <span class="quantity">qty : 1</span>
+                </div>
+            </div>
+            <div class="total">Total : 19.60€/-</div>
+            <a href="#" class="btn">checkout</a>
         </div>
-        <div class="content">
+
+        <form action="" class="login-form">
+            <h3>login now</h3>
+            <input type="email" placeholder="your e-mail" class="box">
+            <input type="password" placeholder="your password" class="box">
+            <p>don't have an account <a href="../html/signup.html">create now</a></p>
+            <input type="submit" value="login now" class="btn">
+        </form>
+    </header>
+    <!-- header section end -->
+
+    <!-- dashboard section starts -->
+    <section class="dashboard">
+        <div class="content-1">
             <div class="cards">
                 <div class="card">
                     <div class="box">
@@ -56,7 +96,7 @@
                         <i class="fa-solid fa-users"></i>
                     </div>
                 </div>
-
+    
                 <div class="card">
                     <div class="box">
                         <h1>53</h1>
@@ -66,7 +106,7 @@
                         <i class="fa-solid fa-capsules"></i>
                     </div>
                 </div>
-
+    
                 <div class="card">
                     <div class="box">
                         <h1>5</h1>
@@ -76,7 +116,7 @@
                         <i class="fa-solid fa-cart-shopping"></i>
                     </div>
                 </div>
-
+    
                 <div class="card">
                     <div class="box">
                         <h1>53</h1>
@@ -86,7 +126,7 @@
                         <i class="fa-solid fa-calculator"></i>
                     </div>
                 </div>
-
+    
                 <div class="card">
                     <div class="box">
                         <h1>3500.00€</h1>
@@ -96,7 +136,7 @@
                         <i class="fa-solid fa-vault"></i>
                     </div>
                 </div>
-
+    
                 <div class="card">
                     <div class="box">
                         <h1>500.00€</h1>
@@ -117,86 +157,54 @@
                     </div>
                 </div>
             </div>
+
             <div class="content-2">
-                <div class="recent-payments">
+                <div class="add-product">
                     <div class="title">
                         <h2>add product</h2>
                         <a href="#" class="btn">View All</a>
                     </div>
-                    <table>
-                        <tr>
-                            <th>Name</th>
-                            <th>School</th>
-                            <th>Amount</th>
-                            <th>Option</th>
-                        </tr>
-                        <tr>
-                            <td>John Doe</td>
-                            <td>St. James College</td>
-                            <td>$120</td>
-                            <td><a href="#" class="btn">View</a></td>
-                        </tr>
-                        <tr>
-                            <td>John Doe</td>
-                            <td>St. James College</td>
-                            <td>$120</td>
-                            <td><a href="#" class="btn">View</a></td>
-                        </tr>
-                        <tr>
-                            <td>John Doe</td>
-                            <td>St. James College</td>
-                            <td>$120</td>
-                            <td><a href="#" class="btn">View</a></td>
-                        </tr>
-                        <tr>
-                            <td>John Doe</td>
-                            <td>St. James College</td>
-                            <td>$120</td>
-                            <td><a href="#" class="btn">View</a></td>
-                        </tr>
-                        <tr>
-                            <td>John Doe</td>
-                            <td>St. James College</td>
-                            <td>$120</td>
-                            <td><a href="#" class="btn">View</a></td>
-                        </tr>
-                        <tr>
-                            <td>John Doe</td>
-                            <td>St. James College</td>
-                            <td>$120</td>
-                            <td><a href="#" class="btn">View</a></td>
-                        </tr>
-                    </table>
+                    <form action="" class="add-product-form">
+                        <div class="up">
+                            <input type="email" placeholder="Product name" class="box">
+                            <input type="number" step=".01" min="0" placeholder="Product price" class="box">
+                        </div>
+                        <div class="down">
+                            <input type="url" placeholder="Product image" class="box">
+                        <select name="section" class="box">
+                            <option value="health">select a section</option>
+                            <option value="health">Health</option>
+                            <option value="supplements">Supplements</option>
+                            <option value="beauty">Beauty</option>
+                        </select>
+                        </div>
+                        <input type="submit" value="create" class="btn">
+                    </form>
                 </div>
-                <div class="new-students">
+
+                <div class="new-users">
                     <div class="title">
                         <h2>approve users</h2>
-                        <a href="#" class="btn">View All</a>
+                        <a href="#" class="btn">approve all</a>
                     </div>
                     <table>
-                        <caption>pending</caption>
                         <tr>
-                            <th>Profile</th>
                             <th>Name</th>
                             <th>option</th>
                         </tr>
                         <tr>
-                            <td><img src="../images/dashboard/user.png" alt=""></td>
                             <td>mark grayson</td>
                             <td><a href="#" class="btn"><i class="fa-solid fa-check"></i></a></td>
                         </tr>
                         <tr>
-                            <td><img src="../images/dashboard/user.png" alt=""></td>
                             <td>kate cha</td>
                             <td><a href="#" class="btn"><i class="fa-solid fa-check"></i></a></td>
                         </tr>
                         <tr>
-                            <td><img src="../images/dashboard/user.png" alt=""></td>
                             <td>Rex Sloane</td>
                             <td><a href="#" class="btn"><i class="fa-solid fa-check"></i></a></td>
                         </tr>
                         <tr>
-                            <td><img src="../images/dashboard/user.png" alt=""></td>
                             <td>Markus Grimshaw</td>
                             <td><a href="#" class="btn"><i class="fa-solid fa-check"></i></a></td>
                         </tr>
@@ -204,7 +212,8 @@
                 </div>
             </div>
         </div>
-    </div>
+    </section>
+    <!-- dashboard section ends -->
 </body>
 
 </html>
