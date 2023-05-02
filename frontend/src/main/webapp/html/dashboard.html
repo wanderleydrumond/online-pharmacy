@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles/dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" href="../images/laptop-medical-solid-green.png" type="image/x-icon">
     <!-- https://www.youtube.com/watch?v=NWpMwYHkA3M -->
     <!-- https://www.imecreative.com/responsive-admin-dashboard-using-html-and-css-2/ -->
     <title>Dashboard</title>
@@ -23,7 +24,7 @@
             <a href="../html/products.html">products</a>
             <a href="#categories">categories</a>
             <a href="#review">review</a>
-            <a href="#blogs">blogs</a>
+            <a href="../html/history.html">history</a>
         </nav>
 
         <div class="icons">
@@ -165,19 +166,16 @@
                         <a href="#" class="btn">View All</a>
                     </div>
                     <form action="" class="add-product-form">
-                        <div class="up">
-                            <input type="email" placeholder="Product name" class="box">
-                            <input type="number" step=".01" min="0" placeholder="Product price" class="box">
-                        </div>
-                        <div class="down">
-                            <input type="url" placeholder="Product image" class="box">
+                        <input type="email" placeholder="Product name" class="box">
+                        <input type="number" step=".01" min="0" placeholder="Product price" class="box">
+                        <input type="url" placeholder="Product image" class="box">                        
                         <select name="section" class="box">
                             <option value="health">select a section</option>
                             <option value="health">Health</option>
                             <option value="supplements">Supplements</option>
                             <option value="beauty">Beauty</option>
                         </select>
-                        </div>
+                        
                         <input type="submit" value="create" class="btn">
                     </form>
                 </div>
