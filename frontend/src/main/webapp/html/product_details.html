@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="../styles/modal.css">
     <link rel="icon" href="../images/laptop-medical-solid-green.png" type="image/x-icon">
     <!-- https://www.youtube.com/watch?v=lCCN_lkl3Xw -->
 </head>
@@ -47,7 +48,6 @@
                     <span class="quantity">qty : 1</span>
                 </div>
             </div>
-            
             <div class="box">
                 <i class="fa-solid fa-trash"></i>
                 <img src="../images/RED_ONION_TREBOLE_FONIO05(sm).png" alt="">
@@ -92,114 +92,79 @@
 
     <!-- products section starts -->
     <section class="products" id="products">
-        <h1 class="heading">order <span>details</span> 24/04/2023</h1>
-        <h3 class="heading">115.23€</h3>
-        <div class="heading"><a href="#" class="btn">checkout</a></div>
+        <h1 class="heading">product <span>details</span></h1>
         <div class="swiper product-slider">
             <!-- os produtos criados pelo JS serão ancorados a esta div -->
             <div class="swiper-wrapper">
-
-                <div class="swiper-slide box">
-                    <a href="../html/product_details.html"><img src="../images/whey-protein.webp" alt=""></a>
-                    <h3>whey gold standard</h3>
-                    <div class="price">4.99€/- - 10.99€/-</div>
-                    <div class="likes">
-                        <p>beauty</p>
-                        <p>30 <a href="#"><i class="fa-regular fa-thumbs-up"></i></a>&emsp;<a href="#"><i
-                                    class="fa-solid fa-heart"></i></a></p>
+                <div class="product-details">
+                    <div class="swiper-slide box">
+                        <a href="../html/product_details.html"><img src="../images/whey-protein.webp" alt=""></a>
+                        <h3>whey gold standard</h3>
+                        <div class="price">10.99€</div>
+                        <div class="likes">
+                            <p>beauty</p>
+                            <p>30 <a href="#"><i class="fa-regular fa-thumbs-up"></i></a>&emsp;<a href="#"><i
+                                        class="fa-solid fa-heart"></i>&emsp;</a>30 <i class="fa-solid fa-comment"></i>
+                            </p>
+                        </div>
+                        <a href="#" class="btn">add to cart</a>
+                        <a href="#products" id="add-comment" class="btn">add comment</a>
                     </div>
-                    <a href="#" class="btn">add to cart</a>
                 </div>
-
-                <div class="swiper-slide box">
-                    <a href="../html/product_details.html"><img src="../images/hidratante.png" alt=""></a>
-                    <h3>Hydrabio Crème</h3>
-                    <div class="price">4.99€/- - 10.99€/-</div>
-                    <div class="likes">
-                        <p>beauty</p>
-                        <p>30 <a href="#"><i class="fa-regular fa-thumbs-up"></i></a>&emsp;<a href="#"><i
-                                    class="fa-solid fa-heart"></i></a></p>
-                    </div>
-                    <a href="#" class="btn">add to cart</a>
-                </div>
-
-                <div class="swiper-slide box">
-                    <a href="../html/product_details.html"><img src="../images/inderal.webp" alt=""></a>
-                    <h3>inderal</h3>
-                    <div class="price">4.99€/- - 10.99€/-</div>
-                    <div class="likes">
-                        <p>beauty</p>
-                        <p>30 <a href="#"><i class="fa-regular fa-thumbs-up"></i></a>&emsp;<a href="#"><i
-                                    class="fa-solid fa-heart"></i></a></p>
-                    </div>
-                    <a href="#" class="btn">add to cart</a>
-                </div>
-
-                <div class="swiper-slide box">
-                    <a href="../html/product_details.html"><img src="../images/cereal-bar.png" alt=""></a>
-                    <h3>Cereal bar nestlè</h3>
-                    <div class="price">4.99€/- - 10.99€/-</div>
-                    <div class="likes">
-                        <p>beauty</p>
-                        <p>30 <i class="fa-regular fa-thumbs-up"></i>&emsp;<i class="fa-regular fa-heart"></i></p>
-                    </div>
-                    <a href="#" class="btn">add to cart</a>
-                </div>
-
             </div>
         </div>
+        <!-- The Modal -->
+        <div id="modal-comment" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <input type="text" size="170" placeholder="insert your comment">
+                <a href="#products" class="btn">save</a>
+            </div>
+
+        </div>
+        <!-- Modal ends  -->
 
         <div class="swiper product-slider">
             <div class="swiper-wrapper">
+
                 <div class="swiper-slide box">
-                    <a href="../html/product_details.html"><img
-                            src="../images/Nivea-Q10-Firming-Body-Milk-Dry-Skin-400ml.png" alt=""></a>
-                    <h3>Nivea Q10 Firming Body Milk</h3>
-                    <div class="price">4.99€/- - 10.99€/-</div>
+                    <h3>Nolan Grayson</h3>
+                    <div class="comment">Wonderful product, a bit oily, but it have a great cost-benefit. I strongly
+                        reconmend to all that have dry skin.</div>
                     <div class="likes">
-                        <p>beauty</p>
-                        <p>30 <i class="fa-regular fa-thumbs-up"></i>&emsp;<i class="fa-solid fa-heart"></i></p>
                     </div>
-                    <a href="#" class="btn">add to cart</a>
+                    <a href="#" class="btn">edit</a>
+                    <a href="#" class="btn">remove</a>
                 </div>
 
                 <div class="swiper-slide box">
-                    <a href="../html/product_details.html"><img
-                            src="../images/Solgar-Whey-to-go-Proteina-de-Suero-en-Polvo-Sabor-Chocolate-377-gr.png"
-                            alt=""></a>
-                    <h3>Solgar Whey to go Whey Protein</h3>
-                    <div class="price">4.99€/- - 10.99€/-</div>
+                    <h3>Cecil Stedman</h3>
+                    <div class="comment">The product is good, my skin got hydrated. But I got pimples because my skin is
+                        oily.</div>
                     <div class="likes">
-                        <p>supplements</p>
-                        <p>30 <a href="#"><i class="fa-regular fa-thumbs-up"></i></a>&emsp;<a href="#"><i
-                                    class="fa-solid fa-heart"></i></a></p>
                     </div>
-                    <a href="#" class="btn">add to cart</a>
+                    <a href="#" class="btn">edit</a>
+                    <a href="#" class="btn">remove</a>
                 </div>
 
                 <div class="swiper-slide box">
-                    <a href="../html/product_details.html"><img src="../images/gatorade.png" alt=""></a>
-                    <h3>gatorade strawberry and passion</h3>
-                    <div class="price">4.99€/- - 10.99€/-</div>
+                    <h3>Amanda</h3>
+                    <div class="comment">The taste is good but it makes me fart badly.</div>
                     <div class="likes">
-                        <p>supplements</p>
-                        <p>30 <a href="#"><i class="fa-regular fa-thumbs-up"></i></a>&emsp;<a href="#"><i
-                                    class="fa-solid fa-heart"></i></a></p>
                     </div>
-                    <a href="#" class="btn">add to cart</a>
+                    <a href="#" class="btn">edit</a>
+                    <a href="#" class="btn">remove</a>
                 </div>
 
                 <div class="swiper-slide box">
-                    <a href="../html/product_details.html"><img src="../images/Website_Chicken_Tenders_3PC(sm).png"
-                            alt=""></a>
-                    <h3>fresh chickens</h3>
-                    <div class="price">4.99€/- - 10.99€/-</div>
+                    <h3>Ray</h3>
+                    <div class="comment">The taste is awful but the results are impressive.</div>
                     <div class="likes">
-                        <p>beauty</p>
-                        <p>30 <a href="#"><i class="fa-regular fa-thumbs-up"></i></a>&emsp;<a href="#"><i
-                                    class="fa-solid fa-heart"></i></a></p>
                     </div>
-                    <a href="#" class="btn">add to cart</a>
+                    <a href="#" class="btn">edit</a>
+                    <a href="#" class="btn">remove</a>
                 </div>
             </div>
         </div>
@@ -252,6 +217,7 @@
     <!-- footer section ends -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script src="../js/navbar.js"></script>
+    <script src="../js/modal.js"></script>
 </body>
 
 </html>

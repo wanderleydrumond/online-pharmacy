@@ -392,12 +392,24 @@ section {
 	padding: .5rem 0;
 }
 
-/* Possivelmente será removido junto com as estrelas. Pois usarei o like */
 .products .product-slider .box .likes i {
 	font-size: 1.7rem;
 	color: var(--light-green);
 	padding: .5rem 0;
 }
+
+/* Product details starts */
+.products .product-slider .product-details .box  {
+	width: 80vw;
+}
+
+.products .product-slider .box .comment {
+	font-size: 2rem;
+	color: var(--light-grey);
+	padding: .5rem 0;
+	text-transform: none;
+}
+/* Product details ends */
 
 .categories .box-container {
 	display: grid;
