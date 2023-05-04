@@ -299,6 +299,7 @@ section {
 .dashboard .content-1 .cards .card {
     width: 250px;
     height: 150px;
+	border-radius: .5rem;
     background: white;
     margin: 20px 10px;
     display: flex;
@@ -306,6 +307,16 @@ section {
     justify-content: space-around;
     box-shadow: var(--box-shadow);
     font-size: 1.6rem;
+	outline-offset: -1rem;
+	outline: var(--outline);
+	box-shadow: var(--box-shadow);
+	transition: .2s linear;
+}
+
+.dashboard .content-1 .cards .card:hover {
+	cursor: default;
+	outline-offset: 0rem;
+	outline: var(--outline-hover);
 }
 
 .dashboard .content-1 .cards .card i {
