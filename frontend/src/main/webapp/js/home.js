@@ -1,41 +1,71 @@
-// Daqui para baixo foram testes de conectividade entre o front e o back
-document.getElementById("teste").addEventListener("click", teste);
+const inputUsername = document.getElementById("username");
+const inputPassword = document.getElementById("password");
+const cartButton = document.getElementById("cart-btn");
+const dashboardButton = document.getElementById("dashboard-btn");
+const signinButton = document.getElementById("signin-btn");
+const signoutButton = document.getElementById("signout-btn");
+const signinError = document.querySelector(".error");
 
-const urlBase = "http://localhost:8080/backend/pharmacy/";
 
-function teste(params) {
-	const header = new Headers();
-	const token = "ac4cb5c8-818d-461f-a1be-e1759fbbfdc4";
+/**
+ * Logs in a user into the system.
+ * 
+ * @date 5/6/2023 - 8:13:57 PM
+ *
+ * @async 
+ * @returns {json} the logged user
+ */
+const signin = async () => {
+	const usernameValue = inputUsername.value;
+	const passwordValue = inputPassword.value;
+	const usernameTrim = usernameValue.trim();
+	const passwordTrim = passwordValue.trim();
 
-	header.append("token", token);
+	if (
+		usernameValue != "" &&
+		passwordValue != "" &&
+		usernameTrim.length > 0 &&
+		passwordTrim.length > 0
+	) {
+		const headers = new Headers();
+		headers.append("username", usernameTrim);
+		headers.append("password", passwordTrim);
 
-	const fetchContent = {
-		method: "GET",
-		"Content-Type": "application/json",
-		headers: header,
-		mode: "cors",
-	};
+		await fetch(
+			urlBase + "/user/signin",
+			fetchContentFactoryWithoutBodyMultipleHeaders(
+				requestMethods.POST,
+				headers,
+			),
+		)
+			.then((response) => {
+				if (response.ok) {
+					inputUsername.value = "";
+					inputPassword.value = "";
+					cartButton.classList.remove("disappear");
+					signinForm.classList.remove("active");
+					signinButton.classList.add("disappear");
+					signoutButton.classList.remove("disappear");
+					return response.json();
+				} else {
+					signinError.classList.remove("disappear");
+					setTimeout(() => {
+						signinError.classList.add("disappear");
+					}, 2000);
+				}
+			})
+			.then((user) => {
+				if (user.role == role.ADMINISTRATOR) {
+					dashboardButton.classList.remove("disappear");
+				}
+				loggedUser = user;
+			});
+	} else {
+		signinError.classList.remove("disappear");
+		setTimeout(() => {
+			signinError.classList.add("disappear");
+		}, 2000);
+	}
+};
 
-	fetch(urlBase + "user/dashboard", fetchContent)
-		.then((response) => {
-			// Pego o status da resposta da requisição. Ex.: 403, 200, 404...
-			console.log("Entrei no then");
-
-			console.log(response.ok);
-			console.log(response.status);
-
-			if (response.ok) {
-				console.log("Dashboard OK!");
-				// Estou esperando apenas o token. Se eu estivesse esperando o objeto seria response.json
-				return response.json();
-			} else {
-				// Aqui que eu informo ao usuário que ele não conseguiu fazer o login
-				console.log("Dashboard falhou");
-			}
-		})
-		.then((dashboardData) => {
-			console.log("Segundo then");
-			// Pego o que veio no corpo da resposta da requisição.
-			console.log(dashboardData);
-		});
-}
+document.getElementById("signin").addEventListener("click", signin);

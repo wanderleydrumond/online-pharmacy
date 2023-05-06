@@ -334,12 +334,16 @@ public class OrderService implements Serializable {
 			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
 		}
 		
-		Order order = optionalOrder.get();
-		List<Product> products = productDAO.findAllByOrderId(order.getId());
+		if (!optionalOrder.isEmpty()) {
+			Order order = optionalOrder.get();
+			List<Product> products = productDAO.findAllByOrderId(order.getId());
+			
+			order.setProductsOfAnOrder(products);
+			
+			return order;			
+		}
 		
-		order.setProductsOfAnOrder(products);
-		
-		return order;
+		return null;
 	}
 
 	/**
