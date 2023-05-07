@@ -13,7 +13,6 @@ import lombok.Setter;
  * Product information type that the frontend consumes and produces.
  * 
  * @author Wanderley Drumond
- *
  */
 @XmlRootElement
 @NoArgsConstructor
@@ -21,9 +20,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ProductDTO implements Serializable {
-	private Short id, totalLikes/*, amountComments*/;
+	private Short id, totalLikes;
 	private String name, image, section;
 	private Float price;
+    private boolean hasLoggedUserLiked, hasLoggedUserFavorited;
 	/**
 	 * <p>The serial version identifier for this class.<p>
 	 * <p>This identifier is used during deserialisation to verify that the sender and receiver of a serialised object have loaded classes for that object that are compatible with respect to serialisation.<p>

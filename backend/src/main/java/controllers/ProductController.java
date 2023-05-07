@@ -69,9 +69,11 @@ public class ProductController {
 	}
 	
 	/**
-	 * Gets all the products from the provided section.
+	 * Gets all the products from the provided section checking if those products were liked and/or marked as favourite.
 	 * 
-	 * @param section which the list of products belongs
+	 * @param token					 logged user identifier key
+	 * @param section				 which the list of products belongs
+	 * @param verifyLikedOrFavorited it will check if this product was liked and/or marked as favourite?
 	 * @return {@link Response} with status code:
 	 *      <ul>
 	 *         <li><strong>200 (OK)</strong> if the products list was found and has elements</li>
@@ -83,9 +85,9 @@ public class ProductController {
 	@Path("/all-by")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllBySection(@QueryParam("section") String section) {
+	public Response getAllBySection(@HeaderParam("token") UUID token, @QueryParam("section") String section, @QueryParam("verify") boolean verifyLikedOrFavorited) {
 		List<Product> products = productService.getAllBySection(section);
-		List<ProductDTO> productsDTO = productMapper.toDTOs(products);
+		List<ProductDTO> productsDTO = productMapper.toDTOs(products, verifyLikedOrFavorited, token);
 		try {
 			return Response.ok(productsDTO).build();
 		} catch (PharmacyException pharmacyException) {
@@ -120,10 +122,10 @@ public class ProductController {
 	@Path("/all")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAll() {
+	public Response getAll(@HeaderParam("token") UUID token, @QueryParam("verify") boolean verifyLikedOrFavorited) {
 		try {
 			List<Product> products = productService.getAll();
-			List<ProductDTO> productsDTO = productMapper.toDTOs(products);
+			List<ProductDTO> productsDTO = productMapper.toDTOs(products, verifyLikedOrFavorited, token);
 			
 			return Response.ok(productsDTO).build();
 		} catch (PharmacyException pharmacyException) {
@@ -227,13 +229,13 @@ public class ProductController {
 	}
 	
 	/**
-	 * The logged user favourited a product.
+	 * The logged user marks a product as favourite.
 	 * 
 	 * @param token		logged user identifier key
 	 * @param productId primary key that identifies the product to favourite
 	 * @return {@link Response} with status code:
 	 *      <ul>
-	 *         <li><strong>200 (OK)</strong> if the user favourited the product along with true {@link boolean} value</li>
+	 *         <li><strong>200 (OK)</strong> if the user marks the product as favourite along with true {@link boolean} value</li>
 	 *         <li><strong>406 (NOT ACCEPTABLE)</strong> if the product id type is different then {@link Short}, {@link Integer} or {@link Byte}</li>
 	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
 	 *      </ul>
@@ -259,13 +261,13 @@ public class ProductController {
 	}
 	
 	/**
-	 * The logged user unfavourited a product.
+	 * The logged user marks off a product as favourite.
 	 * 
 	 * @param token		logged user identifier key
 	 * @param productId primary key that identifies the product to unfavourite
 	 * @return {@link Response} with status code:
 	 *      <ul>
-	 *         <li><strong>200 (OK)</strong> if the user unfavourited the product along with true {@link boolean} value</li>
+	 *         <li><strong>200 (OK)</strong> if the user marks off the product as favourite along with true {@link boolean} value</li>
 	 *         <li><strong>406 (NOT ACCEPTABLE)</strong> if the product id type is different then {@link Short}, {@link Integer} or {@link Byte}</li>
 	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
 	 *      </ul>
@@ -316,9 +318,11 @@ public class ProductController {
 	}
 	
 	/**
-	 * Gets all the products that contains the provided name.
+	 * Gets all the products that contains the provided name checking if those products were liked and/or marked as favourite.
 	 * 
-	 * @param productName the key search
+	 * @param token					 logged user identifier key
+	 * @param productName			 the key search
+	 * @param verifyLikedOrFavorited it will check if this product was liked and/or marked as favourite?
 	 * @return {@link Response} with status code:
 	 *      <ul>
 	 *         <li><strong>200 (OK)</strong> if the products list was found and has elements</li>
@@ -329,9 +333,9 @@ public class ProductController {
 	@Path("/all-by-")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllByName(@QueryParam("name") String productName) {
+	public Response getAllByName(@HeaderParam("token") UUID token, @QueryParam("name") String productName, @QueryParam("verify") boolean verifyLikedOrFavorited) {
 		List<Product> productsFound = productService.getAllByName(productName);
 		
-		return Response.ok(productMapper.toDTOs(productsFound)).build();
+		return Response.ok(productMapper.toDTOs(productsFound, verifyLikedOrFavorited, token)).build();
 	}
 }

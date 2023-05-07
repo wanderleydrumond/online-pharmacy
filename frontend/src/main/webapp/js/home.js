@@ -6,7 +6,6 @@ const signinButton = document.getElementById("signin-btn");
 const signoutButton = document.getElementById("signout-btn");
 const signinError = document.querySelector(".error");
 
-
 /**
  * Logs in a user into the system.
  * 

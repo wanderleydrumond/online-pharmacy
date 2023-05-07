@@ -1,14 +1,24 @@
 const contentTypeJson = "application/json";
+
+/**
+ * The way to put things in URL.
+ * @date 5/7/2023 - 9:51:20 AM
+ *
+ * @type {URLSearchParams}
+ */
 const parameters = new URLSearchParams(window.location.search);
 let dataURL = new URLSearchParams();
 let loggedUser;
 /**
- * Url base do sistema
+ * URL system base
  */
 const urlBase = "http://localhost:8080/backend/pharmacy";
 
-// https://www.sohamkamani.com/javascript/enums/
-
+/**
+ * Enumaration that contains all http request method types.
+ * 
+ * @see https://www.sohamkamani.com/javascript/enums/
+ */
 const requestMethods = {
 	POST: "POST",
 	GET: "GET",

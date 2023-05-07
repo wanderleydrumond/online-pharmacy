@@ -30,7 +30,7 @@ public class ProductDAO extends GenericDAO<Product> {
 
 	/**
 	 * <p>The serial version identifier for this class.<p>
-	 * <p>This identifier is used during deserialisation to verify that the sender and receiver of a serialized object have loaded classes for that object that are compatible with respect to serialisation.<p>
+	 * <p>This identifier is used during deserialisation to verify that the sender and receiver of a serialised object have loaded classes for that object that are compatible with respect to serialisation.<p>
 	 */
 	private static final long serialVersionUID = 1L;
 
@@ -59,9 +59,7 @@ public class ProductDAO extends GenericDAO<Product> {
 			
 			return entityManager.createQuery(CRITERIA_QUERY).getResultList();
 		} catch (Exception exception) {
-			// System.err.println("Catch " + exception.getClass().getName() + " in findAllBySection() in ProductDAO");
 			Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, "in findAllBySection() in ProductDAO", exception);
-			// exception.printStackTrace();
 			
 			return null;
 		}
@@ -146,14 +144,18 @@ public class ProductDAO extends GenericDAO<Product> {
 			
 			return entityManager.createQuery(CRITERIA_QUERY).getResultList();
 		} catch (Exception exception) {
-			// System.err.println("Catch " + exception.getClass().getName() + " in findAllByName() in ProductDAO");
 			Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, "in findAllByName() in ProductDAO", exception);
-			// exception.printStackTrace();
 			
 			return null;
 		}
 	}
 
+	/**
+	 * Finds all products that belongs to the given order id.
+	 * 
+	 * @param orderId that contains the products list to be found
+	 * @return the {@link Product} {@link List} of the products that belogs to the given orderId
+	 */
 	public List<Product> findAllByOrderId(Short orderId) {
 		try {
 			final CriteriaQuery<Product> CRITERIA_QUERY;
@@ -171,6 +173,82 @@ public class ProductDAO extends GenericDAO<Product> {
 			return new ArrayList<Product>();
 		} catch (Exception exception) {
 			Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, "in findAllByOrderId() in ProductDAO", exception);
+			
+			return null;
+		}
+	}
+	
+	/**
+	 * Verifies if the logged user liked the provided product.
+	 * 
+	 * @param token	  logged user identifier key
+	 * @param product object to the checked if it was liked
+	 * @return If: 
+	 * 	<ul>
+	 * 		<li>Yes, true</li>
+	 * 		<li>Not, false</li>
+	 * 	</ul>
+	 */
+	public Boolean verifyLoggedUserLiked(UUID token, Product product) {
+		try {
+			final CriteriaQuery<User> CRITERIA_QUERY;
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CRITERIA_QUERY = criteriaBuilder.createQuery(User.class);
+			Root<User> userTable = CRITERIA_QUERY.from(User.class);
+			Join<User, Product> productsLiked = userTable.join("likedProducts");
+			
+			CRITERIA_QUERY.select(userTable).where(criteriaBuilder.and(
+					criteriaBuilder.equal(userTable.get("token"), token),
+					criteriaBuilder.equal(productsLiked.get("id"), product.getId())
+					));
+			
+			entityManager.createQuery(CRITERIA_QUERY).getSingleResult();
+			
+			return true;
+		} catch (NoResultException noResultException) {
+			Logger.getLogger(ProductDAO.class.getName()).log(Level.FINE, "in verifyLoggedUserFavorited() in ProductDAO", noResultException);
+			
+			return false;
+		} catch (Exception exception) {
+			Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, "in verifyLoggedUserLiked() in ProductDAO", exception);
+			
+			return null;
+		}
+	}
+
+	/**
+	 * Verifies if the logged user marked the provided product as favourite.
+	 * 
+	 * @param token	  logged user identifier key
+	 * @param product object to the checked if it was marked as favourite
+	 * @return If: 
+	 * 	<ul>
+	 * 		<li>Yes, true</li>
+	 * 		<li>Not, false</li>
+	 * 	</ul>
+	 */
+	public Boolean verifyLoggedUserFavorited(UUID token, Product product) {
+		try {
+			final CriteriaQuery<User> CRITERIA_QUERY;
+			CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+			CRITERIA_QUERY = criteriaBuilder.createQuery(User.class);
+			Root<User> userTable = CRITERIA_QUERY.from(User.class);
+			Join<User, Product> productsFavorited = userTable.join("favoriteProducts");
+			
+			CRITERIA_QUERY.select(userTable).where(criteriaBuilder.and(
+					criteriaBuilder.equal(userTable.get("token"), token),
+					criteriaBuilder.equal(productsFavorited.get("id"), product.getId())
+					));
+			
+			entityManager.createQuery(CRITERIA_QUERY).getSingleResult();
+			
+			return true;
+		} catch (NoResultException noResultException) {
+			Logger.getLogger(ProductDAO.class.getName()).log(Level.FINE, "in verifyLoggedUserFavorited() in ProductDAO", noResultException);
+			
+			return false;
+		} catch (Exception exception) {
+			Logger.getLogger(ProductDAO.class.getName()).log(Level.SEVERE, "in verifyLoggedUserFavorited() in ProductDAO", exception);
 			
 			return null;
 		}
