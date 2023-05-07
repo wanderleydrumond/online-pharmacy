@@ -22,7 +22,7 @@
         <nav class="navbar">
             <a href="#home">home</a>
             <a href="#features">features</a>
-            <a href="../html/products.html">products</a>
+            <a href="#" onclick="buildURL(keySearchEnum.ALL)" class="get-all-products">products</a>
             <a href="#categories">categories</a>
             <a href="../html/history.html">history</a>
         </nav>
@@ -129,25 +129,25 @@
             <div class="box">
                 <img src="../images/beauty.png" alt="">
                 <h3>beauty</h3>
-                <a href="../html/products.html" class="btn">See products</a>
+                <a href="../html/order_products_favorites.html?key-search=BEAUTY" class="btn">See products</a>
             </div>
 
             <div class="box">
                 <img src="../images/supplements.png" alt="">
                 <h3>supplements</h3>
-                <a href="../html/products.html" class="btn">See products</a>
+                <a href="../html/order_products_favorites.html?key-search=SUPPLEMENTS" class="btn">See products</a>
             </div>
 
             <div class="box">
                 <img src="../images/Health.png" alt="">
                 <h3>health</h3>
-                <a href="../html/products.html" class="btn">See products</a>
+                <a href="../html/order_products_favorites.html?key-search=HEALTH" class="btn">See products</a>
             </div>
 
             <div class="box">
                 <img src="../images/medicines.png" alt="">
                 <h3>all products</h3>
-                <a href="../html/products.html" class="btn">See products</a>
+                <a href="../html/order_products_favorites.html?key-search=ALL" class="btn get-all-products">See products</a>
             </div>
         </div>
     </section>
@@ -198,7 +198,6 @@
     </section>
     <!-- footer section ends -->
     <script src="../js/constants/constants.js"></script>
-    <script src="../js/constants/enums.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script src="../js/navbar.js"></script>
     <script src="../js/home.js"></script>
