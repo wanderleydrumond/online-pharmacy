@@ -77,7 +77,6 @@ public class ProductController {
 	 * @return {@link Response} with status code:
 	 *      <ul>
 	 *         <li><strong>200 (OK)</strong> if the products list was found and has elements</li>
-	 *         <li><strong>202 (NO CONTENT)</strong> if the products list was found and is empty</li>
 	 *         <li><strong>404 (NOT FOUND)</strong> if the provided enumerator value does not exists in database</li>
 	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
 	 *      </ul>

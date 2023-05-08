@@ -2,7 +2,6 @@
  * A generic token when a user assigned to a non logged user
  */
 const NOT_LOGGED_TOKEN = "00000000-0000-0000-0000-000000000000";
-
 /**
  * The requisition content type is json.
  * @date 5/7/2023 - 3:59:56 PM
@@ -10,15 +9,6 @@ const NOT_LOGGED_TOKEN = "00000000-0000-0000-0000-000000000000";
  * @type {"application/json"}
  */
 const contentTypeJson = "application/json";
-
-/**
- * The way to get things of URL.
- * @date 5/7/2023 - 9:51:20 AM
- *
- * @type {URLSearchParams}
- */
-// const parameters = new URLSearchParams(window.location.search);
-
 /**
  * The way to write, delete or edit URL.
  * @date 5/7/2023 - 3:58:36 PM
@@ -30,9 +20,15 @@ let dataURL = new URLSearchParams();
  * URL system base
  */
 const urlBase = "http://localhost:8080/backend/pharmacy";
-
-/* Para enviar dados pelo cabeçalho da requisição, caso seja mais do que um valor, preciso criar um objeto Headers e deverá ser feito
- .append dos respectivos valores (ver signin.js). Porém se for apenas um valor ele é enviado diretamente como objeto, como abaixo.*/
+ 
+/**
+ * Generates the content of a fetch when it has no body and just one header.
+ * @date 5/8/2023 - 4:44:41 PM
+ *
+ * @param {JSON} requestMethod
+ * @param {Headers} header
+ * @returns {{ method: any; "Content-Type": "application/json"; headers: any; }}
+ */
 function fetchContentFactoryWithoutBody(requestMethod, header) {
 	return {
 		method: requestMethod,
@@ -41,20 +37,20 @@ function fetchContentFactoryWithoutBody(requestMethod, header) {
 	};
 }
 
-// function fetchContentFactoryWithBody(requestMethod, dataBody) {
-// 	console.log("Entrei no fetchContentFactoryWithBody");
-// 	// console.log(tokenParameter);
-// 	console.log(dataBody);
-// 	return {
-// 		method: requestMethod,
-// 		body: JSON.stringify(dataBody),
-// 		headers: {
-// 			"Content-Type": contentTypeJson,
-// 			token: tokenParameter,
-// 			Accept: "*/*",
-// 		},
-// 	};
-// }
+function fetchContentFactoryWithBody(requestMethod, dataBody, header) {
+	console.log("Entrei no fetchContentFactoryWithBody");
+	// console.log(tokenParameter);
+	console.log(dataBody);
+	return {
+		method: requestMethod,
+		body: JSON.stringify(dataBody),
+		headers: {
+			"Content-Type": contentTypeJson,
+			headers: header,
+			Accept: "*/*",
+		},
+	};
+}
 
 function fetchContentFactoryWithoutBodyMultipleHeaders(requestMethod, headers) {
 	// Caso seja necessário informar o CORS: mode:"cors"
@@ -92,6 +88,11 @@ const requestMethods = {
 	PUT: "PUT",
 };
 
+/**
+ * Enumaration that contains all sections.
+ *
+ * @see https://www.sohamkamani.com/javascript/enums/
+ */
 const keySearchEnum = {
 	ALL: "ALL",
 	BEAUTY: section.BEAUTY,

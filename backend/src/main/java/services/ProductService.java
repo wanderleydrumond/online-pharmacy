@@ -93,7 +93,6 @@ public class ProductService implements Serializable {
 	 * @return the products list from the provided section
 	 * @throws {@link PharmacyException} with HTTP {@link Response} status 404 (NOT FOUND) if the provided enumerator value does not exists in database
 	 * @throws {@link PharmacyException} with HTTP {@link Response} status 502 (BAD GATEWAY) if some problem happened in database
-	 * @throws {@link PharmacyException} with HTTP {@link Response} status 202 (NO CONTENT) if the products list was found and is empty
 	 */
 	public List<Product> getAllBySection(String section) {
 		boolean exists = false;
@@ -111,10 +110,6 @@ public class ProductService implements Serializable {
 		
 		if (productsOfThisSection == null) {
 			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
-		}
-		
-		if (productsOfThisSection.isEmpty()) {
-			throw new PharmacyException(Response.Status.NO_CONTENT, "Empty section", "This section do not have any products yet");
 		}
 		
 		return productsOfThisSection;

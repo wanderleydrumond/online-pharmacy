@@ -22,7 +22,7 @@
         <nav class="navbar">
             <a href="#home">home</a>
             <a href="#features">features</a>
-            <a href="#" onclick="buildURL(keySearchEnum.ALL)" class="get-all-products">products</a>
+            <a href="#" onclick="buildURLAndRedirect(keySearchEnum.ALL)" class="get-all-products">products</a>
             <a href="#categories">categories</a>
             <a href="../html/history.html">history</a>
         </nav>
@@ -76,14 +76,14 @@
         </div>
 
         <form action="" class="signin-form" onsubmit="event.preventDefault();">
-            <h3>sign in now</h3>
+            <h3>sign-in</h3>
             <input type="text" placeholder="your username" id="username" class="box">
             <input type="password" placeholder="your password" id="password" class="box">
             <div class="error-signin disappear">
                 <p id="error-message">Invalid credentials</p>
             </div>
             <p>don't have an account <a href="../html/signup.html">create now</a></p>
-            <input type="submit" value="signin now" id="signin" class="btn">
+            <input type="submit" value="sign in" id="signin" class="btn">
         </form>
     </header>
     <!-- header section end -->
@@ -129,25 +129,26 @@
             <div class="box">
                 <img src="../images/beauty.png" alt="">
                 <h3>beauty</h3>
-                <a href="../html/order_products_favorites.html?key-search=BEAUTY" class="btn">See products</a>
+                <a href="#" onclick="buildURLAndRedirect(keySearchEnum.BEAUTY)" class="btn">See products</a>
             </div>
 
             <div class="box">
                 <img src="../images/supplements.png" alt="">
                 <h3>supplements</h3>
-                <a href="../html/order_products_favorites.html?key-search=SUPPLEMENTS" class="btn">See products</a>
+                <a href="#" onclick="buildURLAndRedirect(keySearchEnum.SUPPLEMENTS)" class="btn">See products</a>
             </div>
 
             <div class="box">
                 <img src="../images/Health.png" alt="">
                 <h3>health</h3>
-                <a href="../html/order_products_favorites.html?key-search=HEALTH" class="btn">See products</a>
+                <a href="#" onclick="buildURLAndRedirect(keySearchEnum.HEALTH)" class="btn">See products</a>
             </div>
 
             <div class="box">
                 <img src="../images/medicines.png" alt="">
                 <h3>all products</h3>
-                <a href="../html/order_products_favorites.html?key-search=ALL" class="btn get-all-products">See products</a>
+                <a href="#" onclick="buildURLAndRedirect(keySearchEnum.ALL)" class="btn get-all-products">See
+                    products</a>
             </div>
         </div>
     </section>
@@ -160,19 +161,19 @@
                 <h3>online pharmacy <i class="fa-solid fa-laptop-medical"></i></i></h3>
                 <p class="original">Follow us in our social media</p>
                 <div class="share">
-                    <a href="#" class="fa-brands fa-facebook-f"></a>
-                    <a href="#" class="fa-brands fa-twitter"></a>
-                    <a href="#" class="fa-brands fa-instagram"></a>
-                    <a href="#" class="fa-brands fa-linkedin"></a>
-                    <a href="#" class="fa-brands fa-tiktok"></a>
+                    <a href="https://www.facebook.com/" target="_blank" class="fa-brands fa-facebook-f"></a>
+                    <a href="https://twitter.com/" target="_blank" class="fa-brands fa-twitter"></a>
+                    <a href="https://www.instagram.com/" target="_blank" class="fa-brands fa-instagram"></a>
+                    <a href="https://www.linkedin.com/" target="_blank" class="fa-brands fa-linkedin"></a>
+                    <a href="https://www.tiktok.com/" target="_blank" class="fa-brands fa-tiktok"></a>
                 </div>
             </div>
 
             <div class="box">
                 <h3>contact info</h3>
-                <a href="#" class="links"><i class="fa-solid fa-mobile-screen"></i>+351 919 058 290</a>
+                <a href="tel:+351 919 058 290" class="links"><i class="fa-solid fa-mobile-screen"></i>+351 919 058 290</a>
                 <a href="#" class="links"><i class="fa-solid fa-phone"></i>+351 239 058 391</a>
-                <a href="#" class="links original"><i class="fa-solid fa-envelope"></i>wanderley.drumond@gmail.com</a>
+                <a href="mailto:wanderley.drumond@gmail.com" class="links original"><i class="fa-solid fa-envelope"></i>wanderley.drumond@gmail.com</a>
                 <a href="#" class="links"><i class="fa-solid fa-map-marked-alt"></i>Coimbra, Portugal - 3030-000</a>
             </div>
 
