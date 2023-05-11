@@ -20,7 +20,7 @@ let dataURL = new URLSearchParams();
  * URL system base
  */
 const urlBase = "http://localhost:8080/backend/pharmacy";
- 
+
 /**
  * Generates the content of a fetch when it has no body and just one header.
  * @date 5/8/2023 - 4:44:41 PM
@@ -77,7 +77,7 @@ const role = {
 };
 
 /**
- * Enumaration that contains all http request method types.
+ * Enumeration that contains all http request method types.
  *
  * @see https://www.sohamkamani.com/javascript/enums/
  */
@@ -89,7 +89,7 @@ const requestMethods = {
 };
 
 /**
- * Enumaration that contains all sections.
+ * Enumeration that contains all sections.
  *
  * @see https://www.sohamkamani.com/javascript/enums/
  */

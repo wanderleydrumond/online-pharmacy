@@ -1,5 +1,6 @@
 package mappers;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -45,7 +46,7 @@ public class ProductMapper {
 	 * @return the {@link Product} resultant object
 	 */
 	public Product toEntity(ProductDTO productDTO) {
-		return new Product(productDTO.getName(), productDTO.getPrice(), Section.valueOf(productDTO.getSection()), productDTO.getImage());
+		return new Product(productDTO.getName(), Float.parseFloat(productDTO.getPrice().substring(0, productDTO.getPrice().length())), Section.valueOf(productDTO.getSection()), productDTO.getImage());
 	}
 	
 	/**
@@ -57,13 +58,15 @@ public class ProductMapper {
 	 * @return the {@link ProductDTO} resultant object
 	 */
 	public ProductDTO toDTO(Product product, boolean verifyLikedOrFavorited, UUID token) {
+		DecimalFormat decimalFormat = new DecimalFormat("#,###.00");
+		String formatedValue = decimalFormat.format(product.getPrice()) + "€";
 		if (verifyLikedOrFavorited && !token.equals(NOT_LOGGED_TOKEN)) {
 			Boolean hasLiked = productDAO.verifyLoggedUserLiked(token, product);
 			Boolean hasFavorited = productDAO.verifyLoggedUserFavorited(token, product);
 			
-			return new ProductDTO(product.getId(), userDAO.countTotalLikes(product.getId()), product.getName(), product.getImage(), product.getSection().getVALUE(), product.getPrice(), hasLiked, hasFavorited);
+			return new ProductDTO(product.getId(), userDAO.countTotalLikes(product.getId()), product.getName(), product.getImage(), product.getSection().getVALUE(), formatedValue, hasLiked, hasFavorited);
 		}
-		return new ProductDTO(product.getId(), userDAO.countTotalLikes(product.getId()), product.getName(), product.getImage(), product.getSection().getVALUE(), product.getPrice(), false, false);
+		return new ProductDTO(product.getId(), userDAO.countTotalLikes(product.getId()), product.getName(), product.getImage(), product.getSection().getVALUE(), formatedValue, false, false);
 	}
 	
 	/**

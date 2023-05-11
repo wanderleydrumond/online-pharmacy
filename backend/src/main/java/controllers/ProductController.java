@@ -302,15 +302,17 @@ public class ProductController {
 	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
 	 *      </ul>
 	 */
-	@Path("/favorites")
+	@Path("/favourites")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getAllByToken(@HeaderParam("token") UUID token) {
+	public Response getAllFavoritesByToken(@HeaderParam("token") UUID token, @QueryParam("verify") boolean verifyLikedOrFavorited) {
 		try {
-			return Response.ok(productMapper.toDTOs(productService.getAllFavoritesByToken(token))).build();
+			List<Product> favorites = productService.getAllFavoritesByToken(token);
+			List<ProductDTO> favoritesDTO = productMapper.toDTOs(favorites, verifyLikedOrFavorited, token);
+			
+			return Response.ok(favoritesDTO).build();
 		} catch (PharmacyException pharmacyException) {
-			System.err.println("Catch " + pharmacyException.getClass().getName() + " in getAllByToken() in ProductController");
-			Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, "Database unavailable", pharmacyException);
+			Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, "in getAllByToken() in ProductController", pharmacyException);
 			
 			return Response.status(pharmacyException.getHttpStatus()).header("Impossible to proceed", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
 		}

@@ -338,7 +338,7 @@ public class ProductService implements Serializable {
 	 * Gets all favourite products from the logged user.
 	 * 
 	 * @param token	logged user identifier key
-	 * @return the favourite {@link Product} {@link List}
+	 * @return the logged user favourite {@link Product} {@link List}
 	 * @throws {@link PharmacyException} with HTTP {@link Response} status 401 (UNAUTHORISED) if token is null
 	 * @throws {@link PharmacyException} with HTTP {@link Response} status 502 (BAD GATEWAY) if some problem happened in database
 	 */

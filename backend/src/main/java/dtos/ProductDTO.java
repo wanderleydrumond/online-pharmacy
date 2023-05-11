@@ -21,8 +21,7 @@ import lombok.Setter;
 @Setter
 public class ProductDTO implements Serializable {
 	private Short id, totalLikes;
-	private String name, image, section;
-	private Float price;
+	private String name, image, section, price;
     private boolean hasLoggedUserLiked, hasLoggedUserFavorited;
 	/**
 	 * <p>The serial version identifier for this class.<p>

@@ -47,8 +47,10 @@ const signoutButton = document.getElementById("signout-btn");
  * @type {Object}
  */
 const signinError = document.querySelector(".error");
+const favouritesLink = document.querySelectorAll(".get-favourites");
+
 /**
- * Storages the logged user for the whole page.
+ * Storages the logged user in the home page.
  * @date 5/8/2023 - 4:36:25 PM
  *
  * @type {JSON}
@@ -72,6 +74,10 @@ const manageNavbar = () => {
 	signinForm.classList.remove("active");
 	signinButton.classList.add("disappear");
 	signoutButton.classList.remove("disappear");
+
+	for (const link of favouritesLink) {
+		link.classList.remove("disappear");
+	}
 
 	if (loggedUser.role == role.ADMINISTRATOR) {
 		dashboardButton.classList.remove("disappear");
@@ -157,22 +163,29 @@ document.getElementById("signin").addEventListener("click", signin);
  * @returns {boolean} true if the user is logged out, false otherwise
  */
 const signout = async () => {
-	const header = new Headers();
 	let token = loggedUser.token;
-	header.append("token", token);
-	await fetch(
-		urlBase + "/user/signout",
-		fetchContentFactoryWithoutBody(requestMethods.POST, header),
-	).then((response) => {
-		if (response.ok) {
-			cartButton.classList.add("disappear");
-			signinButton.classList.remove("disappear");
-			signoutButton.classList.add("disappear");
-			dashboardButton.classList.add("disappear");
-		} else {
-			console.log("Sign out failed");
-		}
-	});
+	if (token != null && token != undefined && token != "") {
+		const header = new Headers();
+		header.append("token", token);
+		await fetch(
+			urlBase + "/user/signout",
+			fetchContentFactoryWithoutBody(requestMethods.POST, header),
+		).then((response) => {
+			if (response.ok) {
+				cartButton.classList.add("disappear");
+				signinButton.classList.remove("disappear");
+				signoutButton.classList.add("disappear");
+				dashboardButton.classList.add("disappear");
+				for (const link of favouritesLink) {
+					link.classList.add("disappear");
+				}
+			} else {
+				console.error("Sign out failed");
+			}
+		});
+	} else {
+		console.error("No token detected");
+	}
 };
 
 document.getElementById("signout-btn").addEventListener("click", signout);
