@@ -659,6 +659,22 @@ section {
 	text-transform: none;
 }
 
+.disappear {
+	display: none;
+}
+
+.hidden {
+	visibility: hidden;
+}
+
+.badge {
+	background-color: var(--light-green);
+	color: white;
+	padding: 4px;
+	text-align: center;
+	border-radius: 50%;
+}
+
 /* Media Queries */
 @media (max-width: 991px) {
 	html {
@@ -717,12 +733,4 @@ section {
 	.footer {
 		text-align: center;
 	}
-}
-
-.disappear {
-	display: none;
-}
-
-.hidden {
-	visibility: hidden;
 }

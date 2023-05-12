@@ -130,7 +130,9 @@ const fetchProducts = async () => {
 				});
 			break;
 		case keySearchEnum.FAVOURITES:
-			let urlWithQueryParametersFavourites = new URL(urlBase + "/product/favourites");
+			let urlWithQueryParametersFavourites = new URL(
+				urlBase + "/product/favourites",
+			);
 			urlWithQueryParametersFavourites.searchParams.append("verify", verify);
 
 			header = new Headers();
@@ -230,6 +232,7 @@ const loadProducts = (arrayHalf, divHalf) => {
 
 		// <i class="fa-regular fa-thumbs-up"></i>
 		const likeIcon = document.createElement("i");
+
 		if (
 			tokenParameter == NOT_LOGGED_TOKEN ||
 			!productElement.hasLoggedUserLiked
@@ -254,7 +257,10 @@ const loadProducts = (arrayHalf, divHalf) => {
 						"id",
 						productElement.id,
 					);
-					console.log("urlWithQueryParametersAll", urlWithQueryParametersAll);
+					console.log(
+						"urlWithQueryParametersAll in like",
+						urlWithQueryParametersAll,
+					);
 					await fetch(
 						urlWithQueryParametersAll,
 						fetchContentFactoryWithoutBody(requestMethods.PUT, header),
@@ -264,7 +270,7 @@ const loadProducts = (arrayHalf, divHalf) => {
 								productIdAuxiliary = productElement.id;
 								return response.text();
 							} else {
-								console.log("Error");
+								console.error("Error on like");
 							}
 						})
 						.then((liked) => {
@@ -287,7 +293,7 @@ const loadProducts = (arrayHalf, divHalf) => {
 								productIdAuxiliary = productElement.id;
 								return response.text();
 							} else {
-								console.log("Error");
+								console.error("Error on unlike");
 							}
 						})
 						.then((unliked) => {
@@ -300,14 +306,90 @@ const loadProducts = (arrayHalf, divHalf) => {
 
 		// <a href="#">
 		const favoriteLink = document.createElement("a");
+		favoriteLink.href = "#";
+
 		// <i class="fa-solid fa-heart"></i>
 		const favoriteIcon = document.createElement("i");
 
-		favoriteIcon.classList.add("fa-regular"); // TODO somente se não tiver dado o like ou se não estiver logado
+		if (
+			tokenParameter == NOT_LOGGED_TOKEN ||
+			!productElement.hasLoggedUserFavorited
+		) {
+			favoriteIcon.classList.remove("fa-solid");
+			favoriteIcon.classList.add("fa-regular");
+		} else {
+			favoriteIcon.classList.remove("fa-regular");
+			favoriteIcon.classList.add("fa-solid");
+		}
 		favoriteIcon.classList.add("fa-heart");
 
 		favoriteLink.appendChild(favoriteIcon);
+
 		productReputation.appendChild(likeLink);
+
+		if (tokenParameter != NOT_LOGGED_TOKEN) {
+			header = new Headers();
+			header.append("token", tokenParameter);
+
+			favoriteLink.onclick = async () => {
+				if (!productElement.hasLoggedUserFavorited) {
+					let urlWithQueryParametersAll = new URL(
+						urlBase + "/product/favourite",
+					);
+					urlWithQueryParametersAll.searchParams.append(
+						"id",
+						productElement.id,
+					);
+					console.log(
+						"urlWithQueryParametersAll in favourites",
+						urlWithQueryParametersAll,
+					);
+
+					await fetch(
+						urlWithQueryParametersAll,
+						fetchContentFactoryWithoutBody(requestMethods.PUT, header),
+					)
+						.then((response) => {
+							if (response.ok) {
+								productIdAuxiliary = productElement.id;
+								return response.text();
+							} else {
+								console.error("Error on favorite");
+							}
+						})
+						.then((favorited) => {
+							console.log("Favorited", favorited);
+							fetchProducts();
+						});
+				} else {
+					let urlWithQueryParametersAll = new URL(
+						urlBase + "/product/unfavourite",
+					);
+					urlWithQueryParametersAll.searchParams.append(
+						"id",
+						productElement.id,
+					);
+
+					await fetch(
+						urlWithQueryParametersAll,
+						fetchContentFactoryWithoutBody(requestMethods.PUT, header),
+					)
+						.then((response) => {
+							if (response.ok) {
+								productIdAuxiliary = productElement.id;
+								return response.text();
+							} else {
+								console.error("Error on unfavourite");
+							}
+						})
+						.then((unfavourite) => {
+							console.log("unfavourite", unfavourite);
+							fetchProducts();
+						});
+				}
+			};
+		}
+
 		productReputation.appendChild(spaces);
 		productReputation.appendChild(favoriteLink);
 

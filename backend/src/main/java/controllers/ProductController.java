@@ -239,7 +239,7 @@ public class ProductController {
 	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
 	 *      </ul>
 	 */
-	@Path("/favorite")
+	@Path("/favourite")
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response favoriteById(@HeaderParam("token") UUID token, @QueryParam("id") String productId) {
@@ -271,7 +271,7 @@ public class ProductController {
 	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
 	 *      </ul>
 	 */
-	@Path("/unfavorite")
+	@Path("/unfavourite")
 	@PUT
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response unfavoriteById(@HeaderParam("token") UUID token, @QueryParam("id") String productId) {
