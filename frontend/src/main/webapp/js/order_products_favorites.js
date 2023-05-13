@@ -411,6 +411,8 @@ const loadProducts = (arrayHalf, divHalf) => {
 	});
 };
 
+//NOTE: All Event Listeners
+
 /**
  * Signs out the current user.
  * <ol>
@@ -465,3 +467,13 @@ const signout = async () => {
 };
 
 document.getElementById("signout-btn").addEventListener("click", signout);
+
+const buildURLAndRedirectToHome = () => {
+	dataURL.delete("token");
+	dataURL.delete("role");
+
+	dataURL.append("token", tokenParameter);
+	dataURL.append("role", roleParameter);
+
+	window.location.href = "home.html?" + dataURL.toString();
+};

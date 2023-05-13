@@ -46,9 +46,29 @@ const signoutButton = document.getElementById("signout-btn");
  *
  * @type {Object}
  */
-const signinError = document.querySelector(".error");
+const signinError = document.querySelector(".error-signin");
 const favouritesLink = document.querySelectorAll(".get-favourites");
-
+/**
+ * The way to get things of URL.
+ * @date 5/7/2023 - 9:51:20 AM
+ *
+ * @type {URLSearchParams}
+ */
+const parameters = new URLSearchParams(window.location.search);
+/**
+ * UUID to be get from URL.
+ * @date 5/8/2023 - 5:08:34 PM
+ *
+ * @type {string}
+ */
+let tokenParameter = parameters.get("token");
+/**
+ * User role to be added in the URL parameters.
+ * @date 5/8/2023 - 2:27:35 PM
+ *
+ * @type {string}
+ */
+let roleParameter = parameters.get("role");
 /**
  * Storages the logged user in the home page.
  * @date 5/8/2023 - 4:36:25 PM
@@ -58,7 +78,7 @@ const favouritesLink = document.querySelectorAll(".get-favourites");
 let loggedUser;
 
 window.onload = () => {
-	if (loggedUser != null) {
+	if (loggedUser != null || (tokenParameter != NOT_LOGGED_TOKEN && roleParameter != undefined)) {
 		manageNavbar();
 	}
 };
@@ -79,8 +99,9 @@ const manageNavbar = () => {
 		link.classList.remove("disappear");
 	}
 
-	if (loggedUser.role == role.ADMINISTRATOR) {
-		dashboardButton.classList.remove("disappear");
+	if ((loggedUser != undefined && loggedUser.role == role.ADMINISTRATOR) || 
+		(roleParameter != undefined && roleParameter == role.ADMINISTRATOR)) {
+			dashboardButton.classList.remove("disappear");
 	}
 };
 
@@ -126,7 +147,9 @@ const signin = async () => {
 			})
 			.then((user) => {
 				loggedUser = user;
-				manageNavbar();
+				if (loggedUser != undefined && loggedUser != null) {
+					manageNavbar();
+				}
 			});
 	} else {
 		signinError.classList.remove("disappear");
@@ -163,7 +186,8 @@ document.getElementById("signin").addEventListener("click", signin);
  * @returns {boolean} true if the user is logged out, false otherwise
  */
 const signout = async () => {
-	let token = loggedUser.token;
+	let token = loggedUser ? loggedUser.token : tokenParameter;
+
 	if (token != null && token != undefined && token != "") {
 		const header = new Headers();
 		header.append("token", token);
@@ -176,6 +200,12 @@ const signout = async () => {
 				signinButton.classList.remove("disappear");
 				signoutButton.classList.add("disappear");
 				dashboardButton.classList.add("disappear");
+
+				dataURL.delete("token");
+				dataURL.delete("role");
+
+				window.location.href = "home.html?" + dataURL.toString();
+
 				for (const link of favouritesLink) {
 					link.classList.add("disappear");
 				}
@@ -224,11 +254,20 @@ const buildURLAndRedirect = (keySearchEnumParam) => {
 	dataURL.delete("key-search");
 	dataURL.delete("role");
 
-	let token = NOT_LOGGED_TOKEN,
-		role;
+	let token = NOT_LOGGED_TOKEN;
+	let	role;
+
 	if (loggedUser !== null && loggedUser !== undefined) {
 		token = loggedUser.token;
 		role = loggedUser.role;
+	}
+
+	if (roleParameter != null && roleParameter != undefined) {
+		role = roleParameter;
+	}
+
+	if (tokenParameter != null && tokenParameter != undefined) {
+		token = tokenParameter;
 	}
 
 	dataURL.append("token", token);
