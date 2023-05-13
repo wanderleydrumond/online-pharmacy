@@ -1,3 +1,68 @@
+window.onload = () => {
+	if (loggedUser != null || (tokenParameter != NOT_LOGGED_TOKEN && roleParameter != undefined)) {
+		manageNavbar();
+	}
+};
+
+/**
+ * Builds what is written in the URL when the products button is clicked then redirects to built page.
+ * <ol>
+ * 	<li>Clears the URL</li>
+ * 	<ol>
+ * 		<li>deletes the token</li>
+ * 		<li>deletes the search key</li>
+ * 		<li>deletes the role</li>
+ * 	</ol>
+ * 	<li>Creates a variable for token and initialize it with all zeros UUID</li>
+ * 	<li>Creates a variable for role</li>
+ * 	<li>Checks if logged user is not null</li>
+ * 	<ol>
+ *  	<li>assigns the token attribute from loggedUser variable to token variable</li>
+ * 		<li>assigns the role attribute from loggedUser variable to role variable</li>
+ * 	</ol>
+ * 	<li>Builds the URL</li>
+ * 	<ol>
+ * 		<li>Inserts the token</li>
+ * 		<li>Inserts the search key</li>
+ * 		<li>Inserts the role</li>
+ * 	</ol>
+ * 	<li>Redirects to the built URL</li>
+ * </ol>
+ *
+ * @date 5/8/2023 - 9:26:21 AM
+ *
+ * @param {JSON} keySearchEnumParam the type of search that the user can do. (ALL, BEAUTY, SUPPLEMENTS or HEALTH)
+ */
+const buildURLAndRedirect = (keySearchEnumParam) => {
+	dataURL.delete("token");
+	dataURL.delete("key-search");
+	dataURL.delete("role");
+
+	let token = NOT_LOGGED_TOKEN;
+	let	role;
+
+	if (loggedUser !== null && loggedUser !== undefined) {
+		token = loggedUser.token;
+		role = loggedUser.role;
+	}
+
+	if (roleParameter != null && roleParameter != undefined) {
+		role = roleParameter;
+	}
+
+	if (tokenParameter != null && tokenParameter != undefined) {
+		token = tokenParameter;
+	}
+
+	dataURL.append("token", token);
+	dataURL.append("key-search", keySearchEnumParam);
+	dataURL.append("role", role);
+
+	window.location.href = "order_products_favorites.html?" + dataURL.toString();
+};
+
+// hack: Functions, variables and constants that repeats to all pages. Except dashboard.
+
 /**
  * HTML <strong><em>input</em></strong> element in the form at top of the page in the navbar to storage the username.
  * @date 5/8/2023 - 10:26:58 AM
@@ -76,12 +141,6 @@ let roleParameter = parameters.get("role");
  * @type {JSON}
  */
 let loggedUser;
-
-window.onload = () => {
-	if (loggedUser != null || (tokenParameter != NOT_LOGGED_TOKEN && roleParameter != undefined)) {
-		manageNavbar();
-	}
-};
 
 /**
  * Shows/hides buttons in the navbar according to the sign in action.
@@ -219,60 +278,3 @@ const signout = async () => {
 };
 
 document.getElementById("signout-btn").addEventListener("click", signout);
-
-/**
- * Builds what is written in the URL when the products button is clicked then redirects to built page.
- * <ol>
- * 	<li>Clears the URL</li>
- * 	<ol>
- * 		<li>deletes the token</li>
- * 		<li>deletes the search key</li>
- * 		<li>deletes the role</li>
- * 	</ol>
- * 	<li>Creates a variable for token and initialize it with all zeros UUID</li>
- * 	<li>Creates a variable for role</li>
- * 	<li>Checks if logged user is not null</li>
- * 	<ol>
- *  	<li>assigns the token attribute from loggedUser variable to token variable</li>
- * 		<li>assigns the role attribute from loggedUser variable to role variable</li>
- * 	</ol>
- * 	<li>Builds the URL</li>
- * 	<ol>
- * 		<li>Inserts the token</li>
- * 		<li>Inserts the search key</li>
- * 		<li>Inserts the role</li>
- * 	</ol>
- * 	<li>Redirects to the built URL</li>
- * </ol>
- *
- * @date 5/8/2023 - 9:26:21 AM
- *
- * @param {JSON} keySearchEnumParam the type of search that the user can do. (ALL, BEAUTY, SUPPLEMENTS or HEALTH)
- */
-const buildURLAndRedirect = (keySearchEnumParam) => {
-	dataURL.delete("token");
-	dataURL.delete("key-search");
-	dataURL.delete("role");
-
-	let token = NOT_LOGGED_TOKEN;
-	let	role;
-
-	if (loggedUser !== null && loggedUser !== undefined) {
-		token = loggedUser.token;
-		role = loggedUser.role;
-	}
-
-	if (roleParameter != null && roleParameter != undefined) {
-		role = roleParameter;
-	}
-
-	if (tokenParameter != null && tokenParameter != undefined) {
-		token = tokenParameter;
-	}
-
-	dataURL.append("token", token);
-	dataURL.append("key-search", keySearchEnumParam);
-	dataURL.append("role", role);
-
-	window.location.href = "order_products_favorites.html?" + dataURL.toString();
-};
