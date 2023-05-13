@@ -50,11 +50,11 @@ const productsHalf1Div = document.getElementById("products-half-1");
  */
 const productsHalf2Div = document.getElementById("products-half-2");
 
-window.onload = async () => {
+window.onload = () => {
 	if (loggedUser != null || (tokenParameter != NOT_LOGGED_TOKEN && roleParameter != undefined)) {
 		manageNavbar();
 	}
-	await fetchProducts();
+	fetchProducts();
 };
 
 /**
@@ -77,7 +77,7 @@ const fetchProducts = async () => {
 
 	switch (keySearchParameter) {
 		case keySearchEnum.ALL:
-			let urlWithQueryParametersAll = new URL(urlBase + "/product/all");
+			const urlWithQueryParametersAll = new URL(urlBase + "/product/all");
 			urlWithQueryParametersAll.searchParams.append("verify", verify);
 
 			header = new Headers();
@@ -104,7 +104,7 @@ const fetchProducts = async () => {
 		case keySearchEnum.HEALTH:
 		case keySearchEnum.SUPPLEMENTS:
 			let section = keySearchParameter;
-			let urlWithQueryParametersSection = new URL(urlBase + "/product/all-by");
+			const urlWithQueryParametersSection = new URL(urlBase + "/product/all-by");
 			urlWithQueryParametersSection.searchParams.append("verify", verify);
 			urlWithQueryParametersSection.searchParams.append("section", section);
 
@@ -130,7 +130,7 @@ const fetchProducts = async () => {
 				});
 			break;
 		case keySearchEnum.FAVOURITES:
-			let urlWithQueryParametersFavourites = new URL(
+			const urlWithQueryParametersFavourites = new URL(
 				urlBase + "/product/favourites",
 			);
 			urlWithQueryParametersFavourites.searchParams.append("verify", verify);
@@ -266,7 +266,7 @@ const loadProducts = (arrayHalf, divHalf) => {
 			header.append("token", tokenParameter);
 			likeLink.onclick = async () => {
 				if (!productElement.hasLoggedUserLiked) {
-					let urlWithQueryParametersAll = new URL(urlBase + "/product/like");
+					const urlWithQueryParametersAll = new URL(urlBase + "/product/like");
 					urlWithQueryParametersAll.searchParams.append(
 						"id",
 						productElement.id,
@@ -292,7 +292,7 @@ const loadProducts = (arrayHalf, divHalf) => {
 							fetchProducts();
 						});
 				} else {
-					let urlWithQueryParametersAll = new URL(urlBase + "/product/unlike");
+					const urlWithQueryParametersAll = new URL(urlBase + "/product/unlike");
 					urlWithQueryParametersAll.searchParams.append(
 						"id",
 						productElement.id,
@@ -347,7 +347,7 @@ const loadProducts = (arrayHalf, divHalf) => {
 
 			favoriteLink.onclick = async () => {
 				if (!productElement.hasLoggedUserFavorited) {
-					let urlWithQueryParametersAll = new URL(
+					const urlWithQueryParametersAll = new URL(
 						urlBase + "/product/favourite",
 					);
 					urlWithQueryParametersAll.searchParams.append(
@@ -376,7 +376,7 @@ const loadProducts = (arrayHalf, divHalf) => {
 							fetchProducts();
 						});
 				} else {
-					let urlWithQueryParametersAll = new URL(
+					const urlWithQueryParametersAll = new URL(
 						urlBase + "/product/unfavourite",
 					);
 					urlWithQueryParametersAll.searchParams.append(
@@ -427,7 +427,7 @@ const loadProducts = (arrayHalf, divHalf) => {
 				signinForm.classList.toggle("active");
 			} else {
 				fetch(urlWithQueryParametersOrder,
-				fetchContentFactoryWithoutBody( // here:
+				fetchContentFactoryWithoutBody(
 					requestMethods.PUT,
 					header
 					)
