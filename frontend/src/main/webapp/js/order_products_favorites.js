@@ -57,6 +57,17 @@ window.onload = async () => {
 	await fetchProducts();
 };
 
+/**
+ * Loads the products according to the provided search key.
+ * <ol>
+ * 	<li>Creates the variable that verifies if this product is liked or marked as favorite and initialise it as false</li>
+ * 	
+ * </ol>
+ * @date 5/13/2023 - 1:44:30 PM
+ *
+ * @async
+ * @returns {[JSON]} product list according to the given key search parameter
+ */
 const fetchProducts = async () => {
 	let verify = false;
 
@@ -151,6 +162,7 @@ const fetchProducts = async () => {
 		default:
 			break;
 	}
+
 	divideArrays(this.productList);
 };
 
@@ -166,8 +178,10 @@ const divideArrays = (productList) => {
 			arrayProductsHalf2.push(element);
 		}
 	});
+
 	loadProducts(arrayProductsHalf1, productsHalf1Div);
 	loadProducts(arrayProductsHalf2, productsHalf2Div);
+
 	if (productIdAuxiliary != null && productIdAuxiliary != undefined) {
 		document
 			.getElementById(productIdAuxiliary)
@@ -188,12 +202,23 @@ const loadProducts = (arrayHalf, divHalf) => {
 		productDiv.id = productElement.id;
 		// <a href="../html/product_details.html">
 		const productLink = document.createElement("a");
+		productLink.href = "#";
 		// <img src="../images/whey-protein.webp" alt="">
 		const productImage = document.createElement("img");
 		productImage.src = productElement.image;
+
 		productLink.appendChild(productImage);
 		productLink.addEventListener("click", () => {
-			console.log("productElement.id", productElement.id);
+			dataURL.delete("token");
+			dataURL.delete("key-search");
+			dataURL.delete("role");
+			dataURL.delete("id");
+
+			dataURL.append("token", tokenParameter);
+			dataURL.append("role", roleParameter);
+			dataURL.append("id", productElement.id);
+
+			window.location.href = "product_details.html?" + dataURL.toString();
 		});
 		// <h3>whey gold standard</h3>
 		const productName = document.createElement("h3");
@@ -388,7 +413,36 @@ const loadProducts = (arrayHalf, divHalf) => {
 		const addToCart = document.createElement("a");
 
 		addToCart.classList.add("btn");
-		addToCart.innerHTML = "add to cart";
+		addToCart.innerText = "add to cart";
+
+		// Ação do botão "add to cart": criar eventListener -> se não estiver logado, abre o form de login, se estiver, fazer o fetch de inserir o produto no carrinho
+		addToCart.addEventListener("click", () => {
+			const urlWithQueryParametersOrder = new URL(urlBase + "/order/by");
+			urlWithQueryParametersOrder.searchParams.append("productId", productElement.id);
+
+			const header = new Headers();
+			header.append("token", tokenParameter);
+
+			if (tokenParameter == NOT_LOGGED_TOKEN) {
+				signinForm.classList.toggle("active");
+			} else {
+				fetch(urlWithQueryParametersOrder,
+				fetchContentFactoryWithoutBody( // here:
+					requestMethods.PUT,
+					header
+					)
+				).then((response) => {
+					if (response.ok) {
+						return response.json();
+					} else {
+						console.error("error on fetching order product");
+					}
+				}).then((order) => {
+					// TODO: inserir os elementos referentes a cada produto no carrinho
+					console.log("order", order);
+				});
+			}
+		});
 
 		productDiv.appendChild(productLink);
 		productDiv.appendChild(productName);
