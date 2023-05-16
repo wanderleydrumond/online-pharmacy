@@ -22,14 +22,18 @@ let dataURL = new URLSearchParams();
 const urlBase = "http://localhost:8080/backend/pharmacy";
 
 /**
- * Generates the content of a fetch when it has no body and just one header.
+ * Fills the fetch content when it has no body and one single header.
  * @date 5/8/2023 - 4:44:41 PM
  *
- * @param {JSON} requestMethod
- * @param {Headers} header
- * @returns {{ method: any; "Content-Type": "application/json"; headers: any; }}
+ * @param {JSON} requestMethod the http method type of the request
+ * @param {Headers} header of the request
+ * @returns {JSON | [JSON]} the request response body
  */
-function fetchContentFactoryWithoutBody(requestMethod, header) {
+function fetchContentFactoryWithoutBody(requestMethod, token) {
+	const header = new Headers();
+	header.append("token", token);
+
+	console.log("conteúdo do header", header.get("token"));
 	return {
 		method: requestMethod,
 		"Content-Type": contentTypeJson,
@@ -37,10 +41,19 @@ function fetchContentFactoryWithoutBody(requestMethod, header) {
 	};
 }
 
-function fetchContentFactoryWithBody(requestMethod, dataBody, header) {
-	console.log("Entrei no fetchContentFactoryWithBody");
-	// console.log(tokenParameter);
-	console.log(dataBody);
+/**
+ * Fills the fetch content when it has body and one single header.
+ * @date 5/15/2023 - 3:31:57 PM
+ *
+ * @param {string} requestMethod the http method type of the request
+ * @param {JSON} dataBody the body content
+ * @param {Headers} header of the request
+ * @returns {JSON | [JSON]} the request response body
+ */
+function fetchContentFactoryWithBody(requestMethod, dataBody, token) {
+	const header = new Headers();
+	header.append("token", token);
+
 	return {
 		method: requestMethod,
 		body: JSON.stringify(dataBody),
@@ -52,6 +65,14 @@ function fetchContentFactoryWithBody(requestMethod, dataBody, header) {
 	};
 }
 
+/**
+ * Fills the fetch content when it has no body and multiple headers.
+ * @date 5/15/2023 - 3:28:22 PM
+ *
+ * @param {string} requestMethod the http method type of the request
+ * @param {Headers} headers of the request
+ * @returns {JSON} the request response body
+ */
 function fetchContentFactoryWithoutBodyMultipleHeaders(requestMethod, headers) {
 	// Caso seja necessário informar o CORS: mode:"cors"
 	return {
@@ -62,14 +83,26 @@ function fetchContentFactoryWithoutBodyMultipleHeaders(requestMethod, headers) {
 	};
 }
 
-// ENUMS
+// hack: ENUMS
 
+/**
+ * All sections that a a product can belong to.
+ * @date 5/15/2023 - 3:25:56 PM
+ *
+ * @type {JSON}
+ */
 const section = {
 	BEAUTY: "BEAUTY",
 	HEALTH: "HEALTH",
 	SUPPLEMENTS: "SUPPLEMENTS",
 };
 
+/**
+ * All roles that an user can have.
+ * @date 5/15/2023 - 3:27:17 PM
+ *
+ * @type {JSON}
+ */
 const role = {
 	ADMINISTRATOR: "ADMINISTRATOR",
 	CLIENT: "CLIENT",

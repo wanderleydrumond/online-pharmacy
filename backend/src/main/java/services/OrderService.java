@@ -324,10 +324,10 @@ public class OrderService implements Serializable {
 	 * </ol>
 	 * 
 	 * @param token logged user identifier key
-	 * @return the corresponding {@link Order}
+	 * @return the corresponding {@link Optional} {@link Order}
 	 * @throws {@link PharmacyException} with HTTP {@link Response} status 502 (BAD GATEWAY) if some problem happened in database
 	 */
-	public Order getNonConcluded(UUID token) {
+	public Optional<Order> getNonConcluded(UUID token) {
 		Optional<Order> optionalOrder = orderDAO.findNonConcludedOrder(token);
 		
 		if (optionalOrder == null) {
@@ -335,15 +335,15 @@ public class OrderService implements Serializable {
 		}
 		
 		if (!optionalOrder.isEmpty()) {
-			Order order = optionalOrder.get();
-			List<Product> products = productDAO.findAllByOrderId(order.getId());
 			
-			order.setProductsOfAnOrder(products);
+			List<Product> products = productDAO.findAllByOrderId(optionalOrder.get().getId());
 			
-			return order;			
+			optionalOrder.get().setProductsOfAnOrder(products);
+			
+			return optionalOrder;			
 		}
 		
-		return null;
+		return Optional.empty();
 	}
 
 	/**

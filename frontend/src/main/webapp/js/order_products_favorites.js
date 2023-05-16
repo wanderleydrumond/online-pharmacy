@@ -5,6 +5,12 @@
  * @type {URLSearchParams}
  */
 const parameters = new URLSearchParams(window.location.search);
+
+const titlePageEnum = {
+	ALL_OR_BY_SECTION: "our ",
+	FAVORITES: "my ",
+	ORDER: "order "
+};
 /**
  * Key search to be get from URL.
  * @date 5/8/2023 - 5:06:00 PM
@@ -50,9 +56,13 @@ const productsHalf1Div = document.getElementById("products-half-1");
  */
 const productsHalf2Div = document.getElementById("products-half-2");
 
+const titlePage = document.getElementById("title-page");
+const cartDiv = document.getElementsByClassName("shopping-cart")[0];
+
 window.onload = () => {
 	if (loggedUser != null || (tokenParameter != NOT_LOGGED_TOKEN && roleParameter != undefined)) {
 		manageNavbar();
+		getCart(); // FIXME: Ele entra em momento inapropriado. Não respeita do async await?
 	}
 	fetchProducts();
 };
@@ -61,7 +71,93 @@ window.onload = () => {
  * Loads the products according to the provided search key.
  * <ol>
  * 	<li>Creates the variable that verifies if this product is liked or marked as favorite and initialise it as false</li>
- * 	
+ * 	<li>Verifies if the token on the URL belongs to a logged user</li>
+ * 	<ol>
+ * 		<li>Assigns true to the variable which will check if if that product was liked or marked as favorite by the logged user</li>
+ * 	</ol>
+ * 	<li>If the URL "sey-search" parameter ha the value:</li>
+ * 	<ul>
+ * 		<li>ALL:</li>
+ * 		<ol>
+ * 			<li>Creates a constant that contains the whole endpoint URL</li>
+ * 			<li>Adds the query parameter that verifies the like or favorite</li>
+ * 			<li>Assigns a new instance of Headers object to header variable</li>
+ * 			<li>Adds to the header the token that came by URL</li>
+ * 			<li>Fetches the correspondent backend get method</li>
+ * 				<ol>
+ * 					<li>Gets the method response</li>
+ * 						<ul>
+ * 							<li>if The backend answers 200:</li>
+ * 							<ul>
+ * 								<li>returns all products</li>
+ * 							</ul>
+ * 							<li>Otherwise</li>
+ * 							<ul>
+ * 								<li>logs the error</li>
+ * 							</ul>
+ * 						</ul>
+ * 					<li>Gets the method content</li>
+ * 						<ol>
+ * 							<li>Assigns the content value to the global variable</li>
+ * 						</ol>
+ * 				</ol>
+ * 		</ol>
+ * 		<li>BEAUTY/SUPPLEMENTS/HEALTH:</li>
+ * 			<ol>
+ * 				<li>Creates a constant that contains the whole endpoint URL</li>
+ * 				<li>Adds the query parameter that verifies the like or favorite</li>
+ * 				<li>Adds the query parameter that identifies the section that that product list belongs</li>
+ * 				<li>Assigns a new instance of Headers object to header variable</li>
+ * 				<li>Adds to the header the token that came by URL</li>
+ * 				<li>Fetches the correspondent backend get method</li>
+ * 				<ol>
+ * 					<li>Gets the method response</li>
+ * 						<ul>
+ * 							<li>if The backend answers 200:</li>
+ * 							<ul>
+ * 								<li>returns all products from the given section</li>
+ * 							</ul>
+ * 							<li>Otherwise</li>
+ * 							<ul>
+ * 								<li>logs the error</li>
+ * 							</ul>
+ * 						</ul>
+ * 					<li>Gets the method content</li>
+ * 						<ol>
+ * 							<li>Assigns the content value to the global variable</li>
+ * 						</ol>
+ * 				</ol>
+ * 			</ol>
+ *   	<li>FAVOURITES:</li>
+ * 			<ol>
+ * 				<li>Creates a constant that contains the whole endpoint URL</li>
+ * 				<li>Adds the query parameter that verifies the like or favorite</li>
+ * 				<li>Adds the query parameter that identifies the section that that product list belongs</li>
+ * 				<li>Assigns a new instance of Headers object to header variable</li>
+ * 				<li>Adds to the header the token that came by URL</li>
+ * 				<li>Fetches the correspondent backend get method</li>
+ * 				<ol>
+ * 					<li>Gets the method response</li>
+ * 						<ul>
+ * 							<li>if The backend answers 200:</li>
+ * 							<ul>
+ * 								<li>returns all products from the favorites section</li>
+ * 							</ul>
+ * 							<li>Otherwise</li>
+ * 							<ul>
+ * 								<li>logs the error</li>
+ * 							</ul>
+ * 						</ul>
+ * 					<li>Gets the method content</li>
+ * 						<ol>
+ * 							<li>Assigns the content value to the global variable</li>
+ * 						</ol>
+ * 				</ol>
+ * 			</ol>
+ *   	<li>ORDER:</li>
+ * 		TODO: to be done
+ * 	</ul>
+ * 	<li>calls divideArrays function</li>
  * </ol>
  * @date 5/13/2023 - 1:44:30 PM
  *
@@ -69,6 +165,7 @@ window.onload = () => {
  * @returns {[JSON]} product list according to the given key search parameter
  */
 const fetchProducts = async () => {
+	const titleSpan = document.createElement("span");
 	let verify = false;
 
 	if (tokenParameter != NOT_LOGGED_TOKEN) {
@@ -77,21 +174,23 @@ const fetchProducts = async () => {
 
 	switch (keySearchParameter) {
 		case keySearchEnum.ALL:
+			// debugger;
+
+			titlePage.innerText = titlePageEnum.ALL_OR_BY_SECTION;
+			titleSpan.innerText = "products";
+
 			const urlWithQueryParametersAll = new URL(urlBase + "/product/all");
 			urlWithQueryParametersAll.searchParams.append("verify", verify);
 
-			header = new Headers();
-			header.append("token", tokenParameter);
-			console.log("header", header.get("token"));
 			await fetch(
 				urlWithQueryParametersAll,
-				fetchContentFactoryWithoutBody(requestMethods.GET, header),
+				fetchContentFactoryWithoutBody(requestMethods.GET, tokenParameter),
 			)
 				.then((response) => {
 					if (response.ok) {
 						return response.json();
 					} else {
-						console.log("Error");
+						console.error("Error on getting all products list");
 					}
 				})
 				.then((productList) => {
@@ -103,25 +202,26 @@ const fetchProducts = async () => {
 		case keySearchEnum.BEAUTY:
 		case keySearchEnum.HEALTH:
 		case keySearchEnum.SUPPLEMENTS:
+			// debugger;
 			let section = keySearchParameter;
+
+			titlePage.innerText = titlePageEnum.ALL_OR_BY_SECTION;
+			titleSpan.innerText = section.toLowerCase();
+
 			const urlWithQueryParametersSection = new URL(urlBase + "/product/all-by");
 			urlWithQueryParametersSection.searchParams.append("verify", verify);
 			urlWithQueryParametersSection.searchParams.append("section", section);
 
-			header = new Headers();
-			header.append("token", tokenParameter);
-			console.log("headerSection", header.get("token"));
-
 			await fetch(
 				urlWithQueryParametersSection,
 				fetchContentFactoryWithoutBody(requestMethods.GET),
-				header,
+				tokenParameter,
 			)
 				.then((response) => {
 					if (response.ok) {
 						return response.json();
 					} else {
-						console.error("Error");
+						console.error("Error fetching products by section");
 					}
 				})
 				.then((productList) => {
@@ -130,23 +230,25 @@ const fetchProducts = async () => {
 				});
 			break;
 		case keySearchEnum.FAVOURITES:
+			// debugger;
+			titlePage.innerText = titlePageEnum.FAVORITES;
+			titleSpan.innerText = keySearchEnum.FAVOURITES.toLowerCase();
+
 			const urlWithQueryParametersFavourites = new URL(
 				urlBase + "/product/favourites",
 			);
 			urlWithQueryParametersFavourites.searchParams.append("verify", verify);
 
-			header = new Headers();
-			header.append("token", tokenParameter);
 			console.log("header", header.get("token"));
 			await fetch(
 				urlWithQueryParametersFavourites,
-				fetchContentFactoryWithoutBody(requestMethods.GET, header),
+				fetchContentFactoryWithoutBody(requestMethods.GET, tokenParameter),
 			)
 				.then((response) => {
 					if (response.ok) {
 						return response.json();
 					} else {
-						console.log("Error");
+						console.log("Error fetching favourite products");
 					}
 				})
 				.then((productList) => {
@@ -155,17 +257,33 @@ const fetchProducts = async () => {
 				});
 			break;
 		case keySearchEnum.ORDER:
+			titlePage.innerText = titlePageEnum.ORDER;
+			titleSpan.innerText = "details";
+
 			header = new Headers();
 			header.append("token", tokenParameter);
-			// chamar fetch dos detalhes de um determinado pedido
+			// TODO: chamar fetch dos detalhes de um determinado pedido
 			break;
 		default:
 			break;
 	}
 
+	titlePage.appendChild(titleSpan);
 	divideArrays(this.productList);
 };
-
+/**
+ * Divides the product list in two. @function fetchProducts auxiliary function.
+ * <ol>
+ * 	<li>Creates two variables that will house half array each</li>
+ * 	<li>Creates a variable that defines the point that array will by cut in case of odd amount of elements</li>
+ * 	<li>Divides the provided array</li>
+ * 	<ol>
+ * 		<li>Fills the created arrays in order to respect the cutoff between them</li>
+ * 	</ol>
+ * 	<li>Calls loadProducts function to fill those products in DOM accordingly</li>
+ * </ol>
+ * @param {[JSON]} productList the array to be divide
+ */
 const divideArrays = (productList) => {
 	let arrayProductsHalf1 = [],
 		arrayProductsHalf2 = [];
@@ -262,8 +380,6 @@ const loadProducts = (arrayHalf, divHalf) => {
 		likeLink.appendChild(likeIcon);
 
 		if (tokenParameter != NOT_LOGGED_TOKEN) {
-			header = new Headers();
-			header.append("token", tokenParameter);
 			likeLink.onclick = async () => {
 				if (!productElement.hasLoggedUserLiked) {
 					const urlWithQueryParametersAll = new URL(urlBase + "/product/like");
@@ -277,7 +393,7 @@ const loadProducts = (arrayHalf, divHalf) => {
 					);
 					await fetch(
 						urlWithQueryParametersAll,
-						fetchContentFactoryWithoutBody(requestMethods.PUT, header),
+						fetchContentFactoryWithoutBody(requestMethods.PUT, tokenParameter),
 					)
 						.then((response) => {
 							if (response.ok) {
@@ -300,7 +416,7 @@ const loadProducts = (arrayHalf, divHalf) => {
 
 					await fetch(
 						urlWithQueryParametersAll,
-						fetchContentFactoryWithoutBody(requestMethods.PUT, header),
+						fetchContentFactoryWithoutBody(requestMethods.PUT, tokenParameter),
 					)
 						.then((response) => {
 							if (response.ok) {
@@ -361,7 +477,7 @@ const loadProducts = (arrayHalf, divHalf) => {
 
 					await fetch(
 						urlWithQueryParametersAll,
-						fetchContentFactoryWithoutBody(requestMethods.PUT, header),
+						fetchContentFactoryWithoutBody(requestMethods.PUT, tokenParameter),
 					)
 						.then((response) => {
 							if (response.ok) {
@@ -386,7 +502,7 @@ const loadProducts = (arrayHalf, divHalf) => {
 
 					await fetch(
 						urlWithQueryParametersAll,
-						fetchContentFactoryWithoutBody(requestMethods.PUT, header),
+						fetchContentFactoryWithoutBody(requestMethods.PUT, tokenParameter),
 					)
 						.then((response) => {
 							if (response.ok) {
@@ -420,26 +536,26 @@ const loadProducts = (arrayHalf, divHalf) => {
 			const urlWithQueryParametersOrder = new URL(urlBase + "/order/by");
 			urlWithQueryParametersOrder.searchParams.append("productId", productElement.id);
 
-			const header = new Headers();
-			header.append("token", tokenParameter);
-
 			if (tokenParameter == NOT_LOGGED_TOKEN) {
 				signinForm.classList.toggle("active");
 			} else {
 				fetch(urlWithQueryParametersOrder,
-				fetchContentFactoryWithoutBody(
-					requestMethods.PUT,
-					header
+					fetchContentFactoryWithoutBody(
+						requestMethods.PUT,
+						tokenParameter
 					)
 				).then((response) => {
 					if (response.ok) {
 						return response.json();
 					} else {
-						console.error("error on fetching order product");
+						console.error("error on fetching cart");
 					}
-				}).then((order) => {
-					// TODO: inserir os elementos referentes a cada produto no carrinho
-					console.log("order", order);
+				}).then((cart) => {
+					if (cart.id != null && cart.id != undefined && cart.productsDTO) {
+						loadCartItem(cart);
+						handleBadge(cart.productsDTO.length);
+					}
+					console.log("order", cart);
 				});
 			}
 		});
@@ -454,6 +570,15 @@ const loadProducts = (arrayHalf, divHalf) => {
 	});
 };
 
+/**
+ * Clears the current URL, builds a new one with token and role then redirect to home.
+ * <ol>
+ * 	<li>Clears the parameters to be added to URL</li>
+ * 	<li>Add new parameters to URL</li>
+ * 	<li>Add those parameters to the URL and redirect to it</li>
+ * </ol>
+ * @date 5/16/2023 - 4:26:56 PM
+ */
 const buildURLAndRedirectToHome = () => {
 	dataURL.delete("token");
 	dataURL.delete("role");
@@ -509,13 +634,34 @@ const signinButton = document.getElementById("signin-btn");
  */
 const signoutButton = document.getElementById("signout-btn");
 /**
+ * HTML <strong><em>anchor</em></strong> element in the navbar that has the appearance of a button links the logged user to their edit profile page.
+ * @date 5/15/2023 - 10:22:00 PM
+ *
+ * @type {*}
+ */
+const editProfileButton = document.getElementById("edit-profile-btn");
+/**
  * HTML <strong><em>paragraph</em></strong> element in the login form used to warn user about invalid credentials after the sign in button is clicked.
  * @date 5/8/2023 - 4:33:12 PM
  *
  * @type {Object}
  */
-const signinError = document.querySelector(".error-signin");
-const favouritesLink = document.querySelectorAll(".get-favourites");
+const signinError = document.getElementsByClassName("error-signin");
+/**
+ * HTML <strong><em>anchor</em></strong> element in the navbar that links the current user to favourites page.
+ * @date 5/15/2023 - 10:16:33 PM
+ *
+ * @type {Object}
+ */
+const favouritesLink = document.getElementsByClassName("get-favourites");
+/**
+ * HTML <strong><em>anchor</em></strong> element in the navbar that links the current user to history page.
+ * @date 5/15/2023 - 10:20:41 PM
+ *
+ * @type {Object}
+ */
+const historyLink = document.getElementsByClassName("get-history");
+const badge = document.getElementsByClassName("badge")[0];
 /**
  * UUID to be get from URL.
  * @date 5/8/2023 - 5:08:34 PM
@@ -549,14 +695,19 @@ const manageNavbar = () => {
 	signinForm.classList.remove("active");
 	signinButton.classList.add("disappear");
 	signoutButton.classList.remove("disappear");
+	editProfileButton.classList.remove("disappear");
 
 	for (const link of favouritesLink) {
 		link.classList.remove("disappear");
 	}
 
-	if ((loggedUser != undefined && loggedUser.role == role.ADMINISTRATOR) || 
+	for (const link of historyLink) {
+		link.classList.remove("disappear");
+	}
+
+	if ((loggedUser != undefined && loggedUser.role == role.ADMINISTRATOR) ||
 		(roleParameter != undefined && roleParameter == role.ADMINISTRATOR)) {
-			dashboardButton.classList.remove("disappear");
+		dashboardButton.classList.remove("disappear");
 	}
 };
 
@@ -602,7 +753,7 @@ const signin = async () => {
 			})
 			.then((user) => {
 				loggedUser = user;
-				
+
 				dataURL.delete("token");
 				dataURL.delete("key-search");
 				dataURL.delete("role");
@@ -654,11 +805,11 @@ const signout = async () => {
 	let token = loggedUser ? loggedUser.token : tokenParameter;
 
 	if (token != null && token != undefined && token != "") {
-		const header = new Headers();
-		header.append("token", token);
+
+
 		await fetch(
 			urlBase + "/user/signout",
-			fetchContentFactoryWithoutBody(requestMethods.POST, header),
+			fetchContentFactoryWithoutBody(requestMethods.POST, token),
 		).then((response) => {
 			if (response.ok) {
 				cartButton.classList.add("disappear");
@@ -684,3 +835,166 @@ const signout = async () => {
 };
 
 document.getElementById("signout-btn").addEventListener("click", signout);
+
+/**
+ * Gets the only non concluded order (cart) from the logged user.
+ * @date 5/16/2023 - 4:11:10 PM
+ *
+ * @async
+ * @returns {JSON} object order that contains: 
+ */
+const getCart = async () => {
+	let token = loggedUser ? loggedUser.token : tokenParameter;
+
+	await fetch(
+		urlBase + "/order/cart",
+		fetchContentFactoryWithoutBody(requestMethods.GET, token)).then((response) => {
+			if (response.ok) {
+				return response.json();
+			} else {
+				console.error("Error on getOrderByToken (getCart)");
+			}
+		}).then((cart) => {
+			console.log("Logged user cart", cart);
+
+			handleBadge(cart.productsDTO.length);
+
+			if (cart.id != null && cart.id != undefined) {
+				loadCartItem(cart);
+			}
+		});
+};
+
+/**
+ * Displays all the elements that make up the cart
+ * @date 5/16/2023 - 4:07:58 PM
+ *
+ * @param {[JSON]} cart list of products that the current order contains
+ */
+const loadCartItem = (cart) => {
+
+	cleanCart();
+
+	if (cart.productsDTO) {
+		cart.productsDTO.forEach(productInCartElement => {
+			// <div class="box">
+			const cartItem = document.createElement("div");
+			cartItem.classList.add("box");
+			// <i class="fa-solid fa-trash">
+			const trashIcon = document.createElement("i");
+
+			trashIcon.classList.add("fa-solid");
+			trashIcon.classList.add("fa-trash");
+			trashIcon.addEventListener("click", async () => {
+				const urlWithQueryParametersRemoveProduct = new URL(urlBase + "/order/product-by");
+				urlWithQueryParametersRemoveProduct.searchParams.append("orderId", cart.id);
+				urlWithQueryParametersRemoveProduct.searchParams.append("productId", productInCartElement.id);
+
+				let token = loggedUser ? loggedUser.token : tokenParameter;
+				console.log("header", header.get("token"));
+
+				await fetch(
+					urlWithQueryParametersRemoveProduct,
+					fetchContentFactoryWithoutBody(requestMethods.DELETE, token),
+				)
+					.then((response) => {
+						if (response.ok) {
+							return response.json();
+						} else {
+							console.log("Error");
+						}
+					})
+					.then((cart) => {
+						loadCartItem(cart);
+						handleBadge(cart.productsDTO.length);
+					});
+			});
+			// <img src="../images/national-watermelon-day(sm).png" alt="">
+			const productImage = document.createElement("img");
+			productImage.src = productInCartElement.image;
+			productImage.alt = productInCartElement.name;
+			// <div class="content">
+			const productInformations = document.createElement("div");
+			productInformations.classList.add("content");
+			// <h3>watermelon</h3>
+			const productName = document.createElement("h3");
+			productName.innerText = productInCartElement.name;
+			// <span class="price">€4.99/-</span>
+			const productPrice = document.createElement("span");
+			productPrice.classList.add("price");
+			productPrice.innerText = productInCartElement.price;
+
+			productInformations.appendChild(productName);
+			productInformations.appendChild(productPrice);
+			cartItem.appendChild(trashIcon);
+			cartItem.appendChild(productImage);
+			cartItem.appendChild(productInformations);
+			cartDiv.appendChild(cartItem);
+		});
+
+		const total = document.createElement("div");
+		total.classList.add("total");
+		total.innerText = "Total : " + cart.totalValue.toFixed(2).toString() + "€";
+
+		const checkout = document.createElement("a");
+		checkout.classList.add("btn");
+		checkout.href = "#";
+		checkout.innerText = "checkout";
+		checkout.addEventListener("click", async () => {
+			const urlWithQueryParametersCheckout = new URL(urlBase + "/order/finish");
+			urlWithQueryParametersCheckout.searchParams.append("id", cart.id);
+
+			let token = loggedUser ? loggedUser.token : tokenParameter;
+			console.log("header", header.get("token"));
+
+			debugger;
+			await fetch(
+				urlWithQueryParametersCheckout,
+				fetchContentFactoryWithoutBody(requestMethods.PUT, token),
+			)
+				.then((response) => {
+					if (response.ok) {
+						return response.json();
+					} else {
+						console.log("Error");
+					}
+				})
+				.then((order) => {
+					if (order.isConcluded) {
+						cleanCart();
+						handleBadge(0);
+					}
+				});
+		});
+
+		cartDiv.appendChild(total);
+		cartDiv.appendChild(checkout);
+	}
+};
+
+function cleanCart() {
+	if (cartDiv.children) { //TODO: esta verificação é necessária? Se calhar, basta o while já funciona.
+		while (cartDiv.children.length > 0) {
+			cartDiv.removeChild(cartDiv.children[0]);
+		}
+	}
+}
+
+/**
+ * Displays the badge according to amount of digits.
+ * @date 5/16/2023 - 3:54:09 PM
+ *
+ * @param {number} amount of products
+ */
+function handleBadge(amount) {
+	badge.innerText = amount;
+	if (badge.classList.contains("disappear")) {
+		badge.classList.remove("disappear");
+	}
+
+	if (amount < 10) {
+		badge.classList.add("single-digit");
+	} else {
+		badge.classList.add("two-digits");
+	}
+}

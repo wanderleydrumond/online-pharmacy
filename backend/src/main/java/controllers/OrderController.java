@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -189,8 +190,13 @@ public class OrderController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getOrderByToken(@HeaderParam("token") UUID token) {
-		Order order = orderService.getNonConcluded(token);
-		OrderDTO orderDTO = orderMapper.toDTO(order);
+		Optional<Order> order = orderService.getNonConcluded(token);
+		OrderDTO orderDTO = new OrderDTO(); 
+		
+		if (order.isPresent()) {
+			orderDTO = orderMapper.toDTO(order.get());
+		}
+		
 		return Response.ok(orderDTO).build();
 	}
 }

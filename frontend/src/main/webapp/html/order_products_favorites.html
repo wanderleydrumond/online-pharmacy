@@ -22,7 +22,7 @@
 
         <nav class="navbar">
             <a href="#" onclick="buildURLAndRedirectToHome()">home</a>
-            <a href="../html/history.html">history</a>
+            <a href="../html/history.html" class="get-history disappear">history</a>
         </nav>
 
         <div class="icons">
@@ -30,6 +30,8 @@
             <div class="fa-solid fa-bars" id="menu-btn"></div>
             <div class="fa-solid fa-search" id="search-btn"></div>
             <div class="fa-solid fa-shopping-cart" id="cart-btn"></div>
+            <span class="badge disappear">0</span>
+            <div class="fa-solid fa-user-pen disappear" id="edit-profile-btn"></div>
             <div class="fa-solid fa-user" id="signin-btn"></div>
             <div class="fa-solid fa-power-off disappear" id="signout-btn"></div>
         </div>
@@ -39,8 +41,10 @@
             <label for="search-box" class="fa-solid fa-search"></label>
         </form>
 
+        <!-- NOTE: os produtos criados pelo JS serão ancorados a esta div -->
         <div class="shopping-cart">
-            <div class="box">
+
+            <!-- <div class="box">
                 <i class="fa-solid fa-trash"></i>
                 <img src="../images/national-watermelon-day(sm).png" alt="">
                 <div class="content">
@@ -49,26 +53,9 @@
                     <span class="quantity">qty : 1</span>
                 </div>
             </div>
-            <div class="box">
-                <i class="fa-solid fa-trash"></i>
-                <img src="../images/RED_ONION_TREBOLE_FONIO05(sm).png" alt="">
-                <div class="content">
-                    <h3>onion</h3>
-                    <span class="price">€4.99/-</span>
-                    <span class="quantity">qty : 1</span>
-                </div>
-            </div>
-            <div class="box">
-                <i class="fa-solid fa-trash"></i>
-                <img src="../images/Website_Chicken_Tenders_3PC(sm).png" alt="">
-                <div class="content">
-                    <h3>chicken</h3>
-                    <span class="price">€4.99/-</span>
-                    <span class="quantity">qty : 1</span>
-                </div>
-            </div>
+            
             <div class="total">Total : 19.60€/-</div>
-            <a href="#" class="btn">checkout</a>
+            <a href="#" class="btn">checkout</a> -->
         </div>
 
         <form action="" class="signin-form">
@@ -92,11 +79,16 @@
 
     <!-- products section starts -->
     <section class="products" id="products">
-        <h1 class="heading disappear">order <span>details</span> 24/04/2023</h1>
+        <h1 class="heading" id="title-page">
+            <!-- order  -->
+            <!-- <span> -->
+            <!-- details -->
+            <!-- </span>  -->
+            <!-- 24/04/2023 -->
+        </h1>
         <h3 class="heading disappear">115.23€</h3>
         <div class="heading disappear"><a href="#" class="btn">checkout</a></div>
         <div class="swiper product-slider">
-            <!-- os produtos criados pelo JS serão ancorados a esta div -->
             <div class="swiper-wrapper" id="products-half-1">
 
                 <!-- <div class="swiper-slide box">
@@ -173,7 +165,8 @@
                 <a href="#" onclick="buildURLAndRedirect(keySearchEnum.ALL)" class="links"><i
                         class="fa-solid fa-arrow-right"></i>products</a>
                 <a href="#categories" class="links"><i class="fa-solid fa-arrow-right"></i>categories</a>
-                <a href="../html/history.html" class="links"><i class="fa-solid fa-arrow-right"></i>history</a>
+                <a href="../html/history.html" class="get-history links disappear"><i
+                        class="fa-solid fa-arrow-right"></i>history</a>
             </div>
 
             <div class="box">

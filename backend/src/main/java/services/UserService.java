@@ -151,12 +151,12 @@ public class UserService implements Serializable {
 			updateTotalSignIns();
 		}
 		
-		Order order = orderService.getNonConcluded(user.getToken());
+		Optional<Order> order = orderService.getNonConcluded(user.getToken());
 		
-		if (order != null) {
+		if (order.isPresent()) {
 			Timestamp twoDaysAgo = Timestamp.valueOf(LocalDateTime.now().minusDays(2L));
-			if (order.getLastUpdate().before(twoDaysAgo)) {
-				orderService.emptyCart(user.getToken(), order.getId());
+			if (order.get().getLastUpdate().before(twoDaysAgo)) {
+				orderService.emptyCart(user.getToken(), order.get().getId());
 			}
 		}
 		return user;

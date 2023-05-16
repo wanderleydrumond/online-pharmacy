@@ -1,208 +1,222 @@
 <!DOCTYPE html>
 <html lang="en-UK">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Online Pharmacy</title>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Pharmacy</title>
 
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-        <link rel="stylesheet" href="../styles/styles.css">
-        <link rel="icon" href="../images/laptop-medical-solid-green.png" type="image/x-icon">
-        <!-- https://www.youtube.com/watch?v=lCCN_lkl3Xw -->
-    </head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="icon" href="../images/laptop-medical-solid-green.png" type="image/x-icon">
+    <!-- https://www.youtube.com/watch?v=lCCN_lkl3Xw -->
+</head>
 
-    <body>
-        <!-- header section start -->
-        <header class="header">
-            <a href="#" class="logo"><i class="fa-solid fa-laptop-medical"></i> online pharmacy </a>
+<body>
+    <!-- header section start -->
+    <header class="header">
+        <a href="#" class="logo"><i class="fa-solid fa-laptop-medical"></i> online pharmacy </a>
 
-            <nav class="navbar">
-                <a href="#home">home</a>
-                <a href="#features">features</a>
-                <a href="#" onclick="buildURLAndRedirect(keySearchEnum.ALL)" class="get-all-products">products</a>
-                <a href="#" onclick="buildURLAndRedirect(keySearchEnum.FAVOURITES)" class="get-favourites disappear">favourites</a>
-                <a href="#categories">categories</a>
-                <a href="../html/history.html">history</a>
-            </nav>
+        <nav class="navbar">
+            <a href="#home">home</a>
+            <a href="#features">features</a>
+            <a href="#" onclick="buildURLAndRedirect(keySearchEnum.ALL)" class="get-all-products">products</a>
+            <a href="#" onclick="buildURLAndRedirect(keySearchEnum.FAVOURITES)"
+                class="get-favourites disappear">favourites</a>
+            <a href="#categories">categories</a>
+            <a href="../html/history.html" class="get-history disappear">history</a>
+        </nav>
 
-            <div class="icons">
-                <div class="fa-solid fa-square-poll-vertical disappear" id="dashboard-btn">
-                    <a href="../html/dashboard.html"></a>
-                </div>
-                <div class="fa-solid fa-bars" id="menu-btn"></div>
-                <div class="fa-solid fa-search" id="search-btn"></div>
-                <div class="fa-solid fa-shopping-cart disappear" id="cart-btn"></div>
-                <div class="fa-solid fa-user" id="signin-btn"></div>
-                <div class="fa-solid fa-power-off disappear" id="signout-btn"></div>
+        <div class="icons">
+            <div class="fa-solid fa-square-poll-vertical disappear" id="dashboard-btn">
+                <a href="../html/dashboard.html"></a>
             </div>
+            <div class="fa-solid fa-bars" id="menu-btn"></div>
+            <div class="fa-solid fa-search" id="search-btn"></div>
+            <div class="fa-solid fa-shopping-cart disappear" id="cart-btn"></div>
+            <div class="fa-solid fa-user-pen disappear" id="edit-profile-btn"></div>
+            <div class="fa-solid fa-user" id="signin-btn"></div>
+            <div class="fa-solid fa-power-off disappear" id="signout-btn"></div>
+        </div>
 
-            <form class="search-form" onsubmit="event.preventDefault();">
-                <input type="search" id="search-box" placeholder="search here" class="original">
-                <label for="search-box" class="fa-solid fa-search"></label>
-            </form>
+        <form class="search-form" onsubmit="event.preventDefault();">
+            <input type="search" id="search-box" placeholder="search here" class="original">
+            <label for="search-box" class="fa-solid fa-search"></label>
+        </form>
 
-            <div class="shopping-cart">
-                <div class="box">
-                    <i class="fa-solid fa-trash"></i>
-                    <img src="../images/national-watermelon-day(sm).png" alt="">
-                    <div class="content">
-                        <h3>watermelon</h3>
-                        <span class="price">€4.99/-</span>
-                        <span class="quantity">qty : 1</span>
-                    </div>
-                </div>
-                <div class="box">
-                    <i class="fa-solid fa-trash"></i>
-                    <img src="../images/RED_ONION_TREBOLE_FONIO05(sm).png" alt="">
-                    <div class="content">
-                        <h3>onion</h3>
-                        <span class="price">€4.99/-</span>
-                        <span class="quantity">qty : 1</span>
-                    </div>
-                </div>
-                <div class="box">
-                    <i class="fa-solid fa-trash"></i>
-                    <img src="../images/Website_Chicken_Tenders_3PC(sm).png" alt="">
-                    <div class="content">
-                        <h3>chicken</h3>
-                        <span class="price">€4.99/-</span>
-                        <span class="quantity">qty : 1</span>
-                    </div>
-                </div>
-                <div class="total">Total : 19.60€/-</div>
-                <a href="#" class="btn">checkout</a>
-            </div>
+        <div class="shopping-cart">
 
-            <form action="" class="signin-form" onsubmit="event.preventDefault();">
-                <h3>sign-in</h3>
-                <input type="text" placeholder="your username" id="username" class="box">
-                <input type="password" placeholder="your password" id="password" class="box">
-                <div class="error-signin disappear">
-                    <p id="error-message">Invalid credentials</p>
-                </div>
-                <p>don't have an account <a href="../html/signup.html">create now</a></p>
-                <input type="submit" value="sign in" id="signin" class="btn">
-            </form>
-        </header>
-        <!-- header section end -->
-
-        <!-- home section starts -->
-        <section class="home" id="home">
-            <div class="content">
-                <h3>cheap and <span>organic</span> products for you</h3>
-                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto, eaque!</p>
-            </div>
-        </section>
-        <!-- home section ends -->
-
-        <!-- features section starts -->
-        <section class="features" id="features">
-            <h1 class="heading">our <span>features</span></h1>
-            <div class="box-container">
-                <div class="box">
-                    <img src="../images/medecine-bowl.webp" alt="A bowl filled with many medicine herbs">
-                    <h3>cheap and organic</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus, magnam.</p>
-                </div>
-
-                <div class="box">
-                    <img src="../images/motoboy(sm).png" alt="A motorcyclist performing a delivery">
-                    <h3>free delivery</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus, magnam.</p>
-                </div>
-
-                <div class="box">
-                    <img src="../images/mobile-payment.png" alt="hand holding a cellphone with a credit card in front of it">
-                    <h3>easy payments</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus, magnam.</p>
-                </div>
-            </div>
-        </section>
-        <!-- features section ends -->
-
-        <!-- categories section starts -->
-        <section class="categories" id="categories">
-            <h1 class="heading">product <span>categories</span></h1>
-            <div class="box-container">
-                <div class="box">
-                    <img src="../images/beauty.png" alt="Beauty creams">
-                    <h3>beauty</h3>
-                    <a href="#" onclick="buildURLAndRedirect(keySearchEnum.BEAUTY)" class="btn">See products</a>
-                </div>
-
-                <div class="box">
-                    <img src="../images/supplements.png" alt="A strong guy">
-                    <h3>supplements</h3>
-                    <a href="#" onclick="buildURLAndRedirect(keySearchEnum.SUPPLEMENTS)" class="btn">See products</a>
-                </div>
-
-                <div class="box">
-                    <img src="../images/Health.png" alt="Many pictures related to health">
-                    <h3>health</h3>
-                    <a href="#" onclick="buildURLAndRedirect(keySearchEnum.HEALTH)" class="btn">See products</a>
-                </div>
-
-                <div class="box">
-                    <img src="../images/medicines.png" alt="Medicines">
-                    <h3>all products</h3>
-                    <a href="#" onclick="buildURLAndRedirect(keySearchEnum.ALL)" class="btn get-all-products">See products</a>
-                </div>
-            </div>
-        </section>
-        <!-- categories section ends -->
-
-        <!-- footer section starts -->
-        <section class="footer">
-            <div class="box-container">
-                <div class="box">
-                    <h3>online pharmacy <i class="fa-solid fa-laptop-medical"></i></h3>
-                    <p class="original">Follow us in our social media</p>
-                    <div class="share">
-                        <a href="https://www.facebook.com/" target="_blank" class="fa-brands fa-facebook-f"></a>
-                        <a href="https://twitter.com/" target="_blank" class="fa-brands fa-twitter"></a>
-                        <a href="https://www.instagram.com/" target="_blank" class="fa-brands fa-instagram"></a>
-                        <a href="https://www.linkedin.com/" target="_blank" class="fa-brands fa-linkedin"></a>
-                        <a href="https://www.tiktok.com/" target="_blank" class="fa-brands fa-tiktok"></a>
-                    </div>
-                </div>
-
-                <div class="box">
-                    <h3>contact info</h3>
-                    <a href="tel:+351 919 058 290" class="links"><i class="fa-solid fa-mobile-screen"></i>+351 919 058 290</a>
-                    <a href="#" class="links"><i class="fa-solid fa-phone"></i>+351 239 058 391</a>
-                    <a href="mailto:wanderley.drumond@gmail.com" class="links original"><i class="fa-solid fa-envelope"></i>wanderley.drumond@gmail.com</a>
-                    <a href="geo:40.23266945998722,-8.430624783312775?q=Coimbra" class="links"><i class="fa-solid fa-map-marked-alt"></i>Coimbra, Portugal - 3030-000</a>
-                </div>
-
-                <div class="box">
-                    <h3>quick links</h3>
-                    <a href="#home" class="links"><i class="fa-solid fa-arrow-right"></i>home</a>
-                    <a href="#features" class="links"><i class="fa-solid fa-arrow-right"></i>features</a>
-                    <a href="#" onclick="buildURLAndRedirect(keySearchEnum.ALL)" class="links"><i class="fa-solid fa-arrow-right"></i>products</a>
-                    <a href="#" onclick="buildURLAndRedirect(keySearchEnum.FAVOURITES)" class="get-favourites disappear links"><i class="fa-solid fa-arrow-right"></i>favourites</a>
-                    <a href="#categories" class="links"><i class="fa-solid fa-arrow-right"></i>categories</a>
-                    <a href="../html/history.html" class="links"><i class="fa-solid fa-arrow-right"></i>history</a>
-                </div>
-
-                <div class="box">
-                    <h3>newsletter</h3>
-                    <p>subscribe for latest updates</p>
-                    <input type="email" placeholder="your e-mail" class="email">
-                    <input type="submit" value="subscribe" class="btn">
-                    <img src="../images/payments.gif" alt="Mastercard, Visa and Multibanco logos" class="payment-img">
+            <div class="box">
+                <i class="fa-solid fa-trash"></i>
+                <img src="../images/national-watermelon-day(sm).png" alt="">
+                <div class="content">
+                    <h3>watermelon</h3>
+                    <span class="price">€4.99/-</span>
+                    <span class="quantity">qty : 1</span>
                 </div>
             </div>
 
-            <div class="credit">created by <span>wanderley drumond</span> | all rights reserved</div>
-        </section>
-        <!-- footer section ends -->
-        <script src="../js/constants/constants.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-        <script src="../js/navbar.js"></script>
-        <script src="../js/home.js"></script>
-    </body>
+            <div class="box">
+                <i class="fa-solid fa-trash"></i>
+                <img src="../images/RED_ONION_TREBOLE_FONIO05(sm).png" alt="">
+                <div class="content">
+                    <h3>onion</h3>
+                    <span class="price">€4.99/-</span>
+                    <span class="quantity">qty : 1</span>
+                </div>
+            </div>
+
+            <div class="box">
+                <i class="fa-solid fa-trash"></i>
+                <img src="../images/Website_Chicken_Tenders_3PC(sm).png" alt="">
+                <div class="content">
+                    <h3>chicken</h3>
+                    <span class="price">€4.99/-</span>
+                    <span class="quantity">qty : 1</span>
+                </div>
+            </div>
+            
+            <div class="total">Total : 19.60€/-</div>
+            <a href="#" class="btn">checkout</a>
+        </div>
+
+        <form action="" class="signin-form" onsubmit="event.preventDefault();">
+            <h3>sign-in</h3>
+            <input type="text" placeholder="your username" id="username" class="box">
+            <input type="password" placeholder="your password" id="password" class="box">
+            <div class="error-signin disappear">
+                <p id="error-message">Invalid credentials</p>
+            </div>
+            <p>don't have an account <a href="../html/signup.html">create now</a></p>
+            <input type="submit" value="sign in" id="signin" class="btn">
+        </form>
+    </header>
+    <!-- header section end -->
+
+    <!-- home section starts -->
+    <section class="home" id="home">
+        <div class="content">
+            <h3>cheap and <span>organic</span> products for you</h3>
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto, eaque!</p>
+        </div>
+    </section>
+    <!-- home section ends -->
+
+    <!-- features section starts -->
+    <section class="features" id="features">
+        <h1 class="heading">our <span>features</span></h1>
+        <div class="box-container">
+            <div class="box">
+                <img src="../images/medecine-bowl.webp" alt="A bowl filled with many medicine herbs">
+                <h3>cheap and organic</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus, magnam.</p>
+            </div>
+
+            <div class="box">
+                <img src="../images/motoboy(sm).png" alt="A motorcyclist performing a delivery">
+                <h3>free delivery</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus, magnam.</p>
+            </div>
+
+            <div class="box">
+                <img src="../images/mobile-payment.png"
+                    alt="hand holding a cellphone with a credit card in front of it">
+                <h3>easy payments</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus, magnam.</p>
+            </div>
+        </div>
+    </section>
+    <!-- features section ends -->
+
+    <!-- categories section starts -->
+    <section class="categories" id="categories">
+        <h1 class="heading">product <span>categories</span></h1>
+        <div class="box-container">
+            <div class="box">
+                <img src="../images/beauty.png" alt="Beauty creams">
+                <h3>beauty</h3>
+                <a href="#" onclick="buildURLAndRedirect(keySearchEnum.BEAUTY)" class="btn">See products</a>
+            </div>
+
+            <div class="box">
+                <img src="../images/supplements.png" alt="A strong guy">
+                <h3>supplements</h3>
+                <a href="#" onclick="buildURLAndRedirect(keySearchEnum.SUPPLEMENTS)" class="btn">See products</a>
+            </div>
+
+            <div class="box">
+                <img src="../images/Health.png" alt="Many pictures related to health">
+                <h3>health</h3>
+                <a href="#" onclick="buildURLAndRedirect(keySearchEnum.HEALTH)" class="btn">See products</a>
+            </div>
+
+            <div class="box">
+                <img src="../images/medicines.png" alt="Medicines">
+                <h3>all products</h3>
+                <a href="#" onclick="buildURLAndRedirect(keySearchEnum.ALL)" class="btn get-all-products">See
+                    products</a>
+            </div>
+        </div>
+    </section>
+    <!-- categories section ends -->
+
+    <!-- footer section starts -->
+    <section class="footer">
+        <div class="box-container">
+            <div class="box">
+                <h3>online pharmacy <i class="fa-solid fa-laptop-medical"></i></h3>
+                <p class="original">Follow us in our social media</p>
+                <div class="share">
+                    <a href="https://www.facebook.com/" target="_blank" class="fa-brands fa-facebook-f"></a>
+                    <a href="https://twitter.com/" target="_blank" class="fa-brands fa-twitter"></a>
+                    <a href="https://www.instagram.com/" target="_blank" class="fa-brands fa-instagram"></a>
+                    <a href="https://www.linkedin.com/" target="_blank" class="fa-brands fa-linkedin"></a>
+                    <a href="https://www.tiktok.com/" target="_blank" class="fa-brands fa-tiktok"></a>
+                </div>
+            </div>
+
+            <div class="box">
+                <h3>contact info</h3>
+                <a href="tel:+351 919 058 290" class="links"><i class="fa-solid fa-mobile-screen"></i>+351 919 058
+                    290</a>
+                <a href="#" class="links"><i class="fa-solid fa-phone"></i>+351 239 058 391</a>
+                <a href="mailto:wanderley.drumond@gmail.com" class="links original"><i
+                        class="fa-solid fa-envelope"></i>wanderley.drumond@gmail.com</a>
+                <a href="geo:40.23266945998722,-8.430624783312775?q=Coimbra" class="links"><i
+                        class="fa-solid fa-map-marked-alt"></i>Coimbra, Portugal - 3030-000</a>
+            </div>
+
+            <div class="box">
+                <h3>quick links</h3>
+                <a href="#home" class="links"><i class="fa-solid fa-arrow-right"></i>home</a>
+                <a href="#features" class="links"><i class="fa-solid fa-arrow-right"></i>features</a>
+                <a href="#" onclick="buildURLAndRedirect(keySearchEnum.ALL)" class="links"><i
+                        class="fa-solid fa-arrow-right"></i>products</a>
+                <a href="#" onclick="buildURLAndRedirect(keySearchEnum.FAVOURITES)"
+                    class="get-favourites disappear links"><i class="fa-solid fa-arrow-right"></i>favourites</a>
+                <a href="#categories" class="links"><i class="fa-solid fa-arrow-right"></i>categories</a>
+                <a href="../html/history.html" class="get-history links disappear"><i
+                        class="fa-solid fa-arrow-right"></i>history</a>
+            </div>
+
+            <div class="box">
+                <h3>newsletter</h3>
+                <p>subscribe for latest updates</p>
+                <input type="email" placeholder="your e-mail" class="email">
+                <input type="submit" value="subscribe" class="btn">
+                <img src="../images/payments.gif" alt="Mastercard, Visa and Multibanco logos" class="payment-img">
+            </div>
+        </div>
+
+        <div class="credit">created by <span>wanderley drumond</span> | all rights reserved</div>
+    </section>
+    <!-- footer section ends -->
+    <script src="../js/constants/constants.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+    <script src="../js/navbar.js"></script>
+    <script src="../js/home.js"></script>
+</body>
 
 </html>

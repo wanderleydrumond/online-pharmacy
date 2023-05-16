@@ -111,8 +111,10 @@ const signoutButton = document.getElementById("signout-btn");
  *
  * @type {Object}
  */
-const signinError = document.querySelector(".error-signin");
-const favouritesLink = document.querySelectorAll(".get-favourites");
+const signinError = document.getElementsByClassName("error-signin");
+const favouritesLink = document.getElementsByClassName("get-favourites");
+const historyLink = document.getElementsByClassName("get-history");
+const editProfileButton = document.getElementById("edit-profile-btn");
 /**
  * The way to get things of URL.
  * @date 5/7/2023 - 9:51:20 AM
@@ -153,8 +155,13 @@ const manageNavbar = () => {
 	signinForm.classList.remove("active");
 	signinButton.classList.add("disappear");
 	signoutButton.classList.remove("disappear");
+	editProfileButton.classList.remove("disappear");
 
 	for (const link of favouritesLink) {
+		link.classList.remove("disappear");
+	}
+
+	for (const link of historyLink) {
 		link.classList.remove("disappear");
 	}
 
@@ -248,11 +255,9 @@ const signout = async () => {
 	let token = loggedUser ? loggedUser.token : tokenParameter;
 
 	if (token != null && token != undefined && token != "") {
-		const header = new Headers();
-		header.append("token", token);
 		await fetch(
 			urlBase + "/user/signout",
-			fetchContentFactoryWithoutBody(requestMethods.POST, header),
+			fetchContentFactoryWithoutBody(requestMethods.POST, token),
 		).then((response) => {
 			if (response.ok) {
 				cartButton.classList.add("disappear");

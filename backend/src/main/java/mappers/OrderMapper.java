@@ -18,7 +18,7 @@ import entities.Order;
 @Stateless
 public class OrderMapper {
 	@Inject
-	ProductMapper productMapper;
+	private ProductMapper productMapper;
 	
 	/**
 	 * Changes a {@link OrderDTO} object into a {@link Order} object.
