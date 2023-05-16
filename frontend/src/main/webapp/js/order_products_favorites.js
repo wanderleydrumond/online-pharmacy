@@ -5,7 +5,6 @@
  * @type {URLSearchParams}
  */
 const parameters = new URLSearchParams(window.location.search);
-
 const titlePageEnum = {
 	ALL_OR_BY_SECTION: "our ",
 	FAVORITES: "my ",
@@ -195,15 +194,16 @@ const fetchProducts = async () => {
 				})
 				.then((productList) => {
 					this.productList = productList;
-					console.log("this.productList", this.productList);
+
 				});
 			break;
 
 		case keySearchEnum.BEAUTY:
 		case keySearchEnum.HEALTH:
 		case keySearchEnum.SUPPLEMENTS:
-			// debugger;
+
 			let section = keySearchParameter;
+
 
 			titlePage.innerText = titlePageEnum.ALL_OR_BY_SECTION;
 			titleSpan.innerText = section.toLowerCase();
@@ -212,10 +212,11 @@ const fetchProducts = async () => {
 			urlWithQueryParametersSection.searchParams.append("verify", verify);
 			urlWithQueryParametersSection.searchParams.append("section", section);
 
+			// debugger
+			console.log("getBySection token", parameters.get("token"));
 			await fetch(
 				urlWithQueryParametersSection,
-				fetchContentFactoryWithoutBody(requestMethods.GET),
-				tokenParameter,
+				fetchContentFactoryWithoutBody(requestMethods.GET, tokenParameter),
 			)
 				.then((response) => {
 					if (response.ok) {
@@ -226,7 +227,7 @@ const fetchProducts = async () => {
 				})
 				.then((productList) => {
 					this.productList = productList;
-					console.log("this.productList", this.productList);
+					console.log("this.productList by section", this.productList);
 				});
 			break;
 		case keySearchEnum.FAVOURITES:
@@ -239,7 +240,6 @@ const fetchProducts = async () => {
 			);
 			urlWithQueryParametersFavourites.searchParams.append("verify", verify);
 
-			console.log("header", header.get("token"));
 			await fetch(
 				urlWithQueryParametersFavourites,
 				fetchContentFactoryWithoutBody(requestMethods.GET, tokenParameter),
@@ -253,7 +253,7 @@ const fetchProducts = async () => {
 				})
 				.then((productList) => {
 					this.productList = productList;
-					console.log("this.productList", this.productList);
+					console.log("this.productList favourites", this.productList);
 				});
 			break;
 		case keySearchEnum.ORDER:
@@ -285,25 +285,27 @@ const fetchProducts = async () => {
  * @param {[JSON]} productList the array to be divide
  */
 const divideArrays = (productList) => {
-	let arrayProductsHalf1 = [],
-		arrayProductsHalf2 = [];
-	let cutoff = Math.round(productList.length / 2);
+	if (productList) {
+		let arrayProductsHalf1 = [],
+			arrayProductsHalf2 = [];
+		let cutoff = Math.round(productList.length / 2);
 
-	productList.forEach((element, index) => {
-		if (cutoff <= index) {
-			arrayProductsHalf1.push(element);
-		} else {
-			arrayProductsHalf2.push(element);
+		productList.forEach((element, index) => {
+			if (cutoff <= index) {
+				arrayProductsHalf1.push(element);
+			} else {
+				arrayProductsHalf2.push(element);
+			}
+		});
+
+		loadProducts(arrayProductsHalf1, productsHalf1Div);
+		loadProducts(arrayProductsHalf2, productsHalf2Div);
+
+		if (productIdAuxiliary != null && productIdAuxiliary != undefined) {
+			document
+				.getElementById(productIdAuxiliary)
+				.scrollIntoView({ behavior: "instant", block: "center" });
 		}
-	});
-
-	loadProducts(arrayProductsHalf1, productsHalf1Div);
-	loadProducts(arrayProductsHalf2, productsHalf2Div);
-
-	if (productIdAuxiliary != null && productIdAuxiliary != undefined) {
-		document
-			.getElementById(productIdAuxiliary)
-			.scrollIntoView({ behavior: "instant", block: "center" });
 	}
 };
 
@@ -387,10 +389,6 @@ const loadProducts = (arrayHalf, divHalf) => {
 						"id",
 						productElement.id,
 					);
-					console.log(
-						"urlWithQueryParametersAll in like",
-						urlWithQueryParametersAll,
-					);
 					await fetch(
 						urlWithQueryParametersAll,
 						fetchContentFactoryWithoutBody(requestMethods.PUT, tokenParameter),
@@ -404,7 +402,7 @@ const loadProducts = (arrayHalf, divHalf) => {
 							}
 						})
 						.then((liked) => {
-							console.log("liked", liked);
+
 							fetchProducts();
 						});
 				} else {
@@ -427,7 +425,7 @@ const loadProducts = (arrayHalf, divHalf) => {
 							}
 						})
 						.then((unliked) => {
-							console.log("unliked", unliked);
+
 							fetchProducts();
 						});
 				}
@@ -470,10 +468,6 @@ const loadProducts = (arrayHalf, divHalf) => {
 						"id",
 						productElement.id,
 					);
-					console.log(
-						"urlWithQueryParametersAll in favourites",
-						urlWithQueryParametersAll,
-					);
 
 					await fetch(
 						urlWithQueryParametersAll,
@@ -488,7 +482,7 @@ const loadProducts = (arrayHalf, divHalf) => {
 							}
 						})
 						.then((favorited) => {
-							console.log("Favorited", favorited);
+
 							fetchProducts();
 						});
 				} else {
@@ -513,7 +507,7 @@ const loadProducts = (arrayHalf, divHalf) => {
 							}
 						})
 						.then((unfavourite) => {
-							console.log("unfavourite", unfavourite);
+
 							fetchProducts();
 						});
 				}
@@ -553,9 +547,9 @@ const loadProducts = (arrayHalf, divHalf) => {
 				}).then((cart) => {
 					if (cart.id != null && cart.id != undefined && cart.productsDTO) {
 						loadCartItem(cart);
-						handleBadge(cart.productsDTO.length);
+						handleBadge(cart.productsDTO ? cart.productsDTO.length : 0);
 					}
-					console.log("order", cart);
+
 				});
 			}
 		});
@@ -668,7 +662,7 @@ const badge = document.getElementsByClassName("badge")[0];
  *
  * @type {string}
  */
-let tokenParameter = parameters.get("token");
+const tokenParameter = parameters.get("token");
 /**
  * User role to be added in the URL parameters.
  * @date 5/8/2023 - 2:27:35 PM
@@ -844,6 +838,7 @@ document.getElementById("signout-btn").addEventListener("click", signout);
  * @returns {JSON} object order that contains: 
  */
 const getCart = async () => {
+	console.log("getCart()");
 	let token = loggedUser ? loggedUser.token : tokenParameter;
 
 	await fetch(
@@ -855,9 +850,7 @@ const getCart = async () => {
 				console.error("Error on getOrderByToken (getCart)");
 			}
 		}).then((cart) => {
-			console.log("Logged user cart", cart);
-
-			handleBadge(cart.productsDTO.length);
+			handleBadge(cart.productsDTO ? cart.productsDTO.length : 0);
 
 			if (cart.id != null && cart.id != undefined) {
 				loadCartItem(cart);
@@ -891,8 +884,6 @@ const loadCartItem = (cart) => {
 				urlWithQueryParametersRemoveProduct.searchParams.append("productId", productInCartElement.id);
 
 				let token = loggedUser ? loggedUser.token : tokenParameter;
-				console.log("header", header.get("token"));
-
 				await fetch(
 					urlWithQueryParametersRemoveProduct,
 					fetchContentFactoryWithoutBody(requestMethods.DELETE, token),
@@ -906,7 +897,7 @@ const loadCartItem = (cart) => {
 					})
 					.then((cart) => {
 						loadCartItem(cart);
-						handleBadge(cart.productsDTO.length);
+						handleBadge(cart.productsDTO ? cart.productsDTO.length : 0);
 					});
 			});
 			// <img src="../images/national-watermelon-day(sm).png" alt="">
@@ -945,7 +936,6 @@ const loadCartItem = (cart) => {
 			urlWithQueryParametersCheckout.searchParams.append("id", cart.id);
 
 			let token = loggedUser ? loggedUser.token : tokenParameter;
-			console.log("header", header.get("token"));
 
 			debugger;
 			await fetch(
