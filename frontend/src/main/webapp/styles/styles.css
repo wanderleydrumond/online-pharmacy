@@ -668,11 +668,21 @@ section {
 }
 
 .badge {
+	position: relative;
+	top: 1.7rem;
+	right: 4.3rem;
 	background-color: var(--light-green);
 	color: white;
-	padding: 4px;
 	text-align: center;
 	border-radius: 50%;
+}
+
+.single-digit {
+	padding: .3rem .7rem;
+}
+
+.two-digits {
+	padding: .3rem;
 }
 
 /* Media Queries */
