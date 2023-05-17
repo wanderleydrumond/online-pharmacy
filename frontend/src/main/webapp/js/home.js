@@ -39,7 +39,7 @@ const buildURLAndRedirect = (keySearchEnumParam) => {
 	dataURL.delete("role");
 
 	let token = NOT_LOGGED_TOKEN;
-	let	role;
+	let role;
 
 	if (loggedUser !== null && loggedUser !== undefined) {
 		token = loggedUser.token;
@@ -112,8 +112,27 @@ const signoutButton = document.getElementById("signout-btn");
  * @type {Object}
  */
 const signinError = document.getElementsByClassName("error-signin");
+
+/**
+ * HTML <strong><em>anchor</em></strong> element in the navbar that links the current user to favourites page.
+ * @date 5/17/2023 - 9:02:40 AM
+ *
+ * @type {Object}
+ */
 const favouritesLink = document.getElementsByClassName("get-favourites");
+/**
+ * HTML <strong><em>anchor</em></strong> element in the navbar that links the current user to history page.
+ * @date 5/17/2023 - 9:04:39 AM
+ *
+ * @type {Object}
+ */
 const historyLink = document.getElementsByClassName("get-history");
+/**
+ * HTML <strong><em>anchor</em></strong> element in the navbar that has the appearance of a button to redirect to edit profile page.
+ * @date 5/17/2023 - 9:05:51 AM
+ *
+ * @type {Object}
+ */
 const editProfileButton = document.getElementById("edit-profile-btn");
 /**
  * The way to get things of URL.
@@ -165,9 +184,9 @@ const manageNavbar = () => {
 		link.classList.remove("disappear");
 	}
 
-	if ((loggedUser != undefined && loggedUser.role == role.ADMINISTRATOR) || 
+	if ((loggedUser != undefined && loggedUser.role == role.ADMINISTRATOR) ||
 		(roleParameter != undefined && roleParameter == role.ADMINISTRATOR)) {
-			dashboardButton.classList.remove("disappear");
+		dashboardButton.classList.remove("disappear");
 	}
 };
 
@@ -213,6 +232,15 @@ const signin = async () => {
 			})
 			.then((user) => {
 				loggedUser = user;
+
+				dataURL.delete("token");
+				dataURL.delete("role");
+
+				dataURL.append("token", loggedUser.token);
+				dataURL.append("role", loggedUser.role);
+
+				window.location.href = "home.html?" + dataURL.toString();
+
 				if (loggedUser != undefined && loggedUser != null) {
 					manageNavbar();
 				}
@@ -283,3 +311,165 @@ const signout = async () => {
 };
 
 document.getElementById("signout-btn").addEventListener("click", signout);
+
+/**
+ * Gets the only non concluded order (cart) from the logged user.
+ * @date 5/16/2023 - 4:11:10 PM
+ *
+ * @async
+ * @returns {JSON} object order that contains: 
+ */
+const getCart = async () => {
+	console.log("getCart()");
+	let token = loggedUser ? loggedUser.token : tokenParameter;
+
+	await fetch(
+		urlBase + "/order/cart",
+		fetchContentFactoryWithoutBody(requestMethods.GET, token)).then((response) => {
+			if (response.ok) {
+				return response.json();
+			} else {
+				console.error("Error on getOrderByToken (getCart)");
+			}
+		}).then((cart) => {
+			handleBadge(cart.productsDTO ? cart.productsDTO.length : 0);
+
+			if (cart.id != null && cart.id != undefined) {
+				loadCartItem(cart);
+			}
+		});
+};
+
+/**
+ * Displays all the elements that make up the cart
+ * @date 5/16/2023 - 4:07:58 PM
+ *
+ * @param {[JSON]} cart list of products that the current order contains
+ */
+const loadCartItem = (cart) => {
+
+	cleanCart();
+
+	if (cart.productsDTO) {
+		cart.productsDTO.forEach(productInCartElement => {
+			// <div class="box">
+			const cartItem = document.createElement("div");
+			cartItem.classList.add("box");
+			// <i class="fa-solid fa-trash">
+			const trashIcon = document.createElement("i");
+
+			trashIcon.classList.add("fa-solid");
+			trashIcon.classList.add("fa-trash");
+			trashIcon.addEventListener("click", async () => {
+				const urlWithQueryParametersRemoveProduct = new URL(urlBase + "/order/product-by");
+				urlWithQueryParametersRemoveProduct.searchParams.append("orderId", cart.id);
+				urlWithQueryParametersRemoveProduct.searchParams.append("productId", productInCartElement.id);
+
+				let token = loggedUser ? loggedUser.token : tokenParameter;
+				await fetch(
+					urlWithQueryParametersRemoveProduct,
+					fetchContentFactoryWithoutBody(requestMethods.DELETE, token),
+				)
+					.then((response) => {
+						if (response.ok) {
+							return response.json();
+						} else {
+							console.log("Error");
+						}
+					})
+					.then((cart) => {
+						loadCartItem(cart);
+						handleBadge(cart.productsDTO ? cart.productsDTO.length : 0);
+					});
+			});
+			// <img src="../images/national-watermelon-day(sm).png" alt="">
+			const productImage = document.createElement("img");
+			productImage.src = productInCartElement.image;
+			productImage.alt = productInCartElement.name;
+			// <div class="content">
+			const productInformations = document.createElement("div");
+			productInformations.classList.add("content");
+			// <h3>watermelon</h3>
+			const productName = document.createElement("h3");
+			productName.innerText = productInCartElement.name;
+			// <span class="price">€4.99/-</span>
+			const productPrice = document.createElement("span");
+			productPrice.classList.add("price");
+			productPrice.innerText = productInCartElement.price;
+
+			productInformations.appendChild(productName);
+			productInformations.appendChild(productPrice);
+			cartItem.appendChild(trashIcon);
+			cartItem.appendChild(productImage);
+			cartItem.appendChild(productInformations);
+			cartDiv.appendChild(cartItem);
+		});
+
+		const total = document.createElement("div");
+		total.classList.add("total");
+		total.innerText = "Total : " + cart.totalValue.toFixed(2).toString() + "€";
+
+		const checkout = document.createElement("a");
+		checkout.classList.add("btn");
+		checkout.href = "#";
+		checkout.innerText = "checkout";
+		checkout.addEventListener("click", async () => {
+			const urlWithQueryParametersCheckout = new URL(urlBase + "/order/finish");
+			urlWithQueryParametersCheckout.searchParams.append("id", cart.id);
+
+			let token = loggedUser ? loggedUser.token : tokenParameter;
+
+			await fetch(
+				urlWithQueryParametersCheckout,
+				fetchContentFactoryWithoutBody(requestMethods.PUT, token),
+			)
+				.then((response) => {
+					if (response.ok) {
+						return response.json();
+					} else {
+						console.log("Error");
+					}
+				})
+				.then((order) => {
+					if (order.isConcluded) {
+						cleanCart();
+						handleBadge(0);
+					}
+				});
+		});
+
+		cartDiv.appendChild(total);
+		cartDiv.appendChild(checkout);
+	}
+};
+
+/**
+ * Removes all elements inside div cart.
+ * @date 5/17/2023 - 10:17:54 AM
+ */
+function cleanCart() {
+	if (cartDiv.children) { //TODO: esta verificação é necessária? Se calhar, basta o while já funciona.
+		while (cartDiv.children.length > 0) {
+			cartDiv.removeChild(cartDiv.children[0]);
+		}
+	}
+}
+
+/**
+ * Displays the badge according to amount of digits.
+ * @date 5/16/2023 - 3:54:09 PM
+ *
+ * @param {number} amount of products
+ */
+function handleBadge(amount) {
+	badge.innerText = amount;
+	if (badge.classList.contains("disappear")) {
+		badge.classList.remove("disappear");
+	}
+
+	if (amount < 10) {
+		badge.classList.add("single-digit");
+	} else {
+		badge.classList.add("two-digits");
+	}
+}

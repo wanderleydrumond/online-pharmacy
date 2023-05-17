@@ -655,6 +655,12 @@ const favouritesLink = document.getElementsByClassName("get-favourites");
  * @type {Object}
  */
 const historyLink = document.getElementsByClassName("get-history");
+/**
+ * <strong><em>span</em></strong> element that contains the amount of element in cart
+ * @date 5/17/2023 - 10:20:16 AM
+ *
+ * @type {Object}
+ */
 const badge = document.getElementsByClassName("badge")[0];
 /**
  * UUID to be get from URL.
@@ -757,6 +763,7 @@ const signin = async () => {
 				dataURL.append("role", loggedUser.role);
 
 				window.location.href = "order_products_favorites.html?" + dataURL.toString();
+				
 				if (loggedUser != undefined && loggedUser != null) {
 					manageNavbar();
 				}
@@ -937,7 +944,6 @@ const loadCartItem = (cart) => {
 
 			let token = loggedUser ? loggedUser.token : tokenParameter;
 
-			debugger;
 			await fetch(
 				urlWithQueryParametersCheckout,
 				fetchContentFactoryWithoutBody(requestMethods.PUT, token),
@@ -962,6 +968,10 @@ const loadCartItem = (cart) => {
 	}
 };
 
+/**
+ * Removes all elements inside div cart.
+ * @date 5/17/2023 - 10:17:54 AM
+ */
 function cleanCart() {
 	if (cartDiv.children) { //TODO: esta verificação é necessária? Se calhar, basta o while já funciona.
 		while (cartDiv.children.length > 0) {
