@@ -94,47 +94,7 @@ const getDashboardData = async () => {
             visitors = dashboard.visitorsDTO;
             loadCards(dashboard);
 
-            visitors.forEach((visitorElement, index) => {
-                const elementRow = document.createElement("tr");
-                // <td>mark grayson</td>
-                const visitorName = document.createElement("td");
-                visitorName.innerText = visitorElement.name;
-                // <td></td>
-                const visitorOption = document.createElement("td");
-                // <a href="#" class="btn"></a>
-                const approveButton = document.createElement("a");
-                approveButton.id = index;
-                approveButton.href = "#";
-                approveButton.classList.add("btn");
-                approveButton.addEventListener('click', async (event) => {
-                    const urlWithQueryParametersApprove = new URL(urlBase + "/user/approve");
-                    urlWithQueryParametersApprove.searchParams.append("id", visitorElement.id);
-
-                    await fetch(
-                        urlWithQueryParametersApprove,
-                        fetchContentFactoryWithoutBody(requestMethods.PUT, tokenParameter),
-                    )
-                        .then((response) => {
-                            if (response.ok) {
-                                return response.text();
-                            }
-                        })
-                        .then((approved) => {
-                            location.reload(approved);
-                        });
-                });
-                // <i class="fa-solid fa-check"></i>
-                const checkIcon = document.createElement("i");
-                checkIcon.classList.add("fa-solid");
-                checkIcon.classList.add("fa-check");
-
-                approveButton.appendChild(checkIcon);
-                visitorOption.appendChild(approveButton);
-                elementRow.appendChild(visitorName);
-                elementRow.appendChild(visitorOption);
-                visitorsTable.appendChild(elementRow);
-            });
-
+            loadVisitors();
         });
 };
 
@@ -166,4 +126,48 @@ const loadCards = (dashboard) => {
     totalPurchases.innerText = dashboard.totalValueConcludedOrders.toFixed(2).toString() + "€";
     currentMonth.innerText = dashboard.totalValueConcludedOrdersCurrentMonth.toFixed(2).toString() + "€";
     lastMonth.innerText = dashboard.totalValueConcludedOrdersLastMonth.toFixed(2).toString() + "€";
+}
+const loadVisitors = () => {
+    while (visitorsTable.children.length > 1) {
+        visitorsTable.removeChild(visitorsTable.children[1]);
+    }
+
+    visitors.forEach((visitorElement, index) => {
+        const elementRow = document.createElement("tr");
+        // <td>mark grayson</td>
+        const visitorName = document.createElement("td");
+        visitorName.innerText = visitorElement.name;
+        // <td></td>
+        const visitorOption = document.createElement("td");
+        // <a href="#" class="btn"></a>
+        const approveButton = document.createElement("a");
+        approveButton.id = index;
+        approveButton.href = "#";
+        approveButton.classList.add("btn");
+        approveButton.addEventListener('click', async (event) => {
+            const urlWithQueryParametersApprove = new URL(urlBase + "/user/approve");
+            urlWithQueryParametersApprove.searchParams.append("id", visitorElement.id);
+
+            await fetch(
+                urlWithQueryParametersApprove,
+                fetchContentFactoryWithoutBody(requestMethods.PUT, tokenParameter)
+            )
+                .then((response) => {
+                    if (response.ok) {
+                        getDashboardData();
+                        visitorsTable.scrollIntoView({ behavior: "instant", block: "center" });
+                    }
+                });
+        });
+        // <i class="fa-solid fa-check"></i>
+        const checkIcon = document.createElement("i");
+        checkIcon.classList.add("fa-solid");
+        checkIcon.classList.add("fa-check");
+
+        approveButton.appendChild(checkIcon);
+        visitorOption.appendChild(approveButton);
+        elementRow.appendChild(visitorName);
+        elementRow.appendChild(visitorOption);
+        visitorsTable.appendChild(elementRow);
+    });
 }
