@@ -12,7 +12,7 @@ const parameters = new URLSearchParams(window.location.search);
  * @type {string}
  */
 const tokenParameter = parameters.get("token");
-let dashboard;
+let visitors;
 /**
  * HTML <strong><em>h1</em></strong> element that contains the amount of clients existent in database.
  * @date 5/17/2023 - 4:34:44 PM
@@ -62,12 +62,26 @@ const currentMonth = document.getElementById("current-month");
  * @type {Object}
  */
 const lastMonth = document.getElementById("last-month");
+/**
+ * HTML <strong><em>anchor</em></strong> element in the navbar and in the logo that links the current user to home page.
+ * @date 5/18/2023 - 2:03:06 PM
+ *
+ * @type {Object}
+ */
 const home = document.getElementsByClassName("home");
+const visitorsTable = document.getElementById("visitors");
 
 window.onload = () => {
     getDashboardData();
 }
 
+/**
+ * Gets the all informations regarding dashboard.
+ * @date 5/18/2023 - 1:57:56 PM
+ *
+ * @async
+ * @returns {JSON} the object that contains all the dashboard data
+ */
 const getDashboardData = async () => {
     await fetch(urlBase + "/user/dashboard",
         fetchContentFactoryWithoutBody(requestMethods.GET, tokenParameter)).then((response) => {
@@ -77,17 +91,57 @@ const getDashboardData = async () => {
                 console.error("Error getting dashboard");
             }
         }).then((dashboard) => {
-            this.dashboard = dashboard;
-            totalClients.innerText = dashboard.totalClients;
-            totalProducts.innerText = dashboard.totalProducts;
-            totalCarts.innerText = dashboard.totalCarts;
-            totalSignIns.innerText = dashboard.totalSignIns;
-            totalPurchases.innerText = dashboard.totalValueConcludedOrders.toFixed(2).toString() + "€";
-            currentMonth.innerText = dashboard.totalValueConcludedOrdersCurrentMonth.toFixed(2).toString() + "€";
-            lastMonth.innerText = dashboard.totalValueConcludedOrdersLastMonth.toFixed(2).toString() + "€";
+            visitors = dashboard.visitorsDTO;
+            loadCards(dashboard);
+
+            visitors.forEach((visitorElement, index) => {
+                const elementRow = document.createElement("tr");
+                // <td>mark grayson</td>
+                const visitorName = document.createElement("td");
+                visitorName.innerText = visitorElement.name;
+                // <td></td>
+                const visitorOption = document.createElement("td");
+                // <a href="#" class="btn"></a>
+                const approveButton = document.createElement("a");
+                approveButton.id = index;
+                approveButton.href = "#";
+                approveButton.classList.add("btn");
+                approveButton.addEventListener('click', async (event) => {
+                    const urlWithQueryParametersApprove = new URL(urlBase + "/user/approve");
+                    urlWithQueryParametersApprove.searchParams.append("id", visitorElement.id);
+
+                    await fetch(
+                        urlWithQueryParametersApprove,
+                        fetchContentFactoryWithoutBody(requestMethods.PUT, tokenParameter),
+                    )
+                        .then((response) => {
+                            if (response.ok) {
+                                return response.text();
+                            }
+                        })
+                        .then((approved) => {
+                            location.reload(approved);
+                        });
+                });
+                // <i class="fa-solid fa-check"></i>
+                const checkIcon = document.createElement("i");
+                checkIcon.classList.add("fa-solid");
+                checkIcon.classList.add("fa-check");
+
+                approveButton.appendChild(checkIcon);
+                visitorOption.appendChild(approveButton);
+                elementRow.appendChild(visitorName);
+                elementRow.appendChild(visitorOption);
+                visitorsTable.appendChild(elementRow);
+            });
+
         });
 };
 
+/**
+ * Clears the current URL, builds a new one with token and role then redirect to home.
+ * @date 5/18/2023 - 2:00:12 PM
+ */
 const buildURLAndRedirectToHome = () => {
     dataURL.delete("token");
 
@@ -96,3 +150,20 @@ const buildURLAndRedirectToHome = () => {
 
     window.location.href = "home.html?" + dataURL.toString();
 };
+
+
+/**
+ * Fills the respective data inside each card.
+ * @date 5/18/2023 - 1:49:50 PM
+ *
+ * @param {JSON} dashboard object that contains all informations regarding this page
+ */
+const loadCards = (dashboard) => {
+    totalClients.innerText = dashboard.totalClients;
+    totalProducts.innerText = dashboard.totalProducts;
+    totalCarts.innerText = dashboard.totalCarts;
+    totalSignIns.innerText = dashboard.totalSignIns;
+    totalPurchases.innerText = dashboard.totalValueConcludedOrders.toFixed(2).toString() + "€";
+    currentMonth.innerText = dashboard.totalValueConcludedOrdersCurrentMonth.toFixed(2).toString() + "€";
+    lastMonth.innerText = dashboard.totalValueConcludedOrdersLastMonth.toFixed(2).toString() + "€";
+}

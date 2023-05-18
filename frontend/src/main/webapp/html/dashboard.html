@@ -1,166 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../styles/dashboard.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="../images/laptop-medical-solid-green.png" type="image/x-icon">
-    <!-- https://www.youtube.com/watch?v=NWpMwYHkA3M -->
-    <!-- https://www.imecreative.com/responsive-admin-dashboard-using-html-and-css-2/ -->
-    <title>Dashboard</title>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="../styles/dashboard.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="icon" href="../images/laptop-medical-solid-green.png" type="image/x-icon">
+        <!-- https://www.youtube.com/watch?v=NWpMwYHkA3M -->
+        <!-- https://www.imecreative.com/responsive-admin-dashboard-using-html-and-css-2/ -->
+        <title>Dashboard</title>
+    </head>
 
-<body>
-    <!-- header section start -->
-    <header class="header">
-        <a href="#" class="logo home" onclick="buildURLAndRedirectToHome()"><i class="fa-solid fa-laptop-medical"></i>
-            online pharmacy </a>
+    <body>
+        <!-- header section start -->
+        <header class="header">
+            <a href="#" class="logo home" onclick="buildURLAndRedirectToHome()"><i class="fa-solid fa-laptop-medical"></i>
+                online pharmacy </a>
 
-        <nav class="navbar">
-            <a href="#" class="home" onclick="buildURLAndRedirectToHome()">home</a>
-        </nav>
+            <nav class="navbar">
+                <a href="#" class="home" onclick="buildURLAndRedirectToHome()">home</a>
+            </nav>
 
-        <div class="icons">
-            <div class="fa-solid fa-bars" id="menu-btn"></div>
-        </div>
-    </header>
-    <!-- header section end -->
+            <div class="icons">
+                <div class="fa-solid fa-bars" id="menu-btn"></div>
+            </div>
+        </header>
+        <!-- header section end -->
 
-    <!-- dashboard section starts -->
-    <section class="dashboard">
-        <div class="content-1">
-            <div class="cards">
-                <div class="card">
-                    <div class="box">
-                        <h1 id="total-clients">2194</h1>
-                        <h3>clients</h3>
+        <!-- dashboard section starts -->
+        <section class="dashboard">
+            <div class="content-1">
+                <div class="cards">
+                    <div class="card">
+                        <div class="box">
+                            <h1 id="total-clients">2194</h1>
+                            <h3>clients</h3>
+                        </div>
+                        <div class="icon-case">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
                     </div>
-                    <div class="icon-case">
-                        <i class="fa-solid fa-users"></i>
+
+                    <div class="card">
+                        <div class="box">
+                            <h1 id="total-products">53</h1>
+                            <h3>products</h3>
+                        </div>
+                        <div class="icon-case">
+                            <i class="fa-solid fa-capsules"></i>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="box">
+                            <h1 id="total-carts">5</h1>
+                            <h3>carts</h3>
+                        </div>
+                        <div class="icon-case">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="box">
+                            <h1 id="total-sign-ins">53</h1>
+                            <h3>signins</h3>
+                        </div>
+                        <div class="icon-case">
+                            <i class="fa-solid fa-calculator"></i>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="box">
+                            <h1 id="concluded-orders">3500.00€</h1>
+                            <h3>total purchase</h3>
+                        </div>
+                        <div class="icon-case">
+                            <i class="fa-solid fa-vault"></i>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="box">
+                            <h1 id="current-month">500.00€</h1>
+                            <h3>current month</h3>
+                        </div>
+                        <div class="icon-case">
+                            <i class="fa-solid fa-money-bill"></i>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="box">
+                            <h1 id="last-month">300.00€</h1>
+                            <h3>last month</h3>
+                        </div>
+                        <div class="icon-case">
+                            <i class="fa-solid fa-money-bill-trend-up"></i>
+                        </div>
                     </div>
                 </div>
 
-                <div class="card">
-                    <div class="box">
-                        <h1 id="total-products">53</h1>
-                        <h3>products</h3>
-                    </div>
-                    <div class="icon-case">
-                        <i class="fa-solid fa-capsules"></i>
-                    </div>
-                </div>
+                <div class="content-2">
+                    <div class="add-product">
+                        <div class="title">
+                            <h2>add product</h2>
+                            <a href="#" class="btn">View All</a>
+                        </div>
+                        <form action="" class="add-product-form">
+                            <input type="email" placeholder="Product name" class="box">
+                            <input type="number" step=".01" min="0" placeholder="Product price" class="box">
+                            <input type="url" placeholder="Product image" class="box">
+                            <select name="section" class="box">
+                                <option value="health">select a section</option>
+                                <option value="health">Health</option>
+                                <option value="supplements">Supplements</option>
+                                <option value="beauty">Beauty</option>
+                            </select>
 
-                <div class="card">
-                    <div class="box">
-                        <h1 id="total-carts">5</h1>
-                        <h3>carts</h3>
+                            <input type="submit" value="create" class="btn">
+                        </form>
                     </div>
-                    <div class="icon-case">
-                        <i class="fa-solid fa-cart-shopping"></i>
-                    </div>
-                </div>
 
-                <div class="card">
-                    <div class="box">
-                        <h1 id="total-sign-ins">53</h1>
-                        <h3>signins</h3>
-                    </div>
-                    <div class="icon-case">
-                        <i class="fa-solid fa-calculator"></i>
-                    </div>
-                </div>
+                    <div class="new-users">
+                        <div class="title">
+                            <h2>approve users</h2>
+                            <a href="#" class="btn">approve all</a>
+                        </div>
+                        <table id="visitors">
+                            <tr>
+                                <th>Name</th>
+                                <th>option</th>
+                            </tr>
 
-                <div class="card">
-                    <div class="box">
-                        <h1 id="concluded-orders">3500.00€</h1>
-                        <h3>total purchase</h3>
-                    </div>
-                    <div class="icon-case">
-                        <i class="fa-solid fa-vault"></i>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="box">
-                        <h1 id="current-month">500.00€</h1>
-                        <h3>current month</h3>
-                    </div>
-                    <div class="icon-case">
-                        <i class="fa-solid fa-money-bill"></i>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="box">
-                        <h1 id="last-month">300.00€</h1>
-                        <h3>last month</h3>
-                    </div>
-                    <div class="icon-case">
-                        <i class="fa-solid fa-money-bill-trend-up"></i>
+                            <!-- <tr>
+                                <td>mark grayson</td>
+                                <td>
+                                    <a href="#" class="btn">
+                                        <i class="fa-solid fa-check"></i>
+                                    </a>
+                                </td>
+                            </tr> -->
+                            
+                        </table>
                     </div>
                 </div>
             </div>
-
-            <div class="content-2">
-                <div class="add-product">
-                    <div class="title">
-                        <h2>add product</h2>
-                        <a href="#" class="btn">View All</a>
-                    </div>
-                    <form action="" class="add-product-form">
-                        <input type="email" placeholder="Product name" class="box">
-                        <input type="number" step=".01" min="0" placeholder="Product price" class="box">
-                        <input type="url" placeholder="Product image" class="box">
-                        <select name="section" class="box">
-                            <option value="health">select a section</option>
-                            <option value="health">Health</option>
-                            <option value="supplements">Supplements</option>
-                            <option value="beauty">Beauty</option>
-                        </select>
-
-                        <input type="submit" value="create" class="btn">
-                    </form>
-                </div>
-
-                <div class="new-users">
-                    <div class="title">
-                        <h2>approve users</h2>
-                        <a href="#" class="btn">approve all</a>
-                    </div>
-                    <table>
-                        <tr>
-                            <th>Name</th>
-                            <th>option</th>
-                        </tr>
-                        <tr>
-                            <td>mark grayson</td>
-                            <td><a href="#" class="btn"><i class="fa-solid fa-check"></i></a></td>
-                        </tr>
-                        <tr>
-                            <td>kate cha</td>
-                            <td><a href="#" class="btn"><i class="fa-solid fa-check"></i></a></td>
-                        </tr>
-                        <tr>
-                            <td>Rex Sloane</td>
-                            <td><a href="#" class="btn"><i class="fa-solid fa-check"></i></a></td>
-                        </tr>
-                        <tr>
-                            <td>Markus Grimshaw</td>
-                            <td><a href="#" class="btn"><i class="fa-solid fa-check"></i></a></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- dashboard section ends -->
-    <script src="../js/constants/constants.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-    <script src="../js/navbar.js"></script>
-    <script src="../js/dashboard.js"></script>
-</body>
+        </section>
+        <!-- dashboard section ends -->
+        <script src="../js/constants/constants.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+        <script src="../js/navbar.js"></script>
+        <script src="../js/dashboard.js"></script>
+    </body>
 
 </html>
