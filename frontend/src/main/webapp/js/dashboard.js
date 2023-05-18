@@ -71,9 +71,11 @@ const lastMonth = document.getElementById("last-month");
 const home = document.getElementsByClassName("home");
 const visitorsTable = document.getElementById("visitors");
 const approveAllButton = document.getElementById("approve-all")
+const sectionsSelect = document.getElementsByName("section")[0];
 
 window.onload = () => {
     getDashboardData();
+    getSections();
 }
 
 /**
@@ -168,7 +170,11 @@ approveAllButton.addEventListener('click', async (event) => {
     manageScreen();
 });
 
-function manageScreen() {
+/**
+ * Gets the dashboard data and centers the screen to the table.
+ * @date 5/18/2023 - 7:06:49 PM
+ */
+const manageScreen = () => {
     getDashboardData();
     visitorsTable.scrollIntoView({ behavior: "instant", block: "center" });
 }
@@ -189,3 +195,23 @@ async function approve(visitorElement, isApproveAll) {
             }
         });
 }
+
+/**
+ * Fills options elements inside select element with the sections from the database.
+ * @date 5/18/2023 - 7:03:41 PM
+ */
+const getSections = () => {
+    fetch(urlBase + "/product/all-sections", fetchContentFactoryWithoutBody(requestMethods.GET)).then((response) => {
+        if (response.ok) {
+            return response.json();
+        }
+    }).then((sections) => {
+        sections.forEach(sectionElement => {
+            // <option value="health">Health</option>
+            const option = document.createElement("option");
+            option.value = sectionElement;
+            option.innerText = sectionElement;
+            sectionsSelect.appendChild(option);
+        });
+    });
+};
