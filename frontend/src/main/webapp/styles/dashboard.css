@@ -123,6 +123,10 @@ section {
 	color: white;
 }
 
+.header .icons .disappear {
+	display: none;
+}
+
 #menu-btn {
 	display: none;
 }

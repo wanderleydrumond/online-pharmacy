@@ -212,8 +212,6 @@ const fetchProducts = async () => {
 			urlWithQueryParametersSection.searchParams.append("verify", verify);
 			urlWithQueryParametersSection.searchParams.append("section", section);
 
-			// debugger
-			console.log("getBySection token", parameters.get("token"));
 			await fetch(
 				urlWithQueryParametersSection,
 				fetchContentFactoryWithoutBody(requestMethods.GET, tokenParameter),
@@ -227,7 +225,6 @@ const fetchProducts = async () => {
 				})
 				.then((productList) => {
 					this.productList = productList;
-					console.log("this.productList by section", this.productList);
 				});
 			break;
 		case keySearchEnum.FAVOURITES:
@@ -248,12 +245,11 @@ const fetchProducts = async () => {
 					if (response.ok) {
 						return response.json();
 					} else {
-						console.log("Error fetching favourite products");
+						console.error("Error fetching favourite products");
 					}
 				})
 				.then((productList) => {
 					this.productList = productList;
-					console.log("this.productList favourites", this.productList);
 				});
 			break;
 		case keySearchEnum.ORDER:
@@ -675,7 +671,7 @@ const tokenParameter = parameters.get("token");
  *
  * @type {string}
  */
-let roleParameter = parameters.get("role");
+const roleParameter = parameters.get("role");
 /**
  * Storages the logged user in the home page.
  * @date 5/8/2023 - 4:36:25 PM
@@ -695,7 +691,6 @@ const manageNavbar = () => {
 	signinForm.classList.remove("active");
 	signinButton.classList.add("disappear");
 	signoutButton.classList.remove("disappear");
-	editProfileButton.classList.remove("disappear");
 
 	for (const link of favouritesLink) {
 		link.classList.remove("disappear");
@@ -763,7 +758,7 @@ const signin = async () => {
 				dataURL.append("role", loggedUser.role);
 
 				window.location.href = "order_products_favorites.html?" + dataURL.toString();
-				
+
 				if (loggedUser != undefined && loggedUser != null) {
 					manageNavbar();
 				}
@@ -845,7 +840,6 @@ document.getElementById("signout-btn").addEventListener("click", signout);
  * @returns {JSON} object order that contains: 
  */
 const getCart = async () => {
-	console.log("getCart()");
 	let token = loggedUser ? loggedUser.token : tokenParameter;
 
 	await fetch(
@@ -899,7 +893,7 @@ const loadCartItem = (cart) => {
 						if (response.ok) {
 							return response.json();
 						} else {
-							console.log("Error");
+							console.error("Error fetching order non concluded (cart)");
 						}
 					})
 					.then((cart) => {
@@ -952,7 +946,7 @@ const loadCartItem = (cart) => {
 					if (response.ok) {
 						return response.json();
 					} else {
-						console.log("Error");
+						console.error("Error fetching finished orders");
 					}
 				})
 				.then((order) => {
@@ -998,3 +992,50 @@ function handleBadge(amount) {
 		badge.classList.add("two-digits");
 	}
 }
+
+
+dashboardButton.addEventListener("click", () => {
+	let token;
+
+	if (loggedUser) {
+		token = loggedUser.token;
+	}
+
+	if (tokenParameter != NOT_LOGGED_TOKEN) {
+		token = tokenParameter;
+	}
+
+	if (roleParameter && roleParameter == role.ADMINISTRATOR || loggedUser && loggedUser.role == role.ADMINISTRATOR) {
+		dataURL.delete("token");
+
+		dataURL.append("token", token);
+
+		window.location.href = "dashboard.html?" + dataURL.toString();
+	}
+});
+
+// NAVBAR
+
+let searchForm = document.querySelector(".search-form");
+document.querySelector("#search-btn").onclick = () => {
+	searchForm.classList.toggle("active");
+	shoppingCart.classList.remove("active");
+	signinForm.classList.remove("active");
+	navbar.classList.remove("active");
+};
+
+let shoppingCart = document.querySelector(".shopping-cart");
+document.querySelector("#cart-btn").onclick = () => {
+	searchForm.classList.remove("active");
+	shoppingCart.classList.toggle("active");
+	signinForm.classList.remove("active");
+	navbar.classList.remove("active");
+};
+
+let signinForm = document.querySelector(".signin-form");
+document.querySelector("#signin-btn").onclick = () => {
+	searchForm.classList.remove("active");
+	shoppingCart.classList.remove("active");
+	signinForm.classList.toggle("active");
+	navbar.classList.remove("active");
+};

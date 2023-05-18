@@ -1,7 +1,10 @@
 window.onload = () => {
 	if (loggedUser != null || (tokenParameter != NOT_LOGGED_TOKEN && roleParameter != undefined)) {
 		manageNavbar();
+		getCart();
 	}
+
+
 };
 
 /**
@@ -142,12 +145,19 @@ const editProfileButton = document.getElementById("edit-profile-btn");
  */
 const parameters = new URLSearchParams(window.location.search);
 /**
+ * <strong><em>span</em></strong> element that contains the amount of element in cart
+ * @date 5/17/2023 - 10:20:16 AM
+ *
+ * @type {Object}
+ */
+const badge = document.getElementsByClassName("badge")[0];
+/**
  * UUID to be get from URL.
  * @date 5/8/2023 - 5:08:34 PM
  *
  * @type {string}
  */
-let tokenParameter = parameters.get("token");
+const tokenParameter = parameters.get("token");
 /**
  * User role to be added in the URL parameters.
  * @date 5/8/2023 - 2:27:35 PM
@@ -320,7 +330,6 @@ document.getElementById("signout-btn").addEventListener("click", signout);
  * @returns {JSON} object order that contains: 
  */
 const getCart = async () => {
-	console.log("getCart()");
 	let token = loggedUser ? loggedUser.token : tokenParameter;
 
 	await fetch(
@@ -374,7 +383,7 @@ const loadCartItem = (cart) => {
 						if (response.ok) {
 							return response.json();
 						} else {
-							console.log("Error");
+							console.error("Error fetching product by id");
 						}
 					})
 					.then((cart) => {
@@ -427,7 +436,7 @@ const loadCartItem = (cart) => {
 					if (response.ok) {
 						return response.json();
 					} else {
-						console.log("Error");
+						console.error("Error fetching finished order");
 					}
 				})
 				.then((order) => {
@@ -473,3 +482,44 @@ function handleBadge(amount) {
 		badge.classList.add("two-digits");
 	}
 }
+
+dashboardButton.addEventListener("click", () => {
+	let token;
+
+	if (loggedUser) {
+		token = loggedUser.token;
+	}
+
+	if (tokenParameter != NOT_LOGGED_TOKEN) {
+		token = tokenParameter;
+	}
+
+	if (roleParameter && roleParameter == role.ADMINISTRATOR || loggedUser && loggedUser.role == role.ADMINISTRATOR) {
+		dataURL.delete("token");
+
+		dataURL.append("token", token);
+
+		window.location.href = "dashboard.html?" + dataURL.toString();
+	}
+});
+
+// NAVBAR
+
+let shoppingCart = document.querySelector(".shopping-cart");
+document.querySelector("#cart-btn").onclick = () => {
+	shoppingCart.classList.toggle("active");
+	signinForm.classList.remove("active");
+	navbar.classList.remove("active");
+};
+
+let signinForm = document.querySelector(".signin-form");
+document.querySelector("#signin-btn").onclick = () => {
+	shoppingCart.classList.remove("active");
+	signinForm.classList.toggle("active");
+	navbar.classList.remove("active");
+};
+
+let dashboardBtn = document.getElementById("dashboard-btn");
+dashboardBtn.addEventListener("click", function () {
+	window.location.href = "dashboard.html";
+});

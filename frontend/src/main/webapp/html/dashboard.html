@@ -16,71 +16,16 @@
 <body>
     <!-- header section start -->
     <header class="header">
-        <a href="../html/home.html" class="logo"><i class="fa-solid fa-laptop-medical"></i> online pharmacy </a>
+        <a href="#" class="logo home" onclick="buildURLAndRedirectToHome()"><i class="fa-solid fa-laptop-medical"></i>
+            online pharmacy </a>
 
         <nav class="navbar">
-            <a href="../html/home.html">home</a>
-            <a href="#features">features</a>
-            <a href="../html/products.html">products</a>
-            <a href="#categories">categories</a>
-            <a href="#review">review</a>
-            <a href="../html/history.html">history</a>
+            <a href="#" class="home" onclick="buildURLAndRedirectToHome()">home</a>
         </nav>
 
         <div class="icons">
-            <div class="fa-solid fa-square-poll-vertical" id="dashboard-btn">
-                <a href="../html/dashboard.html"></a>
-            </div>
             <div class="fa-solid fa-bars" id="menu-btn"></div>
-            <div class="fa-solid fa-search" id="search-btn"></div>
-            <div class="fa-solid fa-shopping-cart" id="cart-btn"></div>
-            <div class="fa-solid fa-user" id="signin-btn"></div>
         </div>
-
-        <form class="search-form">
-            <input type="search" id="search-box" placeholder="search here" class="original">
-            <label for="search-box" class="fa-solid fa-search"></label>
-        </form>
-
-        <div class="shopping-cart">
-            <div class="box">
-                <i class="fa-solid fa-trash"></i>
-                <img src="../images/national-watermelon-day(sm).png" alt="">
-                <div class="content-1">
-                    <h3>watermelon</h3>
-                    <span class="price">€4.99/-</span>
-                    <span class="quantity">qty : 1</span>
-                </div>
-            </div>
-            <div class="box">
-                <i class="fa-solid fa-trash"></i>
-                <img src="../images/RED_ONION_TREBOLE_FONIO05(sm).png" alt="">
-                <div class="content-1">
-                    <h3>onion</h3>
-                    <span class="price">€4.99/-</span>
-                    <span class="quantity">qty : 1</span>
-                </div>
-            </div>
-            <div class="box">
-                <i class="fa-solid fa-trash"></i>
-                <img src="../images/Website_Chicken_Tenders_3PC(sm).png" alt="">
-                <div class="content-1">
-                    <h3>chicken</h3>
-                    <span class="price">€4.99/-</span>
-                    <span class="quantity">qty : 1</span>
-                </div>
-            </div>
-            <div class="total">Total : 19.60€/-</div>
-            <a href="#" class="btn">checkout</a>
-        </div>
-
-        <form action="" class="signin-form">
-            <h3>sign-in</h3>
-            <input type="email" placeholder="your e-mail" class="box">
-            <input type="password" placeholder="your password" class="box">
-            <p>don't have an account <a href="../html/signup.html">create now</a></p>
-            <input type="submit" value="sign in" class="btn">
-        </form>
     </header>
     <!-- header section end -->
 
@@ -90,7 +35,7 @@
             <div class="cards">
                 <div class="card">
                     <div class="box">
-                        <h1>2194</h1>
+                        <h1 id="total-clients">2194</h1>
                         <h3>clients</h3>
                     </div>
                     <div class="icon-case">
@@ -100,7 +45,7 @@
 
                 <div class="card">
                     <div class="box">
-                        <h1>53</h1>
+                        <h1 id="total-products">53</h1>
                         <h3>products</h3>
                     </div>
                     <div class="icon-case">
@@ -110,7 +55,7 @@
 
                 <div class="card">
                     <div class="box">
-                        <h1>5</h1>
+                        <h1 id="total-carts">5</h1>
                         <h3>carts</h3>
                     </div>
                     <div class="icon-case">
@@ -120,7 +65,7 @@
 
                 <div class="card">
                     <div class="box">
-                        <h1>53</h1>
+                        <h1 id="total-sign-ins">53</h1>
                         <h3>signins</h3>
                     </div>
                     <div class="icon-case">
@@ -130,7 +75,7 @@
 
                 <div class="card">
                     <div class="box">
-                        <h1>3500.00€</h1>
+                        <h1 id="concluded-orders">3500.00€</h1>
                         <h3>total purchase</h3>
                     </div>
                     <div class="icon-case">
@@ -140,7 +85,7 @@
 
                 <div class="card">
                     <div class="box">
-                        <h1>500.00€</h1>
+                        <h1 id="current-month">500.00€</h1>
                         <h3>current month</h3>
                     </div>
                     <div class="icon-case">
@@ -150,7 +95,7 @@
 
                 <div class="card">
                     <div class="box">
-                        <h1>300.00€</h1>
+                        <h1 id="last-month">300.00€</h1>
                         <h3>last month</h3>
                     </div>
                     <div class="icon-case">
@@ -212,8 +157,10 @@
         </div>
     </section>
     <!-- dashboard section ends -->
+    <script src="../js/constants/constants.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script src="../js/navbar.js"></script>
+    <script src="../js/dashboard.js"></script>
 </body>
 
 </html>

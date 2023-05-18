@@ -180,7 +180,7 @@ public class OrderService implements Serializable {
 	 * @param productId	primary key that identifies the product to remove to the current order
 	 * @return the updated {@link Order}
 	 */
-	public Order removeProductByOrderId(UUID token, Short orderId, Short productId) {
+	public synchronized Order removeProductByOrderId(UUID token, Short orderId, Short productId) {
 		Order order = getById(token, orderId);
 		
 		Product product = order.getProductsOfAnOrder()
@@ -199,6 +199,25 @@ public class OrderService implements Serializable {
 		
 		orderDAO.merge(order);
 		
+		return verifyRemoveOrder(order);
+	}
+
+	/**
+	 * <p>Verifies if the given {@link Order} should be removed or not.</p>
+	 * <p><em>{@linkplain OrderService#removeProductByOrderId(UUID, Short, Short) removeProductByOrderId} auxiliary method.</em></p>
+	 * 
+	 * @param order to be removed
+	 * @return If the order was:
+	 * 	<ul>
+	 * 		<li>removed, a new {@link Order}</li>
+	 * 		<li>not removed, the given {@link Order}</li>
+	 * 	</ul>
+	 */
+	private Order verifyRemoveOrder(Order order) {
+		if (order.getProductsOfAnOrder().isEmpty()) {
+			remove(order);
+			return new Order();
+		}
 		return order;
 	}
 
