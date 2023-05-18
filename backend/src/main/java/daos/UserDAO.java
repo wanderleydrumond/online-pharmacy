@@ -164,14 +164,11 @@ public class UserDAO extends GenericDAO<User> {
 			
 			return typedQuery.getSingleResult();
 		} catch (NoResultException noResultException) {
-			System.out.println("Catch " + noResultException.getClass().getName() + " in exists() in UserDAO.");
-			Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "in exists()", noResultException);
+			Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "in checkIfIsAdmin()", noResultException);
 
 			return false;
 		} catch (Exception exception) {
-			System.err.println("Catch " + exception.getClass().getName() + " in exists() in UserDAO");
-			Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "in exists()", exception);
-			// exception.printStackTrace();
+			Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "in checkIfIsAdmin()", exception);
 			
 			return null;
 		}

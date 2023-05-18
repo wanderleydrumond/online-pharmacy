@@ -110,10 +110,10 @@
                             <h2>add product</h2>
                             <a href="#" class="btn">View All</a>
                         </div>
-                        <form action="" class="add-product-form">
-                            <input type="email" placeholder="Product name" class="box">
-                            <input type="number" step=".01" min="0" placeholder="Product price" class="box">
-                            <input type="url" placeholder="Product image" class="box">
+                        <form action="" class="add-product-form" onsubmit="event.preventDefault();">
+                            <input type="text" placeholder="Product name" class="box" id="product-name">
+                            <input type="number" step=".01" min="0" placeholder="Product price" class="box" id="product-price">
+                            <input type="url" placeholder="Product image" class="box" id="product-image">
                             <select name="section" class="box">
                                 <option value="health">select a section</option>
                                 <!-- <option value="health">Health</option>
@@ -121,7 +121,7 @@
                                 <option value="beauty">Beauty</option> -->
                             </select>
 
-                            <input type="submit" value="create" class="btn">
+                            <input type="submit" value="create" class="btn" id="create-product-button">
                         </form>
                     </div>
 

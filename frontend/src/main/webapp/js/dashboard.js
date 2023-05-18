@@ -72,6 +72,10 @@ const home = document.getElementsByClassName("home");
 const visitorsTable = document.getElementById("visitors");
 const approveAllButton = document.getElementById("approve-all")
 const sectionsSelect = document.getElementsByName("section")[0];
+const inputProductName = document.getElementById("product-name");
+const inputPrice = document.getElementById("product-price");
+const inputImage = document.getElementById("product-image");
+const create = document.getElementById("create-product-button");
 
 window.onload = () => {
     getDashboardData();
@@ -215,3 +219,33 @@ const getSections = () => {
         });
     });
 };
+
+const createProduct = () => {
+    const productNameValue = inputProductName.value.trim();
+    const priceValue = inputPrice.value.trim();
+    const imageValue = inputImage.value.trim();
+    const sectionChoose = sectionsSelect.options[sectionsSelect.selectedIndex].text.toUpperCase();
+
+    let body = {
+        "name": productNameValue,
+        "image": imageValue,
+        "price": priceValue,
+        "section": sectionChoose
+    }
+    fetch(urlBase + "/product/create", fetchContentFactoryWithBody(requestMethods.POST, body, tokenParameter)).then((response) => {
+        if (response.ok) {
+            inputProductName.value = "";
+            inputImage.value = "";
+            inputPrice.value = "";
+            sectionsSelect.options[0];
+        }
+        return response.json();
+    }).then((product) => {
+        console.log(product);
+    }).catch((error) => console.log(error));
+};
+
+create.addEventListener('click', (event) => {
+    debugger;
+    createProduct();
+});

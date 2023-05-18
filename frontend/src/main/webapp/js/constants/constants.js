@@ -50,15 +50,12 @@ function fetchContentFactoryWithoutBody(requestMethod, token) {
  * @returns {JSON | [JSON]} the request response body
  */
 function fetchContentFactoryWithBody(requestMethod, dataBody, token) {
-	const header = new Headers();
-	header.append("token", token);
-
 	return {
 		method: requestMethod,
 		body: JSON.stringify(dataBody),
 		headers: {
 			"Content-Type": contentTypeJson,
-			headers: header,
+			token,
 			Accept: "*/*",
 		},
 	};
