@@ -484,7 +484,6 @@ function handleBadge(amount) {
 }
 
 dashboardButton.addEventListener("click", () => {
-	debugger;
 	let token;
 
 	if (loggedUser) {
@@ -497,7 +496,6 @@ dashboardButton.addEventListener("click", () => {
 
 	if (roleParameter && roleParameter == role.ADMINISTRATOR || loggedUser && loggedUser.role == role.ADMINISTRATOR) {
 		dataURL.delete("token");
-		// dataURL.delete("role");
 
 		dataURL.append("token", token);
 

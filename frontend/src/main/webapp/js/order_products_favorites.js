@@ -173,7 +173,6 @@ const fetchProducts = async () => {
 
 	switch (keySearchParameter) {
 		case keySearchEnum.ALL:
-			// debugger;
 
 			titlePage.innerText = titlePageEnum.ALL_OR_BY_SECTION;
 			titleSpan.innerText = "products";
@@ -228,7 +227,6 @@ const fetchProducts = async () => {
 				});
 			break;
 		case keySearchEnum.FAVOURITES:
-			// debugger;
 			titlePage.innerText = titlePageEnum.FAVORITES;
 			titleSpan.innerText = keySearchEnum.FAVOURITES.toLowerCase();
 
