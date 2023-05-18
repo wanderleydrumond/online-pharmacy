@@ -70,6 +70,7 @@ const lastMonth = document.getElementById("last-month");
  */
 const home = document.getElementsByClassName("home");
 const visitorsTable = document.getElementById("visitors");
+const approveAllButton = document.getElementById("approve-all")
 
 window.onload = () => {
     getDashboardData();
@@ -145,19 +146,7 @@ const loadVisitors = () => {
         approveButton.href = "#";
         approveButton.classList.add("btn");
         approveButton.addEventListener('click', async (event) => {
-            const urlWithQueryParametersApprove = new URL(urlBase + "/user/approve");
-            urlWithQueryParametersApprove.searchParams.append("id", visitorElement.id);
-
-            await fetch(
-                urlWithQueryParametersApprove,
-                fetchContentFactoryWithoutBody(requestMethods.PUT, tokenParameter)
-            )
-                .then((response) => {
-                    if (response.ok) {
-                        getDashboardData();
-                        visitorsTable.scrollIntoView({ behavior: "instant", block: "center" });
-                    }
-                });
+            await approve(visitorElement, false);
         });
         // <i class="fa-solid fa-check"></i>
         const checkIcon = document.createElement("i");
@@ -170,4 +159,33 @@ const loadVisitors = () => {
         elementRow.appendChild(visitorOption);
         visitorsTable.appendChild(elementRow);
     });
+}
+
+approveAllButton.addEventListener('click', async (event) => {
+    for (const visitorElement of visitors) {
+        await approve(visitorElement, true);
+    }
+    manageScreen();
+});
+
+function manageScreen() {
+    getDashboardData();
+    visitorsTable.scrollIntoView({ behavior: "instant", block: "center" });
+}
+
+async function approve(visitorElement, isApproveAll) {
+    const urlWithQueryParametersApprove = new URL(urlBase + "/user/approve");
+    urlWithQueryParametersApprove.searchParams.append("id", visitorElement.id);
+
+    await fetch(
+        urlWithQueryParametersApprove,
+        fetchContentFactoryWithoutBody(requestMethods.PUT, tokenParameter)
+    )
+        .then((response) => {
+            if (response.ok) {
+                if (!isApproveAll) {
+                    manageScreen();
+                }
+            }
+        });
 }
