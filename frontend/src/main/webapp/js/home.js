@@ -484,6 +484,7 @@ function handleBadge(amount) {
 }
 
 dashboardButton.addEventListener("click", () => {
+	debugger;
 	let token;
 
 	if (loggedUser) {
@@ -496,6 +497,7 @@ dashboardButton.addEventListener("click", () => {
 
 	if (roleParameter && roleParameter == role.ADMINISTRATOR || loggedUser && loggedUser.role == role.ADMINISTRATOR) {
 		dataURL.delete("token");
+		// dataURL.delete("role");
 
 		dataURL.append("token", token);
 
@@ -518,8 +520,3 @@ document.querySelector("#signin-btn").onclick = () => {
 	signinForm.classList.toggle("active");
 	navbar.classList.remove("active");
 };
-
-let dashboardBtn = document.getElementById("dashboard-btn");
-dashboardBtn.addEventListener("click", function () {
-	window.location.href = "dashboard.html";
-});
