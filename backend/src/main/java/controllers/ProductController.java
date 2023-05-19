@@ -114,6 +114,7 @@ public class ProductController {
 	 * @return {@link Response} with status code:
 	 *      <ul>
 	 *         <li><strong>200 (OK)</strong> if the product list was found and has elements</li>
+	 *         <li><strong>204 (NO CONTENT)</strong> if the product list was found and is empty</li>
 	 *         <li><strong>502 (BAD GATEWAY)</strong> if some problem happened in database</li>
 	 *      </ul>
 	 */
@@ -125,7 +126,8 @@ public class ProductController {
 			List<Product> products = productService.getAll();
 			List<ProductDTO> productsDTO = productMapper.toDTOs(products, verifyLikedOrFavorited, token);
 			
-			return Response.ok(productsDTO).build();
+			return productsDTO.isEmpty() ? Response.status(Response.Status.NO_CONTENT).entity(productsDTO).build() : Response.ok(productsDTO).build();
+			
 		} catch (PharmacyException pharmacyException) {
 			return Response.status(pharmacyException.getHttpStatus()).header("Impossible to proceed", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
 		} 
