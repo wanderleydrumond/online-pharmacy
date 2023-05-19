@@ -360,7 +360,6 @@ public class ProductService implements Serializable {
 	 * 
 	 * @param productName the key search
 	 * @return the products list that contains the provided name
-	 * @throws {@link PharmacyException} with HTTP {@link Response} status 202 (NO CONTENT) if the products list was found and is empty
 	 * @throws {@link PharmacyException} with HTTP {@link Response} status 502 (BAD GATEWAY) if some problem happened in database
 	 */
 	public List<Product> getAllByName(String productName) {
@@ -368,10 +367,6 @@ public class ProductService implements Serializable {
 		
 		if (productsFound == null) {
 			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
-		}
-		
-		if (productsFound.isEmpty()) {
-			throw new PharmacyException(Response.Status.NO_CONTENT, "No content", "No products were found with the provided name");
 		}
 		
 		return productsFound;
