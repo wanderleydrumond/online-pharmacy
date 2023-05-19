@@ -138,17 +138,12 @@ public class ProductService implements Serializable {
 	 * 
 	 * @return the {@link Product} {@link ArrayList} with all products inside of it
 	 * @throws {@link PharmacyException} with HTTP {@link Response} status 502 (BAD GATEWAY) if some problem happened in database
-	 * @throws {@link PharmacyException} with HTTP {@link Response} status 202 (NO CONTENT) if the {@link ArrayList} has no elements inside
 	 */
 	public List<Product> getAll() {
 		List<Product> products = productDAO.findAll();
 		
 		if (products == null) {
 			throw new PharmacyException(Response.Status.BAD_GATEWAY, "Database unavailable", "Problems connecting database");
-		}
-		
-		if (products.isEmpty()) {
-			throw new PharmacyException(Response.Status.NO_CONTENT, "No content", "There are no sections yet");
 		}
 		
 		return products;
