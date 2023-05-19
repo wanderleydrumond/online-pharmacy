@@ -76,6 +76,7 @@ const inputProductName = document.getElementById("product-name");
 const inputPrice = document.getElementById("product-price");
 const inputImage = document.getElementById("product-image");
 const create = document.getElementById("create-product-button");
+const viewProducts = document.getElementById("view-products");
 
 window.onload = () => {
     getDashboardData();
@@ -240,12 +241,20 @@ const createProduct = () => {
             sectionsSelect.value = "none";
         }
         return response.json();
-    }).then((product) => {
-        console.log(product);
-    }).catch((error) => console.log(error));
+    })
 };
 
 create.addEventListener('click', (event) => {
-    debugger;
     createProduct();
+});
+
+viewProducts.addEventListener('click', async (event) => {
+    dataURL.delete("token");
+    dataURL.delete("role");
+
+    dataURL.append("token", tokenParameter);
+    dataURL.append("role", role.ADMINISTRATOR);
+    dataURL.append("key-search", keySearchEnum.ALL);
+
+    window.location.href = "order_products_favorites.html?" + dataURL.toString();
 });

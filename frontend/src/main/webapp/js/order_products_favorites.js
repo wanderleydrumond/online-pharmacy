@@ -187,8 +187,6 @@ const fetchProducts = async () => {
 				.then((response) => {
 					if (response.ok) {
 						return response.json();
-					} else {
-						console.error("Error on getting all products list");
 					}
 				})
 				.then((productList) => {
