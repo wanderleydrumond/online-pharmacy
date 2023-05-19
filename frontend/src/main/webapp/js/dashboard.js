@@ -237,7 +237,7 @@ const createProduct = () => {
             inputProductName.value = "";
             inputImage.value = "";
             inputPrice.value = "";
-            sectionsSelect.options[0];
+            sectionsSelect.value = "none";
         }
         return response.json();
     }).then((product) => {

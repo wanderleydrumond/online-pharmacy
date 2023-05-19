@@ -683,7 +683,7 @@ let loggedUser;
  * @date 5/8/2023 - 9:22:11 AM
  */
 const manageNavbar = () => {
-	inputProductName.value = "";
+	inputUsername.value = "";
 	inputPassword.value = "";
 	cartButton.classList.remove("disappear");
 	signinForm.classList.remove("active");
@@ -712,7 +712,7 @@ const manageNavbar = () => {
  * @returns {JSON} the logged user
  */
 const signin = async () => {
-	const usernameValue = inputProductName.value;
+	const usernameValue = inputUsername.value;
 	const passwordValue = inputPassword.value;
 	const usernameTrim = usernameValue.trim();
 	const passwordTrim = passwordValue.trim();
