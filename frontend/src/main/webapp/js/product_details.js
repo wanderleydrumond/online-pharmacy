@@ -27,24 +27,14 @@ const idParameter = parameters.get("id");
  */
 let verify;
 const productDiv = document.getElementById("product-container");
-const productLink = document.getElementById("product-link");
-const productImage = document.getElementById("product-image");
-const productName = document.getElementById("product-name");
-const productPrice = document.getElementsByClassName("price")[0];
-const productReputation = document.getElementsByClassName("likes")[0];
-const productSection = document.getElementById("product-section");
-const reputationData = document.getElementById("reputation-data");
-const likeLink = document.getElementById("like-link");
-const likeIcon = document.getElementsByClassName("fa-thumbs-up")[0];
-const favouriteLink = document.getElementById("favourite-link");
-const favouriteIcon = document.getElementsByClassName("fa-heart")[0];
-const addToCart = document.getElementsByClassName("btn")[0];
-const addComment = document.getElementById("add-comment");
+const saveComment = document.getElementById("save-comment");
 
 // Get the modal
 let modal = document.getElementById("modal-comment");
 // Get the <span> element that closes the modal
 let span = document.getElementsByClassName("close")[0];
+let isNewComment;
+const inputComment = document.getElementById("comment-text");
 
 window.onload = () => {
     getProductData();
@@ -62,6 +52,31 @@ window.onclick = function (event) {
         modal.style.display = "none";
     }
 }
+
+saveComment.addEventListener('click', async (event) => {
+    if (isNewComment) {
+        const urlWithQueryParametersComment = new URL(urlBase + "/comment/create");
+        urlWithQueryParametersComment.searchParams.append("id", idParameter);
+
+        let body = {
+            content: inputComment.value.trim()
+        }
+
+        await fetch(
+            urlWithQueryParametersComment, fetchContentFactoryWithBody(requestMethods.POST, body, tokenParameter)
+        ).then((response) => {
+            if (response.ok) {
+                inputComment.value = "";
+                modal.style.display = "none";
+                return response.json();
+            }
+        }).then((newComment) => {
+            getProductComments();
+        });
+    } else {
+        // TODO: lógica do edit
+    }
+});
 
 const getProductData = async () => {
     verify = (tokenParameter == NOT_LOGGED_TOKEN) ? false : true;
@@ -162,6 +177,7 @@ const loadProduct = (product) => {
     addComment.innerText = "add comment";
     // When the user clicks the button, open the modal 
     addComment.onclick = function () {
+        isNewComment = true;
         modal.style.display = "block";
     };
 
@@ -254,3 +270,21 @@ const loadProduct = (product) => {
         };
     }
 }
+
+let commentsVariable = [];
+const getProductComments = async () => {
+    const urlWithQueryParametersComments = new URL(urlBase + "/comment/all-by");
+    urlWithQueryParametersComments.searchParams.append("id", idParameter);
+
+    await fetch(
+        urlWithQueryParametersComments,
+        fetchContentFactoryWithoutBody(requestMethods.GET)
+    ).then((response) => {
+        if (response.ok) {
+            return response.json();
+        }
+    }).then((comments) => {
+        commentsVariable = comments;
+        debugger;
+    });
+};
