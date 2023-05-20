@@ -448,9 +448,6 @@ const loadProducts = (arrayHalf, divHalf) => {
 		productReputation.appendChild(likeLink);
 
 		if (tokenParameter != NOT_LOGGED_TOKEN) {
-			header = new Headers();
-			header.append("token", tokenParameter);
-
 			favoriteLink.onclick = async () => {
 				if (!productElement.hasLoggedUserFavorited) {
 					const urlWithQueryParametersAll = new URL(
