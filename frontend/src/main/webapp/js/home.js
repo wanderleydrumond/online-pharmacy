@@ -3,8 +3,6 @@ window.onload = () => {
 		manageNavbar();
 		getCart();
 	}
-
-
 };
 
 /**

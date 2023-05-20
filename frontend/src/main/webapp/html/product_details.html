@@ -18,10 +18,10 @@
 <body>
     <!-- header section start -->
     <header class="header">
-        <a href="../html/home.html" class="logo"><i class="fa-solid fa-laptop-medical"></i> online pharmacy </a>
+        <a href="#" class="logo"><i class="fa-solid fa-laptop-medical"></i> online pharmacy </a>
 
         <nav class="navbar">
-            <a href="../html/home.html">home</a>
+            <a href="#">home</a>
         </nav>
 
         <div class="icons">
@@ -46,18 +46,28 @@
             <!-- os produtos criados pelo JS serão ancorados a esta div -->
             <div class="swiper-wrapper">
                 <div class="product-details">
-                    <div class="swiper-slide box">
-                        <a href="../html/product_details.html"><img src="../images/whey-protein.webp" alt=""></a>
-                        <h3>whey gold standard</h3>
+                    <div class="swiper-slide box" id="product-container">
+
+                        <!-- <a href="#" id="product-link">
+                            <img src="../images/whey-protein.webp" id="product-image" alt="">
+                        </a>
+                        <h3 id="product-name">whey gold standard</h3>
                         <div class="price">10.99€</div>
                         <div class="likes">
-                            <p>beauty</p>
-                            <p>30 <a href="#"><i class="fa-regular fa-thumbs-up"></i></a>&emsp;<a href="#"><i
-                                        class="fa-solid fa-heart"></i>&emsp;</a>30 <i class="fa-solid fa-comment"></i>
-                            </p>
+                            <p id="product-section">beauty</p>
+                            <div id="reputation-data">30 
+                                <a href="#" id="like-link">
+                                    <i class="fa-regular fa-thumbs-up"></i>
+                                </a>&emsp;
+                                <a href="#" id="favourite-link">
+                                    <i class="fa-solid fa-heart"></i>&emsp;
+                                </a>30 
+                                <i class="fa-solid fa-comment"></i>
+                            </div>
                         </div>
                         <a href="#" class="btn">add to cart</a>
-                        <a href="#products" id="add-comment" class="btn">add comment</a>
+                        <a href="#" class="btn" id="add-comment">add comment</a> -->
+
                     </div>
                 </div>
             </div>
@@ -168,9 +178,10 @@
         <div class="credit">created by <span>wanderley drumond</span> | all rights reserved</div>
     </section>
     <!-- footer section ends -->
+    <script src="../js/constants/constants.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script src="../js/navbar.js"></script>
-    <script src="../js/modal.js"></script>
+    <script src="../js/product_details.js"></script>
 </body>
 
 </html>

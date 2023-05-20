@@ -137,7 +137,9 @@ public class ProductController {
 	/**
 	 * Gets the product data by its id.
 	 * 
-	 * @param productId primary key that identifies the product to be found
+	 * @param token 				 logged user identifier key
+	 * @param verifyLikedOrFavorited it will check if this product was liked and/or marked as favourite?
+	 * @param productId primary 	 key that identifies the product to be found
 	 * @return {@link Response} with status code:
 	 *      <ul>
 	 *         <li><strong>200 (OK)</strong> if the product was found along with the {@link ProductDTO}</li>
@@ -148,18 +150,18 @@ public class ProductController {
 	@Path("/by")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getById(@QueryParam("id") String productId) {
+	public Response getById(@HeaderParam("token") UUID token, @QueryParam("verify") boolean verifyLikedOrFavorited, @QueryParam("id") String productId) {
 		try {
-			return Response.ok(productMapper.toDTO(productService.getById(Short.parseShort(productId)))).build();
+			Product product = productService.getById(Short.parseShort(productId));
+			ProductDTO productDTO = productMapper.toDTO(product, verifyLikedOrFavorited, token);
+			
+			return Response.ok(productDTO).build();
 		} catch (NumberFormatException numberFormatException) {
-			System.err.println("Catch " + numberFormatException.getClass().getName() + " in getById() in ProductController");
-			Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, "Incorrect number format for id", numberFormatException);
-			numberFormatException.printStackTrace();
+			Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, "Incorrect number format for id in getById()", numberFormatException);
 			
 			return Response.status(Response.Status.NOT_ACCEPTABLE).entity("Incorrect number format for id").build();
 		} catch (PharmacyException pharmacyException) {
-			System.err.println("Catch " + pharmacyException.getClass().getName() + " in getById() in ProductController");
-			Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, "Database unavailable", pharmacyException);
+			Logger.getLogger(ProductController.class.getName()).log(Level.SEVERE, "Database unavailable in getById()", pharmacyException);
 			
 			return Response.status(pharmacyException.getHttpStatus()).header("Impossible to proceed", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
 		}

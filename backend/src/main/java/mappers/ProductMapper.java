@@ -50,7 +50,7 @@ public class ProductMapper {
 	}
 	
 	/**
-	 * Changes a {@link Product} object into a {@link ProductDTO} object checking if this product was liked and or favorited.
+	 * Changes a {@link Product} object into a {@link ProductDTO} object checking if this product was liked and or marked as favourite.
 	 * 
 	 * @param product 				 the object that will be transformed into DTO object
 	 * @param verifyLikedOrFavorited it will check if this product was liked and/or favorited?
