@@ -35,10 +35,16 @@ let modal = document.getElementById("modal-comment");
 let span = document.getElementsByClassName("close")[0];
 let isNewComment;
 const inputComment = document.getElementById("comment-text");
+const commentsDiv = document.getElementById("comments-container");
+let hasCommented = false;
+let commentJson = {
+    id: 0,
+    text: ""
+}
 
-window.onload = () => {
+window.onload = async () => {
+    await getComments();
     getProductData();
-    getProductComments();
 };
 
 // When the user clicks on <span> (x), close the modal
@@ -53,30 +59,7 @@ window.onclick = function (event) {
     }
 }
 
-saveComment.addEventListener('click', async (event) => {
-    if (isNewComment) {
-        const urlWithQueryParametersComment = new URL(urlBase + "/comment/create");
-        urlWithQueryParametersComment.searchParams.append("id", idParameter);
-
-        let body = {
-            content: inputComment.value.trim()
-        }
-
-        await fetch(
-            urlWithQueryParametersComment, fetchContentFactoryWithBody(requestMethods.POST, body, tokenParameter)
-        ).then((response) => {
-            if (response.ok) {
-                inputComment.value = "";
-                modal.style.display = "none";
-                return response.json();
-            }
-        }).then((newComment) => {
-            getProductComments();
-        });
-    } else {
-        // TODO: lógica do edit
-    }
-});
+// PRODUCT
 
 const getProductData = async () => {
     verify = (tokenParameter == NOT_LOGGED_TOKEN) ? false : true;
@@ -164,10 +147,10 @@ const loadProduct = (product) => {
     commentIcon.classList.add("fa-comment");
 
     // <a href="#" class="btn">add to cart</a>
-    const addToCart = document.createElement("a");
+    /*const addToCart = document.createElement("a");
     addToCart.href = "#";
     addToCart.classList.add("btn");
-    addToCart.innerText = "add to cart";
+    addToCart.innerText = "add to cart";*/
 
     // <a href="#products" id="add-comment" class="btn">add comment</a>
     const addComment = document.createElement("a");
@@ -175,6 +158,9 @@ const loadProduct = (product) => {
     addComment.id = "add-comment";
     addComment.classList.add("btn");
     addComment.innerText = "add comment";
+    if (hasCommented) {
+        addComment.classList.add("disappear");
+    }
     // When the user clicks the button, open the modal 
     addComment.onclick = function () {
         isNewComment = true;
@@ -195,7 +181,7 @@ const loadProduct = (product) => {
     productDiv.appendChild(productName);
     productDiv.appendChild(productPrice);
     productDiv.appendChild(productReputation);
-    productDiv.appendChild(addToCart);
+    // productDiv.appendChild(addToCart);
     productDiv.appendChild(addComment);
 
     if (tokenParameter != NOT_LOGGED_TOKEN) {
@@ -271,8 +257,9 @@ const loadProduct = (product) => {
     }
 }
 
-let commentsVariable = [];
-const getProductComments = async () => {
+// COMMENTS
+
+const getComments = async () => {
     const urlWithQueryParametersComments = new URL(urlBase + "/comment/all-by");
     urlWithQueryParametersComments.searchParams.append("id", idParameter);
 
@@ -284,7 +271,119 @@ const getProductComments = async () => {
             return response.json();
         }
     }).then((comments) => {
-        commentsVariable = comments;
-        debugger;
+        let commentLoggedUser = comments.find(commentElement => commentElement.tokenOwner == tokenParameter);
+        if (commentLoggedUser) {
+            hasCommented = true;
+        }
+        loadComments(comments);
     });
 };
+
+const loadComments = (comments) => {
+    while (commentsDiv.children.length > 0) {
+        commentsDiv.removeChild(commentsDiv.children[0]);
+    }
+
+    if (comments.length > 0) {
+        comments.forEach(commentElement => {
+            // <div class="swiper-slide box"></div>
+            const commentDiv = document.createElement("div");
+            commentDiv.classList.add("swiper-slide");
+            commentDiv.classList.add("box");
+            // <h3>Nolan Grayson</h3>
+            const commentOwner = document.createElement("h3");
+            commentOwner.innerText = commentElement.nameOwner;
+            // <div class="comment">Wonderful product, a bit oily, but it have a great cost-benefit. I strongly reconmend to all that have dry skin.</div>
+            const commentContent = document.createElement("div");
+            commentContent.classList.add("comment");
+            commentContent.innerText = commentElement.content;
+            // <a href="#" class="btn">edit</a>
+            const editButton = document.createElement("a");
+            editButton.href = "#";
+            editButton.classList.add("btn");
+            editButton.innerText = "edit";
+            editButton.addEventListener('click', (event) => {
+                inputComment.value = commentElement.content;
+                modal.style.display = "block";
+                commentJson.id = commentElement.id;
+                commentJson.text = commentElement.content;
+                isNewComment = false;
+            });
+            // <a href="#" class="btn">remove</a>
+            const removeButton = document.createElement("a");
+            removeButton.href = "#";
+            removeButton.classList.add("btn");
+            removeButton.innerText = "remove";
+            removeButton.addEventListener('click', async (event) => {
+                const urlWithQueryParametersProduct = new URL(urlBase + "/comment/by");
+                urlWithQueryParametersProduct.searchParams.append("id", commentElement.id);
+
+                await fetch(
+                    urlWithQueryParametersProduct,
+                    fetchContentFactoryWithoutBody(requestMethods.DELETE, tokenParameter)
+                ).then((response) => {
+                    if (response.ok) {
+                        hasCommented = false;
+                        document.getElementById("add-comment").classList.remove("disappear");
+                        getComments();
+                        commentsDiv.scrollIntoView({ behavior: "instant", block: "center" });
+                    }
+                });
+            });
+
+            commentDiv.appendChild(commentOwner);
+            commentDiv.appendChild(commentContent);
+            if (commentElement.tokenOwner == tokenParameter) {
+                commentDiv.appendChild(editButton);
+                commentDiv.appendChild(removeButton);
+            }
+            commentsDiv.appendChild(commentDiv);
+        });
+    }
+};
+
+saveComment.addEventListener('click', async (event) => {
+    if (isNewComment) {
+        const urlWithQueryParametersComment = new URL(urlBase + "/comment/create");
+        urlWithQueryParametersComment.searchParams.append("id", idParameter);
+
+        let body = {
+            content: inputComment.value.trim()
+        }
+
+        await fetch(
+            urlWithQueryParametersComment, fetchContentFactoryWithBody(requestMethods.POST, body, tokenParameter)
+        ).then((response) => {
+            if (response.ok) {
+                inputComment.value = "";
+                modal.style.display = "none";
+                hasCommented = true;
+                document.getElementById("add-comment").classList.add("disappear");
+                commentsDiv.scrollIntoView({ behavior: "instant", block: "center" });
+                return response.json();
+            }
+        }).then((newComment) => {
+            getComments();
+        });
+    } else {
+        const urlWithQueryParametersComment = new URL(urlBase + "/comment/by");
+        urlWithQueryParametersComment.searchParams.append("id", commentJson.id);
+
+        let body = {
+            content: inputComment.value.trim()
+        }
+
+        await fetch(
+            urlWithQueryParametersComment, fetchContentFactoryWithBody(requestMethods.PUT, body, tokenParameter)
+        ).then((response) => {
+            if (response.ok) {
+                inputComment.value = "";
+                modal.style.display = "none";
+                commentsDiv.scrollIntoView({ behavior: "instant", block: "center" });
+                return response.json();
+            }
+        }).then((updatedComment) => {
+            getComments();
+        });
+    }
+});

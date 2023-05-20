@@ -33,6 +33,7 @@ function fetchContentFactoryWithoutBody(requestMethod, token) {
 	const header = new Headers();
 	header.append("token", token);
 
+	debugger;
 	return {
 		method: requestMethod,
 		"Content-Type": contentTypeJson,
