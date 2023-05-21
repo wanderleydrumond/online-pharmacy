@@ -110,7 +110,6 @@ public class UserController {
 		try {
 			return Response.ok(userService.signOut(token)).build();
 		} catch (PharmacyException pharmacyException) {
-			// FIXME I cannot get the proper header value.
 			System.err.println("Catch " + pharmacyException.getClass().getName() + " in signOut() in UserController");
 			pharmacyException.printStackTrace();
 			

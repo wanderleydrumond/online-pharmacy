@@ -13,6 +13,13 @@ const parameters = new URLSearchParams(window.location.search);
  */
 const tokenParameter = parameters.get("token");
 /**
+ * User role to be get from URL.
+ * @date 5/21/2023 - 11:18:37 AM
+ *
+ * @type {string}
+ */
+const roleParameter = parameters.get("role");
+/**
  * Product identification number to be get from URL.
  * @date 5/19/2023 - 12:47:07 PM
  *
@@ -26,8 +33,27 @@ const idParameter = parameters.get("id");
  * @type {boolean}
  */
 let verify;
+/**
+ * HTML <strong><em>div</em></strong> element that contains all information to be built from the product.
+ * @date 5/21/2023 - 11:23:13 AM
+ *
+ * @type {Object}
+ */
 const productDiv = document.getElementById("product-container");
+/**
+ * HTML <strong><em>anchor</em></strong> element in the modal that has the appearance of a button to save the comment.
+ * @date 5/21/2023 - 11:26:18 AM
+ *
+ * @type {Object}
+ */
 const saveComment = document.getElementById("save-comment");
+/**
+ * All three elements that mat redirect to homepage. 
+ * @date 5/21/2023 - 11:31:43 AM
+ *
+ * @type {Object}
+ */
+const home = document.getElementsByClassName("home");
 
 // Get the modal
 let modal = document.getElementById("modal-comment");
@@ -61,6 +87,13 @@ window.onclick = function (event) {
 
 // PRODUCT
 
+/**
+ * Gets the current product informations.
+ * @date 5/21/2023 - 11:35:17 AM
+ *
+ * @async
+ * @returns {JSON}
+ */
 const getProductData = async () => {
     verify = (tokenParameter == NOT_LOGGED_TOKEN) ? false : true;
 
@@ -80,6 +113,12 @@ const getProductData = async () => {
     });
 };
 
+/**
+ * Loads the product data on the screen.
+ * @date 5/21/2023 - 11:36:25 AM
+ *
+ * @param {JSON} product to be loaded
+ */
 const loadProduct = (product) => {
     while (productDiv.children.length > 0) {
         productDiv.removeChild(productDiv.children[0]);
@@ -140,19 +179,10 @@ const loadProduct = (product) => {
     }
     favoriteIcon.classList.add("fa-heart");
 
-    // TODO: Se esse usuário já tiver comentado este produto, carrega o solid, senão, o regular
-    // <i class="fa-solid fa-comment"></i>
     const commentIcon = document.createElement("i");
     commentIcon.classList.add("fa-solid");
     commentIcon.classList.add("fa-comment");
 
-    // <a href="#" class="btn">add to cart</a>
-    /*const addToCart = document.createElement("a");
-    addToCart.href = "#";
-    addToCart.classList.add("btn");
-    addToCart.innerText = "add to cart";*/
-
-    // <a href="#products" id="add-comment" class="btn">add comment</a>
     const addComment = document.createElement("a");
     addComment.href = "#";
     addComment.id = "add-comment";
@@ -170,8 +200,7 @@ const loadProduct = (product) => {
     likeLink.appendChild(likeIcon);
     favoriteLink.appendChild(favoriteIcon);
     reputationData.appendChild(likeLink);
-    // reputationData.innerHTML = "&emsp;"
-    // TODO: reputationData.innerText = Quantidade de comentários desse produto
+    
     reputationData.appendChild(favoriteLink);
     reputationData.appendChild(commentIcon);
     productReputation.appendChild(productSection);
@@ -181,7 +210,6 @@ const loadProduct = (product) => {
     productDiv.appendChild(productName);
     productDiv.appendChild(productPrice);
     productDiv.appendChild(productReputation);
-    // productDiv.appendChild(addToCart);
     productDiv.appendChild(addComment);
 
     if (tokenParameter != NOT_LOGGED_TOKEN) {
@@ -259,6 +287,13 @@ const loadProduct = (product) => {
 
 // COMMENTS
 
+/**
+ * Gets all comments from the current product.
+ * @date 5/21/2023 - 11:37:51 AM
+ *
+ * @async
+ * @returns {[JSON]}
+ */
 const getComments = async () => {
     const urlWithQueryParametersComments = new URL(urlBase + "/comment/all-by");
     urlWithQueryParametersComments.searchParams.append("id", idParameter);
@@ -279,6 +314,12 @@ const getComments = async () => {
     });
 };
 
+/**
+ * Loads all comments from the current product on the screen.
+ * @date 5/21/2023 - 11:38:51 AM
+ *
+ * @param {[JSON]} comments to be loaded
+ */
 const loadComments = (comments) => {
     while (commentsDiv.children.length > 0) {
         commentsDiv.removeChild(commentsDiv.children[0]);
@@ -387,3 +428,19 @@ saveComment.addEventListener('click', async (event) => {
         });
     }
 });
+
+/**
+ * Clears the current URL, builds a new one with token and role then redirect to home.
+ * @date 5/21/2023 - 10:48:25 AM
+ */
+const buildURLAndRedirectToHome = () => {
+    dataURL.delete("token");
+    dataURL.delete("role");
+    dataURL.delete("id");
+
+    dataURL.append("token", tokenParameter);
+    dataURL.append("role", roleParameter);
+
+    window.location.href = "home.html?" + dataURL.toString();
+};
+
