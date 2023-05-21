@@ -53,7 +53,7 @@ const saveComment = document.getElementById("save-comment");
  *
  * @type {Object}
  */
-const home = document.getElementsByClassName("home");
+const home = document.getElementsByClassName("homepage");
 
 // Get the modal
 let modal = document.getElementById("modal-comment");
@@ -444,3 +444,8 @@ const buildURLAndRedirectToHome = () => {
     window.location.href = "home.html?" + dataURL.toString();
 };
 
+for (const homeElement of home) {
+    homeElement.addEventListener('click', (event) => {
+        buildURLAndRedirectToHome();
+    });
+}
