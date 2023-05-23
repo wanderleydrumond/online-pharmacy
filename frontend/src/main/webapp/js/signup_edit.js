@@ -2,42 +2,42 @@
  * HTML <strong><em>input</em></strong> element that contains the name.
  * @date 5/21/2023 - 3:24:18 PM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const inputName = document.getElementsByName("name")[0];
 /**
  * HTML <strong><em>input</em></strong> element that contains the username.
  * @date 5/21/2023 - 3:25:46 PM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const inputUsername = document.getElementsByName("username")[0];
 /**
  * HTML <strong><em>input</em></strong> element that contains the password.
  * @date 5/21/2023 - 3:26:34 PM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const inputPassword = document.getElementsByName("password")[0];
 /**
  * HTML <strong><em>input</em></strong> element that contains the password confirmation.
  * @date 5/21/2023 - 3:27:02 PM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const inputConfirmPassword = document.getElementsByName("cpassword")[0];
 /**
  * HTML <strong><em>form</em></strong> element that contains all the elements.
  * @date 5/21/2023 - 3:27:28 PM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const form = document.getElementById("signup-edit-form");
 /**
  * HTML <strong><em>div</em></strong> element that contains a paragraph for the error message.
  * @date 5/21/2023 - 3:28:25 PM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const signUpError = document.getElementsByClassName("error-signup")[0];
 /**

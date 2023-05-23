@@ -17,65 +17,113 @@ let visitors;
  * HTML <strong><em>h1</em></strong> element that contains the amount of clients existent in database.
  * @date 5/17/2023 - 4:34:44 PM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const totalClients = document.getElementById("total-clients");
 /**
  * HTML <strong><em>h1</em></strong> element that contains the amount of products existent in database.
  * @date 5/17/2023 - 4:35:46 PM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const totalProducts = document.getElementById("total-products");
 /**
  * HTML <strong><em>h1</em></strong> element that contains the amount of orders non concluded existent in database.
  * @date 5/17/2023 - 4:36:31 PM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const totalCarts = document.getElementById("total-carts");
 /**
  * HTML <strong><em>h1</em></strong> element that contains the amount of sign ins performed in system.
  * @date 5/17/2023 - 4:37:25 PM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const totalSignIns = document.getElementById("total-sign-ins");
 /**
  * HTML <strong><em>h1</em></strong> element that contains the total value of purchases performed in system.
  * @date 5/17/2023 - 4:42:05 PM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const totalPurchases = document.getElementById("concluded-orders");
 /**
  * HTML <strong><em>h1</em></strong> element that contains the total value of purchases performed in current month in system.
  * @date 5/17/2023 - 4:43:57 PM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const currentMonth = document.getElementById("current-month");
 /**
  * HTML <strong><em>h1</em></strong> element that contains the total value of purchases performed in last month in system.
  * @date 5/17/2023 - 4:45:27 PM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const lastMonth = document.getElementById("last-month");
 /**
  * HTML <strong><em>anchor</em></strong> element in the navbar and in the logo that links the current user to home page.
  * @date 5/18/2023 - 2:03:06 PM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const home = document.getElementsByClassName("home");
+/**
+ * HTML <strong><em>table</em></strong> element that displays all users to be approved.
+ * @date 5/23/2023 - 2:27:14 PM
+ *
+ * @type {HTMLElement}
+ */
 const visitorsTable = document.getElementById("visitors");
-const approveAllButton = document.getElementById("approve-all")
+/**
+ * HTML <strong><em>anchor</em></strong> element that has the appearance of a button made to approve all users at once.
+ * @date 5/23/2023 - 2:29:03 PM
+ *
+ * @type {HTMLElement}
+ */
+const approveAllButton = document.getElementById("approve-all");
+/**
+ * HTML <strong><em>select</em></strong> element in the form to create a product.
+ * @date 5/23/2023 - 2:30:52 PM
+ *
+ * @type {HTMLElement}
+ */
 const sectionsSelect = document.getElementsByName("section")[0];
+/**
+ * HTML <strong><em>input text</em></strong> element that contains the product name in the form to create a product.
+ * @date 5/23/2023 - 3:03:06 PM
+ *
+ * @type {HTMLElement}
+ */
 const inputProductName = document.getElementById("product-name");
+/**
+ * HTML <strong><em>input text</em></strong> element that contains the product price in the form to create a product.
+ * @date 5/23/2023 - 3:04:16 PM
+ *
+ * @type {HTMLElement}
+ */
 const inputPrice = document.getElementById("product-price");
+/**
+ * HTML <strong><em>input text</em></strong> element that contains the product image in the form to create a product.
+ * @date 5/23/2023 - 3:05:42 PM
+ *
+ * @type {HTMLElement}
+ */
 const inputImage = document.getElementById("product-image");
+/**
+ * HTML <strong><em>anchor</em></strong> element that has the appearance of a button made to create a product.
+ * @date 5/23/2023 - 3:06:48 PM
+ *
+ * @type {HTMLElement}
+ */
 const create = document.getElementById("create-product-button");
+/**
+ * HTML <strong><em>anchor</em></strong> element that has the appearance of redirect to the page of all products.
+ * @date 5/23/2023 - 3:08:25 PM
+ *
+ * @type {HTMLElement}
+ */
 const viewProducts = document.getElementById("view-products");
 
 window.onload = () => {

@@ -1,4 +1,10 @@
-let navbar = document.querySelector(".navbar");
+/**
+ * HTML <strong><em>nav</em></strong> element that holds the site menu.
+ * @date 5/23/2023 - 3:25:40 PM
+ *
+ * @type {HTMLElement}
+ */
+let navbar = document.querySelector("navbar");
 document.querySelector("#menu-btn").onclick = () => {
 	navbar.classList.toggle("active");
 };

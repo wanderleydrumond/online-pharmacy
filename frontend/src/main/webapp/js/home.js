@@ -68,49 +68,49 @@ const buildURLAndRedirect = (keySearchEnumParam) => {
  * HTML <strong><em>input</em></strong> element in the form at top of the page in the navbar to storage the username.
  * @date 5/8/2023 - 10:26:58 AM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const inputUsername = document.getElementById("username");
 /**
  * HTML <strong><em>input</em></strong> element in the form at top of the page in the navbar to storage the password.
  * @date 5/8/2023 - 4:18:26 PM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const inputPassword = document.getElementById("password");
 /**
  * HTML <strong><em>anchor</em></strong> element in the navbar that has the appearance of a button to toggle the cart.
  * @date 5/8/2023 - 4:20:17 PM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const cartButton = document.getElementById("cart-btn");
 /**
  * HTML <strong><em>anchor</em></strong> element in the navbar that has the appearance of a button to redirect to dashboard page.
  * @date 5/8/2023 - 4:23:33 PM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const dashboardButton = document.getElementById("dashboard-btn");
 /**
  * HTML <strong><em>anchor</em></strong> element in the navbar that has the appearance of a button to toggle the sign in form.
  * @date 5/8/2023 - 4:29:18 PM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const signinButton = document.getElementById("signin-btn");
 /**
  * HTML <strong><em>anchor</em></strong> element in the navbar that has the appearance of a button to signs out the logged user.
  * @date 5/8/2023 - 4:31:06 PM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const signoutButton = document.getElementById("signout-btn");
 /**
  * HTML <strong><em>div</em></strong> element in the login form used to warn user about invalid credentials after the sign in button is clicked.
  * @date 5/8/2023 - 4:33:12 PM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const signinError = document.getElementsByClassName("error-signin")[0];
 
@@ -118,21 +118,21 @@ const signinError = document.getElementsByClassName("error-signin")[0];
  * HTML <strong><em>anchor</em></strong> element in the navbar that links the current user to favourites page.
  * @date 5/17/2023 - 9:02:40 AM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const favouritesLink = document.getElementsByClassName("get-favourites");
 /**
  * HTML <strong><em>anchor</em></strong> element in the navbar that links the current user to history page.
  * @date 5/17/2023 - 9:04:39 AM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const historyLink = document.getElementsByClassName("get-history");
 /**
  * HTML <strong><em>anchor</em></strong> element in the navbar that has the appearance of a button to redirect to edit profile page.
  * @date 5/17/2023 - 9:05:51 AM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const editProfileButton = document.getElementById("edit-profile-btn");
 /**
@@ -146,7 +146,7 @@ const parameters = new URLSearchParams(window.location.search);
  * <strong><em>span</em></strong> element that contains the amount of element in cart
  * @date 5/17/2023 - 10:20:16 AM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const badge = document.getElementsByClassName("badge")[0];
 /**

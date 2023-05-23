@@ -37,32 +37,75 @@ let verify;
  * HTML <strong><em>div</em></strong> element that contains all information to be built from the product.
  * @date 5/21/2023 - 11:23:13 AM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const productDiv = document.getElementById("product-container");
 /**
  * HTML <strong><em>anchor</em></strong> element in the modal that has the appearance of a button to save the comment.
  * @date 5/21/2023 - 11:26:18 AM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const saveComment = document.getElementById("save-comment");
 /**
  * All three elements that mat redirect to homepage. 
  * @date 5/21/2023 - 11:31:43 AM
  *
- * @type {Object}
+ * @type {HTMLElement}
  */
 const home = document.getElementsByClassName("homepage");
 
-// Get the modal
+/**
+ * Gets the modal
+ * @date 5/23/2023 - 3:12:05 PM
+ *
+ * @type {HTMLElement}
+ */
 let modal = document.getElementById("modal-comment");
-// Get the <span> element that closes the modal
+/**
+ * Get the <code><span></code> element that closes the modal
+ * @date 5/23/2023 - 3:12:39 PM
+ *
+ * @type {HTMLElement}
+ */
 let span = document.getElementsByClassName("close")[0];
+
+/**
+ * Auxiliary variable that verifies if the modal will be opened filled or not.
+ * @date 5/23/2023 - 3:15:47 PM
+ *
+ * @type {Boolean}
+ */
 let isNewComment;
+
+/**
+ * HTML <strong><em>input text</em></strong> element inside the modal.
+ * @date 5/23/2023 - 3:17:23 PM
+ *
+ * @type {HTMLElement}
+ */
 const inputComment = document.getElementById("comment-text");
+/**
+ * HTML <strong><em>div</em></strong> element that contains all comments.
+ * @date 5/23/2023 - 3:19:44 PM
+ *
+ * @type {HTMLElement}
+ */
 const commentsDiv = document.getElementById("comments-container");
+
+/**
+ * Flag that controls if that commented was already commented or not.
+ * @date 5/23/2023 - 3:21:50 PM
+ *
+ * @type {boolean}
+ */
 let hasCommented = false;
+/**
+ * Object comment.
+ * @date 5/23/2023 - 3:23:12 PM
+ *
+ * @type {{ id: number; text: string; }}
+ */
 let commentJson = {
     id: 0,
     text: ""
@@ -200,7 +243,7 @@ const loadProduct = (product) => {
     likeLink.appendChild(likeIcon);
     favoriteLink.appendChild(favoriteIcon);
     reputationData.appendChild(likeLink);
-    
+
     reputationData.appendChild(favoriteLink);
     reputationData.appendChild(commentIcon);
     productReputation.appendChild(productSection);
