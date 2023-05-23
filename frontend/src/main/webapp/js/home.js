@@ -107,12 +107,12 @@ const signinButton = document.getElementById("signin-btn");
  */
 const signoutButton = document.getElementById("signout-btn");
 /**
- * HTML <strong><em>paragraph</em></strong> element in the login form used to warn user about invalid credentials after the sign in button is clicked.
+ * HTML <strong><em>div</em></strong> element in the login form used to warn user about invalid credentials after the sign in button is clicked.
  * @date 5/8/2023 - 4:33:12 PM
  *
  * @type {Object}
  */
-const signinError = document.getElementsByClassName("error-signin");
+const signinError = document.getElementsByClassName("error-signin")[0];
 
 /**
  * HTML <strong><em>anchor</em></strong> element in the navbar that links the current user to favourites page.

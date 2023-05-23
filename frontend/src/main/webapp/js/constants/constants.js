@@ -130,4 +130,6 @@ const keySearchEnum = {
 	HEALTH: section.HEALTH,
 	FAVOURITES: "FAVOURITES",
 	ORDER: "ORDER",
+	SIGNUP: "SIGNUP",
+	EDIT_PROFILE: "PROFILE"
 };

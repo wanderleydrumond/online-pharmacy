@@ -76,12 +76,11 @@ public class UserService implements Serializable {
 	 * <em>{@link Role} is set again for safety reasons.</em>
 	 * 
 	 * @param user to be created with name, username, password and role filled
-	 * @return
-	 * 		<ul>
-	 * 			<li>The new user id, if persisted in database</li>
-	 * 			<li>A {@link PharmacyException} with response code 409 (CONFLICT) if already exists a user with the same credentials.</li>
-	 * 			<li>A {@link PharmacyException} with response code 400 (BAD REQUEST) if the request was made with username and password set as null.</li>
-	 * 		</ul>
+	 * @throws {@link PharmacyException} with response code:
+	 * <ul>
+	 * 	<li>409 (CONFLICT) if already exists a user with the same credentials</li>
+	 * 	<li>400 (BAD REQUEST) if the request was made with username and password set as null</li>
+	 * </ul>
 	 */
 	public int signUp(User user) {
 		Optional<User> userToFind = userDAO.signIn(user.getUsername(), user.getPassword());

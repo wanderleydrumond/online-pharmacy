@@ -4,6 +4,8 @@
 	--light-green: #76BD22;
 	--dark-green: #1B5633;
 	--light-grey: #666;
+   --error: #ff9696;
+   --success:#96ff96;
 	--white: #EEE;
     --black: #333;
 	--box-shadow: 0 .5rem 1.5rem rgba(0, 0, 0, .1);
@@ -86,4 +88,16 @@
 
 .form-container form p a:hover {
    color:var(--light-green);
+}
+
+.form-container  form  .error-signup {
+   background-color: var(--error);
+}
+
+.form-container  form  .success-signup {
+   background-color: var(--success);
+}
+
+.disappear {
+   display: none;
 }
