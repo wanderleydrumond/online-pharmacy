@@ -188,7 +188,7 @@ const manageNavbar = () => {
 		dataURL.delete("role")
 		dataURL.delete("key-search");
 
-		dataURL.append("token" , tokenParameter);
+		dataURL.append("token", tokenParameter);
 		dataURL.append("role", roleParameter);
 		dataURL.append("key-search", keySearchEnum.EDIT_PROFILE);
 
@@ -511,6 +511,16 @@ dashboardButton.addEventListener("click", () => {
 		window.location.href = "dashboard.html?" + dataURL.toString();
 	}
 });
+
+for (const historyLinkElement of historyLink) {
+	historyLinkElement.addEventListener('click', () => {
+		dataURL.delete("token");
+		dataURL.delete("role");
+		dataURL.append("token", tokenParameter);
+
+		window.location.href = "history.html?" + dataURL.toString();
+	});
+}
 
 // NAVBAR
 

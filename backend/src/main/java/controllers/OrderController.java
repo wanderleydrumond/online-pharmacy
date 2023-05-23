@@ -113,7 +113,7 @@ public class OrderController {
 	}
 	
 	/**
-	 * Gets all concluded orders.
+	 * Gets all concluded orders for the logged user.
 	 * 
 	 * @param token	logged user identifier key
 	 * @return {@link Response} with status code:

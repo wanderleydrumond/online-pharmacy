@@ -132,6 +132,7 @@ public class UserDAO extends GenericDAO<User> {
 
 	/**
 	 * Checks if the user that holds the given token has the role of ADMINISTRATOR.
+	 * FIXME Even if I'm logged as client I can do things which suppose not to. See "A client tries to get the dashboard" example in postman
 	 * 
 	 * @param token logged user identifier key
 	 * @return
