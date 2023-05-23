@@ -183,6 +183,17 @@ const manageNavbar = () => {
 	signinButton.classList.add("disappear");
 	signoutButton.classList.remove("disappear");
 	editProfileButton.classList.remove("disappear");
+	editProfileButton.addEventListener('click', (event) => {
+		dataURL.delete("token");
+		dataURL.delete("role")
+		dataURL.delete("key-search");
+
+		dataURL.append("token" , tokenParameter);
+		dataURL.append("role", roleParameter);
+		dataURL.append("key-search", keySearchEnum.EDIT_PROFILE);
+
+		window.location.href = "signup_edit.html?" + dataURL.toString();
+	});
 
 	for (const link of favouritesLink) {
 		link.classList.remove("disappear");

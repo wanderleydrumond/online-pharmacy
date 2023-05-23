@@ -1,6 +1,8 @@
 package controllers;
 
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -83,8 +85,7 @@ public class UserController {
 		try {
 			return Response.ok(userService.signIn(username, password)).build();
 		} catch (PharmacyException pharmacyException) {
-			System.err.println("Catch " + pharmacyException.getClass().getName() + " in signIn() in UserController");
-			pharmacyException.printStackTrace();
+			Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, "in signIn()", pharmacyException);
 			
 			return Response.status(pharmacyException.getHttpStatus()).header("Problem in database", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
 		}
@@ -110,8 +111,7 @@ public class UserController {
 		try {
 			return Response.ok(userService.signOut(token)).build();
 		} catch (PharmacyException pharmacyException) {
-			System.err.println("Catch " + pharmacyException.getClass().getName() + " in signOut() in UserController");
-			pharmacyException.printStackTrace();
+			Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, "in signOut()", pharmacyException);
 			
 			return Response.status(pharmacyException.getHttpStatus()).header("Request not done", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
 		}
@@ -137,8 +137,7 @@ public class UserController {
 		try {
 			return Response.ok(userService.approve(token, Integer.valueOf(userToApproveId))).build();
 		} catch (PharmacyException pharmacyException) {
-			System.err.println("Catch " + pharmacyException.getClass().getName() + " in approve() in UserController");
-			pharmacyException.printStackTrace();
+			Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, "in approve()", pharmacyException);
 			
 			return Response.status(pharmacyException.getHttpStatus()).header("Request not done", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
 		}
@@ -161,8 +160,7 @@ public class UserController {
 		try {
 			return Response.ok(userMapper.toDTO(userService.getByToken(token))).build();
 		} catch (PharmacyException pharmacyException) {
-			System.err.println("Catch " + pharmacyException.getClass().getName() + " in getData() in UserController");
-			pharmacyException.printStackTrace();
+			Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, "in getData()", pharmacyException);
 			
 			return Response.status(pharmacyException.getHttpStatus()).header("Request not done", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
 		}
@@ -175,7 +173,7 @@ public class UserController {
 	 * @param requestBody {@link UserDTO} containing only the data to be updated
 	 * @return {@link Response} with status code:
 	 *      <ul>
-	 *         <li><strong>200 (OK)</strong> if the user was successfully updated</li>
+	 *         <li><strong>200 (OK)</strong> along with the updated userDTO, if the user was successfully updated</li>
 	 *         <li><strong>403 (FORBIDDEN)</strong> if :</li>
 	 *         	<ul>
 	 *         		<li>the logged user is deleted</li>
@@ -191,8 +189,7 @@ public class UserController {
 		try {
 			return Response.ok(userMapper.toDTO(userService.editBytoken(token, requestBody))).build();
 		} catch (PharmacyException pharmacyException) {
-			System.err.println("Catch " + pharmacyException.getClass().getName() + " in editData() in UserController");
-			pharmacyException.printStackTrace();
+			Logger.getLogger(UserController.class.getName()).log(Level.SEVERE, "in editData()", pharmacyException);
 			
 			return Response.status(pharmacyException.getHttpStatus()).header("Request not done", pharmacyException.getHeader()).entity(pharmacyException.getMessage()).build();
 		}
@@ -208,6 +205,8 @@ public class UserController {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response dashboard(@HeaderParam("token") UUID token) {
-		return Response.ok(userService.dashboard(token)).build();
+		DashboardDTO dashboardDTO = userService.dashboard(token);
+		
+		return Response.ok(dashboardDTO).build();
 	}
 }

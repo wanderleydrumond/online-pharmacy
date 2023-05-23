@@ -98,7 +98,6 @@ public class UserDAO extends GenericDAO<User> {
 		} catch (Exception exception) {
 			System.err.println("Catch " + exception.getClass().getName() + " in findByUUID() in UserDAO");
 			Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, "in findByUUID()", exception);
-			// exception.printStackTrace();
 			
 			return Optional.empty();
 		}
