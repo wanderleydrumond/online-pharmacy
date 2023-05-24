@@ -13,6 +13,13 @@ const parameters = new URLSearchParams(window.location.search);
  */
 const tokenParameter = parameters.get("token");
 /**
+ * Role to be get from URL.
+ * @date 5/24/2023 - 11:35:05 AM
+ *
+ * @type {string}
+ */
+const roleParameter = parameters.get("role");
+/**
  * HTML <code><div></code> that contains the first half order list.
  * @date 5/23/2023 - 4:08:51 PM
  *
@@ -26,6 +33,7 @@ const ordersHalf1Div = document.getElementById("orders-half-1");
  * @type {HTMLElement}
  */
 const ordersHalf2Div = document.getElementById("orders-half-2");
+const home = document.getElementsByClassName("homepage");
 let orderId;
 
 window.onload = () => {
@@ -113,6 +121,7 @@ const loadOrders = (arrayHalf, divHalf) => {
 
             dataURL.append("token", tokenParameter);
             dataURL.append("id", orderElement.id);
+            dataURL.append("role", roleParameter);
 
             window.location.href = "order_products_favorites.html?" + dataURL.toString();
         });
@@ -123,3 +132,15 @@ const loadOrders = (arrayHalf, divHalf) => {
         divHalf.appendChild(orderDiv);
     });
 };
+
+for (const homeLink of home) {
+    homeLink.addEventListener('click', () => {
+        dataURL.delete("token");
+        dataURL.delete("role");
+
+        dataURL.append("token", tokenParameter);
+        dataURL.append("role", roleParameter);
+
+        window.location.href = "home.html?" + dataURL.toString();
+    });
+}

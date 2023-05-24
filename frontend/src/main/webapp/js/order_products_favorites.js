@@ -986,7 +986,6 @@ function handleBadge(amount) {
 	}
 }
 
-
 dashboardButton.addEventListener("click", () => {
 	let token;
 
@@ -1006,6 +1005,20 @@ dashboardButton.addEventListener("click", () => {
 		window.location.href = "dashboard.html?" + dataURL.toString();
 	}
 });
+
+for (const historyElement of historyLink) {
+	historyElement.addEventListener('click', () => {
+		dataURL.delete("token");
+		dataURL.delete("key-search");
+		dataURL.delete("role");
+		debugger;
+		dataURL.append("token", tokenParameter); //here:
+		dataURL.append("role", roleParameter);
+
+		window.location.href = "history.html?" + dataURL.toString();
+	});
+}
+
 
 // NAVBAR
 

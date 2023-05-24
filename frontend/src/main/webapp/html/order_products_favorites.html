@@ -1,189 +1,183 @@
 <!DOCTYPE html>
 <html lang="en-UK">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online Pharmacy</title>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Online Pharmacy</title>
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../styles/styles.css">
-    <link rel="icon" href="../images/laptop-medical-solid-green.png" type="image/x-icon">
-    <!-- https://www.youtube.com/watch?v=lCCN_lkl3Xw -->
-</head>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link rel="stylesheet" href="../styles/styles.css">
+        <link rel="icon" href="../images/laptop-medical-solid-green.png" type="image/x-icon">
+        <!-- https://www.youtube.com/watch?v=lCCN_lkl3Xw -->
+    </head>
 
-<body>
-    <!-- header section start -->
-    <header class="header">
-        <a href="#" onclick="buildURLAndRedirectToHome()" class="logo"><i class="fa-solid fa-laptop-medical"></i> online
-            pharmacy </a>
+    <body>
+        <!-- header section start -->
+        <header class="header">
+            <a href="#" onclick="buildURLAndRedirectToHome()" class="logo"><i class="fa-solid fa-laptop-medical"></i> online
+                pharmacy </a>
 
-        <nav class="navbar">
-            <a href="#" onclick="buildURLAndRedirectToHome()">home</a>
-            <a href="../html/history.html" class="get-history disappear">history</a>
-        </nav>
+            <nav class="navbar">
+                <a href="#" onclick="buildURLAndRedirectToHome()">home</a>
+                <a href="#" class="get-history disappear">history</a>
+            </nav>
 
-        <div class="icons">
-            <div class="fa-solid fa-square-poll-vertical disappear" id="dashboard-btn"></div>
-            <div class="fa-solid fa-bars" id="menu-btn"></div>
-            <div class="fa-solid fa-search" id="search-btn"></div>
-            <div class="fa-solid fa-shopping-cart" id="cart-btn"></div>
-            <span class="badge disappear">0</span>
-            <div class="fa-solid fa-user" id="signin-btn"></div>
-            <div class="fa-solid fa-power-off disappear" id="signout-btn"></div>
-        </div>
+            <div class="icons">
+                <div class="fa-solid fa-square-poll-vertical disappear" id="dashboard-btn"></div>
+                <div class="fa-solid fa-bars" id="menu-btn"></div>
+                <div class="fa-solid fa-search" id="search-btn"></div>
+                <div class="fa-solid fa-shopping-cart" id="cart-btn"></div>
+                <span class="badge disappear">0</span>
+                <div class="fa-solid fa-user" id="signin-btn"></div>
+                <div class="fa-solid fa-power-off disappear" id="signout-btn"></div>
+            </div>
 
-        <form class="search-form">
-            <input type="search" id="search-box" placeholder="search here" class="original">
-            <label for="search-box" class="fa-solid fa-search"></label>
-        </form>
+            <form class="search-form">
+                <input type="search" id="search-box" placeholder="search here" class="original">
+                <label for="search-box" class="fa-solid fa-search"></label>
+            </form>
 
-        <!-- NOTE: os produtos criados pelo JS serão ancorados a esta div -->
-        <div class="shopping-cart">
+            <!-- NOTE: os produtos criados pelo JS serão ancorados a esta div -->
+            <div class="shopping-cart">
 
-            <!-- <div class="box">
-                <i class="fa-solid fa-trash"></i>
-                <img src="../images/national-watermelon-day(sm).png" alt="">
-                <div class="content">
-                    <h3>watermelon</h3>
-                    <span class="price">€4.99/-</span>
-                    <span class="quantity">qty : 1</span>
+                <!-- <div class="box">
+                    <i class="fa-solid fa-trash"></i>
+                    <img src="../images/national-watermelon-day(sm).png" alt="">
+                    <div class="content">
+                        <h3>watermelon</h3>
+                        <span class="price">€4.99/-</span>
+                        <span class="quantity">qty : 1</span>
+                    </div>
                 </div>
+                
+                <div class="total">Total : 19.60€/-</div>
+                <a href="#" class="btn">checkout</a> -->
             </div>
-            
-            <div class="total">Total : 19.60€/-</div>
-            <a href="#" class="btn">checkout</a> -->
-        </div>
 
-        <form action="" class="signin-form">
-            <h3>sign-in</h3>
-            <input type="email" placeholder="your e-mail" id="username" class="box">
-            <input type="password" placeholder="your password" id="password" class="box">
-            <p>don't have an account <a href="#">create now</a></p>
-            <input type="submit" value="sign in" id="signin" class="btn">
-        </form>
-    </header>
-    <!-- header section end -->
+            <form action="" class="signin-form">
+                <h3>sign-in</h3>
+                <input type="email" placeholder="your e-mail" id="username" class="box">
+                <input type="password" placeholder="your password" id="password" class="box">
+                <p>don't have an account <a href="#">create now</a></p>
+                <input type="submit" value="sign in" id="signin" class="btn">
+            </form>
+        </header>
+        <!-- header section end -->
 
-    <!-- home section starts -->
-    <section class="home" id="home">
-        <div class="content">
-            <h3>cheap and <span>organic</span> products for you</h3>
-            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto, eaque!</p>
-        </div>
-    </section>
-    <!-- home section ends -->
-
-    <!-- products section starts -->
-    <section class="products" id="products">
-        <h1 class="heading" id="title-page">
-            <!-- order  -->
-            <!-- <span> -->
-            <!-- details -->
-            <!-- </span>  -->
-            <!-- 24/04/2023 -->
-        </h1>
-        <h3 class="heading disappear">115.23€</h3>
-        <div class="heading disappear"><a href="#" class="btn">checkout</a></div>
-        <div class="swiper product-slider">
-            <div class="swiper-wrapper" id="products-half-1">
-
-                <!-- <div class="swiper-slide box">
-                        <a href="../html/product_details.html">
-                            <img src="../images/whey-protein.webp" alt="">
-                        </a>
-                        <h3>whey gold standard</h3>
-                        <div class="price">4.99€/- - 10.99€/-</div>
-                        <div class="likes">
-                            <p>beauty</p>
-                            <p>30 
-                                <a href="#">
-                                    <i class="fa-regular fa-thumbs-up"></i>
-                                </a>&emsp;
-                                <a href="#">
-                                    <i class="fa-solid fa-heart"></i>
-                                </a>
-                            </p>
-                        </div>
-                        <a href="#" class="btn">add to cart</a>
-                    </div> -->
-
+        <!-- home section starts -->
+        <section class="home" id="home">
+            <div class="content">
+                <h3>cheap and <span>organic</span> products for you</h3>
+                <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iusto, eaque!</p>
             </div>
-        </div>
+        </section>
+        <!-- home section ends -->
 
-        <div class="swiper product-slider">
-            <div class="swiper-wrapper" id="products-half-2">
-                <!-- <div class="swiper-slide box">
-                        <a href="../html/product_details.html"><img src="../images/Nivea-Q10-Firming-Body-Milk-Dry-Skin-400ml.png" alt=""></a>
-                        <h3>Nivea Q10 Firming Body Milk</h3>
-                        <div class="price">4.99€/- - 10.99€/-</div>
-                        <div class="likes">
-                            <p>beauty</p>
-                            <p>30 <i class="fa-regular fa-thumbs-up"></i>&emsp;<i class="fa-solid fa-heart"></i></p>
-                        </div>
-                        <a href="#" class="btn">add to cart</a>
-                    </div> -->
-            </div>
-        </div>
-    </section>
-    <!-- products section ends -->
+        <!-- products section starts -->
+        <section class="products" id="products">
+            <h1 class="heading" id="title-page">
+                <!-- order  -->
+                <!-- <span> -->
+                <!-- details -->
+                <!-- </span>  -->
+                <!-- 24/04/2023 -->
+            </h1>
+            <h3 class="heading disappear">115.23€</h3>
+            <div class="heading disappear"><a href="#" class="btn">checkout</a></div>
+            <div class="swiper product-slider">
+                <div class="swiper-wrapper" id="products-half-1">
 
-    <!-- footer section starts -->
-    <section class="footer">
-        <div class="box-container">
-            <div class="box">
-                <h3>online pharmacy <i class="fa-solid fa-laptop-medical"></i></h3>
-                <p class="original">Follow us in our social media</p>
-                <div class="share">
-                    <a href="https://www.facebook.com/" target="_blank" class="fa-brands fa-facebook-f"></a>
-                    <a href="https://twitter.com/" target="_blank" class="fa-brands fa-twitter"></a>
-                    <a href="https://www.instagram.com/" target="_blank" class="fa-brands fa-instagram"></a>
-                    <a href="https://www.linkedin.com/" target="_blank" class="fa-brands fa-linkedin"></a>
-                    <a href="https://www.tiktok.com/" target="_blank" class="fa-brands fa-tiktok"></a>
+                    <!-- <div class="swiper-slide box">
+                            <a href="../html/product_details.html">
+                                <img src="../images/whey-protein.webp" alt="">
+                            </a>
+                            <h3>whey gold standard</h3>
+                            <div class="price">4.99€/- - 10.99€/-</div>
+                            <div class="likes">
+                                <p>beauty</p>
+                                <p>30 
+                                    <a href="#">
+                                        <i class="fa-regular fa-thumbs-up"></i>
+                                    </a>&emsp;
+                                    <a href="#">
+                                        <i class="fa-solid fa-heart"></i>
+                                    </a>
+                                </p>
+                            </div>
+                            <a href="#" class="btn">add to cart</a>
+                        </div> -->
+
                 </div>
             </div>
 
-            <div class="box">
-                <h3>contact info</h3>
-                <a href="tel:+351 919 058 290" class="links"><i class="fa-solid fa-mobile-screen"></i>+351 919 058
-                    290</a>
-                <a href="#" class="links"><i class="fa-solid fa-phone"></i>+351 239 058 391</a>
-                <a href="mailto:wanderley.drumond@gmail.com" class="links original"><i
-                        class="fa-solid fa-envelope"></i>wanderley.drumond@gmail.com</a>
-                <a href="geo:40.23266945998722,-8.430624783312775" class="links"><i
-                        class="fa-solid fa-map-marked-alt"></i>Coimbra, Portugal - 3030-000</a>
+            <div class="swiper product-slider">
+                <div class="swiper-wrapper" id="products-half-2">
+                    <!-- <div class="swiper-slide box">
+                            <a href="../html/product_details.html"><img src="../images/Nivea-Q10-Firming-Body-Milk-Dry-Skin-400ml.png" alt=""></a>
+                            <h3>Nivea Q10 Firming Body Milk</h3>
+                            <div class="price">4.99€/- - 10.99€/-</div>
+                            <div class="likes">
+                                <p>beauty</p>
+                                <p>30 <i class="fa-regular fa-thumbs-up"></i>&emsp;<i class="fa-solid fa-heart"></i></p>
+                            </div>
+                            <a href="#" class="btn">add to cart</a>
+                        </div> -->
+                </div>
+            </div>
+        </section>
+        <!-- products section ends -->
+
+        <!-- footer section starts -->
+        <section class="footer">
+            <div class="box-container">
+                <div class="box">
+                    <h3>online pharmacy <i class="fa-solid fa-laptop-medical"></i></h3>
+                    <p class="original">Follow us in our social media</p>
+                    <div class="share">
+                        <a href="https://www.facebook.com/" target="_blank" class="fa-brands fa-facebook-f"></a>
+                        <a href="https://twitter.com/" target="_blank" class="fa-brands fa-twitter"></a>
+                        <a href="https://www.instagram.com/" target="_blank" class="fa-brands fa-instagram"></a>
+                        <a href="https://www.linkedin.com/" target="_blank" class="fa-brands fa-linkedin"></a>
+                        <a href="https://www.tiktok.com/" target="_blank" class="fa-brands fa-tiktok"></a>
+                    </div>
+                </div>
+
+                <div class="box">
+                    <h3>contact info</h3>
+                    <a href="tel:+351 919 058 290" class="links"><i class="fa-solid fa-mobile-screen"></i>+351 919 058 290</a>
+                    <a href="#" class="links"><i class="fa-solid fa-phone"></i>+351 239 058 391</a>
+                    <a href="mailto:wanderley.drumond@gmail.com" class="links original"><i class="fa-solid fa-envelope"></i>wanderley.drumond@gmail.com</a>
+                    <a href="geo:40.23266945998722,-8.430624783312775" class="links"><i class="fa-solid fa-map-marked-alt"></i>Coimbra, Portugal - 3030-000</a>
+                </div>
+
+                <div class="box">
+                    <h3>quick links</h3>
+                    <a href="#" onclick="buildURLAndRedirectToHome()" class="links"><i class="fa-solid fa-arrow-right"></i>home</a>
+                    <a href="#features" class="links"><i class="fa-solid fa-arrow-right"></i>features</a>
+                    <a href="#" onclick="buildURLAndRedirect(keySearchEnum.ALL)" class="links"><i class="fa-solid fa-arrow-right"></i>products</a>
+                    <a href="#categories" class="links"><i class="fa-solid fa-arrow-right"></i>categories</a>
+                    <a href="#" class="get-history links disappear"><i class="fa-solid fa-arrow-right"></i>history</a>
+                </div>
+
+                <div class="box">
+                    <h3>newsletter</h3>
+                    <p>subscribe for latest updates</p>
+                    <input type="email" placeholder="your e-mail" class="email">
+                    <input type="submit" value="subscribe" class="btn">
+                    <img src="../images/payments.gif" alt="" class="payment-img">
+                </div>
             </div>
 
-            <div class="box">
-                <h3>quick links</h3>
-                <a href="#" onclick="buildURLAndRedirectToHome()" class="links"><i
-                        class="fa-solid fa-arrow-right"></i>home</a>
-                <a href="#features" class="links"><i class="fa-solid fa-arrow-right"></i>features</a>
-                <a href="#" onclick="buildURLAndRedirect(keySearchEnum.ALL)" class="links"><i
-                        class="fa-solid fa-arrow-right"></i>products</a>
-                <a href="#categories" class="links"><i class="fa-solid fa-arrow-right"></i>categories</a>
-                <a href="../html/history.html" class="get-history links disappear"><i
-                        class="fa-solid fa-arrow-right"></i>history</a>
-            </div>
-
-            <div class="box">
-                <h3>newsletter</h3>
-                <p>subscribe for latest updates</p>
-                <input type="email" placeholder="your e-mail" class="email">
-                <input type="submit" value="subscribe" class="btn">
-                <img src="../images/payments.gif" alt="" class="payment-img">
-            </div>
-        </div>
-
-        <div class="credit">created by <span>wanderley drumond</span> | all rights reserved</div>
-    </section>
-    <!-- footer section ends -->
-    <script src="../js/order_products_favorites.js"></script>
-    <script src="../js/constants/constants.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
-    <script src="../js/navbar.js"></script>
-</body>
+            <div class="credit">created by <span>wanderley drumond</span> | all rights reserved</div>
+        </section>
+        <!-- footer section ends -->
+        <script src="../js/order_products_favorites.js"></script>
+        <script src="../js/constants/constants.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+        <script src="../js/navbar.js"></script>
+    </body>
 
 </html>

@@ -516,7 +516,9 @@ for (const historyLinkElement of historyLink) {
 	historyLinkElement.addEventListener('click', () => {
 		dataURL.delete("token");
 		dataURL.delete("role");
+
 		dataURL.append("token", tokenParameter);
+		dataURL.append("role", roleParameter);
 
 		window.location.href = "history.html?" + dataURL.toString();
 	});
