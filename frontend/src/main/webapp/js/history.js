@@ -44,34 +44,34 @@ const getHistoryData = () => {
 };
 
 const divideArrays = (orderList) => {
-	if (orderList) {
-		let arrayOrdersHalf1 = [],
-			arrayOrdersHalf2 = [];
-		let cutoff = Math.round(orderList.length / 2);
+    if (orderList) {
+        let arrayOrdersHalf1 = [],
+            arrayOrdersHalf2 = [];
+        let cutoff = Math.round(orderList.length / 2);
 
-		orderList.forEach((element, index) => {
-			if (cutoff <= index) {
-				arrayOrdersHalf1.push(element);
-			} else {
-				arrayOrdersHalf2.push(element);
-			}
-		});
+        orderList.forEach((element, index) => {
+            if (cutoff <= index) {
+                arrayOrdersHalf1.push(element);
+            } else {
+                arrayOrdersHalf2.push(element);
+            }
+        });
 
-		loadOrders(arrayOrdersHalf1, ordersHalf1Div);
-		loadOrders(arrayOrdersHalf2, ordersHalf2Div);
+        loadOrders(arrayOrdersHalf1, ordersHalf1Div);
+        loadOrders(arrayOrdersHalf2, ordersHalf2Div);
 
-		if (orderId != null && orderId != undefined) {
-			document
-				.getElementById(orderId)
-				.scrollIntoView({ behavior: "instant", block: "center" });
-		}
-	}
+        if (orderId != null && orderId != undefined) {
+            document
+                .getElementById(orderId)
+                .scrollIntoView({ behavior: "instant", block: "center" });
+        }
+    }
 };
 
 const loadOrders = (arrayHalf, divHalf) => {
     while (divHalf.children.length > 0) {
-		divHalf.removeChild(divHalf.children[0]);
-	}
+        divHalf.removeChild(divHalf.children[0]);
+    }
 
     arrayHalf.forEach(orderElement => {
         // <div class="swiper-slide box"></div>
@@ -81,11 +81,27 @@ const loadOrders = (arrayHalf, divHalf) => {
         orderId = orderDiv.id = orderElement.id;
         // <h3>24/04/2023</h3>
         const orderDate = document.createElement("h3");
-        orderDate.innerText = orderElement.lastUpdate;
+
+        const dateFromDatabase = new Date(orderElement.lastUpdate);
+        const formattingOptions = {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+        };
+        const formattedDate = dateFromDatabase.toLocaleString('en-GB', formattingOptions);
+        orderDate.innerText = formattedDate;
+
         // <div class="price">101.99€</div>
         const orderValue = document.createElement("div");
         orderValue.classList.add("price");
-        orderValue.innerText = orderElement.totalValue;
+        const formattedPrice = orderElement.totalValue.toLocaleString('pt-PT', {
+            style: 'currency',
+            currency: 'EUR'
+        });
+        orderValue.innerText = formattedPrice;
         // <a href="../html/order_details.html" class="btn">see details</a>
         const seeDetails = document.createElement("a");
         seeDetails.href = "#";
@@ -97,8 +113,8 @@ const loadOrders = (arrayHalf, divHalf) => {
 
             dataURL.append("token", tokenParameter);
             dataURL.append("id", orderElement.id);
-    
-            window.location.href = "order_details.html?" + dataURL.toString();
+
+            window.location.href = "order_products_favorites.html?" + dataURL.toString();
         });
 
         orderDiv.appendChild(orderDate);
