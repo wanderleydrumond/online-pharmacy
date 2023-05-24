@@ -1,6 +1,7 @@
 package mappers;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import javax.ejb.Stateless;
@@ -37,7 +38,28 @@ public class OrderMapper {
 	 * @return the DTO resultant object
 	 */
 	public OrderDTO toDTO(Order order) {
-		List<ProductDTO> productsDTO = order.getProductsOfAnOrder().stream().map(productMapper::toDTO).collect(Collectors.toList());
+		
+		return toDTO(order, false, null);
+	}
+	
+	/**
+	 * <p>Changes a {@link Order} object into a {@link OrderDTO} object.</p>
+	 * <p><em>{@linkplain OrderMapper#toDTO(Order) toDTO} overload method</em></p>
+	 * 
+	 * @param order 				 the object that will be transformed into DTO object
+	 * @param verifyLikedOrFavorited it will check if this product was liked and/or favorited?
+	 * @param token					 logged user identifier key
+	 * @return the DTO resultant object
+	 */
+	public OrderDTO toDTO(Order order, boolean verifyLikedOrFavorited, UUID token) {
+		List<ProductDTO> productsDTO;
+		
+		if(verifyLikedOrFavorited && token!= null) {
+			productsDTO = order.getProductsOfAnOrder().stream().map(productElement -> productMapper.toDTO(productElement, verifyLikedOrFavorited, token)).collect(Collectors.toList());
+		} else {
+			productsDTO = order.getProductsOfAnOrder().stream().map(productMapper::toDTO).collect(Collectors.toList());			
+		}
+		
 		return new OrderDTO(order.getId(), order.getLastUpdate().toString(), order.getTotalValue(), order.getIsConcluded(), productsDTO);
 	}
 	

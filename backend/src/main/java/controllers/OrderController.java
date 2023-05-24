@@ -44,7 +44,6 @@ public class OrderController {
 	 * Adds the provided product to the provided order from the logged user if an order already exists, otherwise, creates an order before.
 	 * 
 	 * @param token		logged user identifier key
-	 * @param orderId	primary key that identifies the order to update
 	 * @param productId primary key that identifies the to add to the referred order
 	 * @return {@link Response} with status code:
 	 *      <ul>
@@ -80,9 +79,9 @@ public class OrderController {
 	@Path("/by")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getById(@HeaderParam("token") UUID token, @QueryParam("id") String orderId) {
+	public Response getById(@HeaderParam("token") UUID token, @QueryParam("verify") boolean verifyLikedOrFavorited, @QueryParam("orderId") String orderId) {
 		Order order = orderService.getById(token, Short.valueOf(orderId));
-		OrderDTO orderDTO = orderMapper.toDTO(order);
+		OrderDTO orderDTO = orderMapper.toDTO(order, verifyLikedOrFavorited, token);
 		
 		return Response.ok(orderDTO).build();
 	}

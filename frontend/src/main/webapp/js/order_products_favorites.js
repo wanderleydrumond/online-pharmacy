@@ -173,7 +173,7 @@ const fetchProducts = async () => {
 
 	switch (keySearchParameter) {
 		case keySearchEnum.ALL:
-
+			debugger;
 			titlePage.innerText = titlePageEnum.ALL_OR_BY_SECTION;
 			titleSpan.innerText = "products";
 
@@ -191,7 +191,6 @@ const fetchProducts = async () => {
 				})
 				.then((productList) => {
 					this.productList = productList;
-
 				});
 			break;
 
@@ -254,7 +253,24 @@ const fetchProducts = async () => {
 
 			header = new Headers();
 			header.append("token", tokenParameter);
-			// TODO: chamar fetch dos detalhes de um determinado pedido
+
+			const urlWithQueryParametersOrderDetails = new URL(urlBase + "/order/by");
+			urlWithQueryParametersOrderDetails.searchParams.append("verify", verify);
+			urlWithQueryParametersOrderDetails.searchParams.append("orderId", orderIdParameter);
+
+			await fetch(
+				urlWithQueryParametersOrderDetails,
+				fetchContentFactoryWithoutBody(requestMethods.GET, tokenParameter)
+			)
+				.then((response) => {
+					if (response.ok) {
+						return response.json();
+					}
+				})
+				.then((orderDetails) => {
+					productList = orderDetails.productsDTO;
+					this.productList = productList;
+				});
 			break;
 		default:
 			break;
@@ -666,6 +682,13 @@ const tokenParameter = parameters.get("token");
  */
 const roleParameter = parameters.get("role");
 /**
+ * Order id to be get from URL.
+ * @date 5/24/2023 - 4:46:24 PM
+ *
+ * @type {String}
+ */
+const orderIdParameter = parameters.get("id");
+/**
  * Storages the logged user in the home page.
  * @date 5/8/2023 - 4:36:25 PM
  *
@@ -1011,8 +1034,8 @@ for (const historyElement of historyLink) {
 		dataURL.delete("token");
 		dataURL.delete("key-search");
 		dataURL.delete("role");
-		debugger;
-		dataURL.append("token", tokenParameter); //here:
+
+		dataURL.append("token", tokenParameter);
 		dataURL.append("role", roleParameter);
 
 		window.location.href = "history.html?" + dataURL.toString();

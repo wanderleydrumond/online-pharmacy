@@ -122,6 +122,7 @@ const loadOrders = (arrayHalf, divHalf) => {
             dataURL.append("token", tokenParameter);
             dataURL.append("id", orderElement.id);
             dataURL.append("role", roleParameter);
+            dataURL.append("key-search", keySearchEnum.ORDER);
 
             window.location.href = "order_products_favorites.html?" + dataURL.toString();
         });
