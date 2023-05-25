@@ -57,8 +57,13 @@ const productsHalf2Div = document.getElementById("products-half-2");
 
 const titlePage = document.getElementById("title-page");
 const cartDiv = document.getElementsByClassName("shopping-cart")[0];
+const searchButton = document.getElementById("search-btn");
 
 window.onload = () => {
+	if (keySearchParameter == keySearchEnum.ORDER) {
+		searchButton.classList.add("disappear");
+	}
+
 	if (loggedUser != null || (tokenParameter != NOT_LOGGED_TOKEN && roleParameter != undefined)) {
 		manageNavbar();
 		getCart(); // FIXME: Ele entra em momento inapropriado. Não respeita do async await?
@@ -173,7 +178,6 @@ const fetchProducts = async () => {
 
 	switch (keySearchParameter) {
 		case keySearchEnum.ALL:
-			debugger;
 			titlePage.innerText = titlePageEnum.ALL_OR_BY_SECTION;
 			titleSpan.innerText = "products";
 
@@ -317,6 +321,13 @@ const divideArrays = (productList) => {
 	}
 };
 
+/**
+ * Mounts the half of products on the screen according to the key search page.
+ * @date 5/25/2023 - 8:59:00 AM
+ *
+ * @param {[Object]} arrayHalf the data that will be loaded
+ * @param {HTMLElement} divHalf element that contains other elements that will be mounted dynamically
+ */
 const loadProducts = (arrayHalf, divHalf) => {
 	while (divHalf.children.length > 0) {
 		divHalf.removeChild(divHalf.children[0]);
@@ -661,12 +672,26 @@ const favouritesLink = document.getElementsByClassName("get-favourites");
  */
 const historyLink = document.getElementsByClassName("get-history");
 /**
- * <strong><em>span</em></strong> element that contains the amount of element in cart
+ * HTML <strong><em>span</em></strong> element that contains the amount of element in cart
  * @date 5/17/2023 - 10:20:16 AM
  *
  * @type {Object}
  */
 const badge = document.getElementsByClassName("badge")[0];
+/**
+ * HTML <strong><em>input text</em></strong> element that holds the product name search content.
+ * @date 5/25/2023 - 4:47:55 PM
+ *
+ * @type {HTMLElement}
+ */
+const productSearchInput = document.getElementById("search-box");
+/**
+ * HTML <strong><em>label</em></strong> element in the navbar that has the appearance of a magnifier.
+ * @date 5/25/2023 - 3:14:46 PM
+ *
+ * @type {HTMLElement}
+ */
+const search = document.getElementById("search-button");
 /**
  * UUID to be get from URL.
  * @date 5/8/2023 - 5:08:34 PM
@@ -1042,6 +1067,29 @@ for (const historyElement of historyLink) {
 	});
 }
 
+search.addEventListener('click', () => {
+	verify = false;
+	if (tokenParameter != NOT_LOGGED_TOKEN) {
+		verify = true;
+	}
+
+	let productSearchInputValue = productSearchInput.value.trim();
+	const urlWithQueryParametersAllByName = new URL(urlBase + "/product/all-by-");
+
+	urlWithQueryParametersAllByName.searchParams.append("verify", verify);
+	urlWithQueryParametersAllByName.searchParams.append("name", productSearchInputValue);
+
+	fetch(urlWithQueryParametersAllByName, fetchContentFactoryWithoutBody(requestMethods.GET, tokenParameter))
+		.then((response) => {
+			if (response.ok) {
+				return response.json();
+			}
+		})
+		.then((productList) => {
+			this.productList = productList;
+			divideArrays(this.productList);
+		});
+});
 
 // NAVBAR
 

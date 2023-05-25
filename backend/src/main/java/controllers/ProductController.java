@@ -112,6 +112,8 @@ public class ProductController {
 	/**
 	 * Gets all products.
 	 * 
+	 * @param token					 logged user identifier key
+	 * @param verifyLikedOrFavorited it will check if this product was liked and/or marked as favourite?
 	 * @return {@link Response} with status code:
 	 *      <ul>
 	 *         <li><strong>200 (OK)</strong> if the product list was found and has elements</li>

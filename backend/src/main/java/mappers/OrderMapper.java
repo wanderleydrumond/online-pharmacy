@@ -32,7 +32,7 @@ public class OrderMapper {
 	}
 	
 	/**
-	 * Changes a {@link Order} object into a {@link OrderDTO} object.
+	 * Changes an {@link Order} object into an {@link OrderDTO} object.
 	 * 
 	 * @param order the object that will be transformed into DTO object
 	 * @return the DTO resultant object
@@ -64,7 +64,7 @@ public class OrderMapper {
 	}
 	
 	/**
-	 * Changes a {@link OrderDTO} object list into a {@link Order} objects list.
+	 * Changes an {@link OrderDTO} object list into an {@link Order} objects list.
 	 * 
 	 * @param ordersDTO the list that will be transformed into Entity list
 	 * @return the {@link Order} resultant objects list
@@ -74,7 +74,7 @@ public class OrderMapper {
 	}
 	
 	/**
-	 * Changes a {@link Order} objects list into a {@link OrderDTO} objects list.
+	 * Changes an {@link Order} objects list into an {@link OrderDTO} objects list.
 	 * 
 	 * @param orders the list that will be transformed into DTO list
 	 * @return the {@link OrderDTO} resultant objects list
