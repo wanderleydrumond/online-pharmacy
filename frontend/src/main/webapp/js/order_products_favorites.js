@@ -66,7 +66,7 @@ window.onload = () => {
 
 	if (loggedUser != null || (tokenParameter != NOT_LOGGED_TOKEN && roleParameter != undefined)) {
 		manageNavbar();
-		getCart(); // FIXME: Ele entra em momento inapropriado. Não respeita do async await?
+		getCart();
 	}
 	fetchProducts();
 };
@@ -1008,10 +1008,8 @@ const loadCartItem = (cart) => {
  * @date 5/17/2023 - 10:17:54 AM
  */
 function cleanCart() {
-	if (cartDiv.children) { //TODO: esta verificação é necessária? Se calhar, basta o while já funciona.
-		while (cartDiv.children.length > 0) {
-			cartDiv.removeChild(cartDiv.children[0]);
-		}
+	while (cartDiv.children.length > 0) {
+		cartDiv.removeChild(cartDiv.children[0]);
 	}
 }
 
