@@ -1,0 +1,2990 @@
+{
+	"info": {
+		"_postman_id": "6c39622a-2366-46af-98f6-1aa239f7b1a1",
+		"name": "Pharmacy",
+		"description": "StartFragment\n\nEndpoints from the pharmacy project.\n\nEndFragmen",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20200333",
+		"_collection_link": "https://winter-satellite-262226.postman.co/workspace/Projetos-de-estudos~a2954886-a859-47ed-897a-1b77b93280fc/collection/20200333-6c39622a-2366-46af-98f6-1aa239f7b1a1?action=share&creator=20200333&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Sign Up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{administrator_name}}\",\r\n    \"username\": \"{{administrator_username}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"role\": \"VISITOR\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/user/signup",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"signup"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Sign up an inexistent user into the system",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Markus Grimshaw\",\r\n    \"username\": \"black_samson\",\r\n    \"password\": \"{{password}}\",\r\n    \"role\": \"VISITOR\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/user/signup",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"signup"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Trying to signing up an existing user into the system",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"{{visitor1_name}}\",\r\n    \"username\": \"{{visitor1_username}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"role\": \"VISITOR\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/user/signup",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"signup"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Sign In",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "username",
+								"value": "{{administrator_username}}",
+								"type": "text"
+							},
+							{
+								"key": "password",
+								"value": "{{password}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/user/signin",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"signin"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Correct username and password",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "username",
+										"value": "{{client1_username}}",
+										"description": "correct username",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "{{password}}",
+										"description": "correct password",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/user/signin",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"signin"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Incorrect username and correct password",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "username",
+										"value": "inexistent_in_database",
+										"description": "incorrect username",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "{{password}}",
+										"description": "correct password",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/user/signin",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"signin"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Correct username and incorrect password",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "username",
+										"value": "{{visitor1_username}}",
+										"description": "correct username",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "incorrect_password",
+										"description": "incorrect password",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/user/signin",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"signin"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "A visitor tries to sign in",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "username",
+										"value": "{{visitor1_username}}",
+										"description": "unauthorized user",
+										"type": "text"
+									},
+									{
+										"key": "password",
+										"value": "{{password}}",
+										"description": "correct password",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/user/signin",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"signin"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Sign out",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{administrator_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/user/signout",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"signout"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Sign out a logged user",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{client1_token}}",
+										"description": "Token that belongs to a logged user",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/user/signout",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"signout"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Trying to sign out a non logged user",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{visitor1_token}}",
+										"description": "Token that belongs to a non logged user",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/user/signout",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"signout"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Trying to sign out a non user without providing token",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "",
+										"description": "Token set as null",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/user/signout",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"signout"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Approve user",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{administrator_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/user/approve?id={{client1_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"approve"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{client1_id}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "An administrator approves a visitor sign up",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{administrator_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/user/approve?id={{client1_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"approve"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{client1_id}}"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "An administrator tries to approves a client sign up",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{administrator_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/user/approve?id={{client1_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"approve"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{client1_id}}"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Gets own data",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{administrator_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/user/data",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"data"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "An administrator gets their own data",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{administrator_token}}",
+										"description": "an administrator can see their own data",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/user/data",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"data"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "A client gets their own data",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{client1_token}}",
+										"description": "a client can see their own data",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/user/data",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"data"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "A visitor tries to get their own data",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{visitor1_token}}",
+										"description": "a visitor can't see their own data",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/user/data",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"data"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Edit own data",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{administrator_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"name\":\"{{administrator_name}}\",\r\n\t\"password\":\"{{password}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/user/data",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"data"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "An administrator edits their own data",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{administrator_token}}",
+										"description": "the correct administrator token",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"name\":\"{{administrator_name}}\",\r\n\t\"password\":\"{{password}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/user/data",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"data"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "An administrator tries to edit a client data",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{administrator_token}}",
+										"description": "the correct administrator token",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"name\":\"{{client1_name}}\",\r\n\t\"password\":\"{{password}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/user/data",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"data"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "An administrator tries to edit a visitor data",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{administrator_token}}",
+										"description": "the correct administrator token",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"name\":\"{{visitor1_name}}\",\r\n\t\"password\":\"{{password}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/user/data",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"data"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "An administrator tries to edit their own forbidden data",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{administrator_token}}",
+										"description": "the correct administrator token",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"name\":\"{{administrator_name}}\",\r\n\t\"password\":\"{{password}}\",\r\n\t\"username\":\"ommini-man\",\r\n\t\"role\":\"CLIENT\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/user/data",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"data"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Dashboard",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{administrator_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/user/dashboard",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"user",
+								"dashboard"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "An administrator gets the dashboard",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{administrator_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/user/dashboard",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"dashboard"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "A client tries to get the dashboard",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{client1_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/user/dashboard",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"dashboard"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "A non logged user tries to get the dashboard",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{not_logged_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/user/dashboard",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"user",
+										"dashboard"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{administrator_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"name\": \"Nivea Q10 Firming Body Milk Dry Skin 400ml\",\r\n\t\"image\": \"https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U\",\r\n\t\"price\": 6.74,\r\n\t\"section\": \"BEAUTY\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/product/create",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"product",
+								"create"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "An administrator creates a non existent product",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{administrator_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"name\": \"Solgar Whey to go Whey Protein Powder Sabor Chocolate 377 gr\",\r\n\t\"image\": \"https://fastly.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI\",\r\n\t\"price\": 32.08,\r\n\t\"section\": \"SUPPLEMENTS\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/product/create",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"product",
+										"create"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "An administrator creates an another non existent product",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{administrator_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"name\": \"Gillette Recargas Fusion5 Proglide Power 4 Uds\",\r\n\t\"image\": \"https://fastly.picsum.photos/id/999/200/300.jpg?hmac=XqjgMZW5yK4MjHpQJFs_TiRodRNf9UVKjJiGnDJV8GI\",\r\n\t\"price\": 21.99,\r\n\t\"section\": \"BEAUTY\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/product/create",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"product",
+										"create"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Get all by section",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{administrator_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/product/all-by?section={{section}}&verify={{verify_liked_and_or_favourite}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"product",
+								"all-by"
+							],
+							"query": [
+								{
+									"key": "section",
+									"value": "{{section}}"
+								},
+								{
+									"key": "verify",
+									"value": "{{verify_liked_and_or_favourite}}",
+									"description": "verify if this user has liked and/or favorited products"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Getting the list of a section that have products for a non logged user",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{not_logged_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/product/all-by?section={{section}}&verify={{verify_liked_and_or_favourite}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"product",
+										"all-by"
+									],
+									"query": [
+										{
+											"key": "section",
+											"value": "{{section}}",
+											"description": "section that contains products"
+										},
+										{
+											"key": "verify",
+											"value": "{{verify_liked_and_or_favourite}}"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Getting the list of a section that have products for a client",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{client1_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/product/all-by?section={{section}}&verify={{verify_liked_and_or_favourite}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"product",
+										"all-by"
+									],
+									"query": [
+										{
+											"key": "section",
+											"value": "{{section}}",
+											"description": "section that contains products"
+										},
+										{
+											"key": "verify",
+											"value": "{{verify_liked_and_or_favourite}}"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Getting the list of a section that does not have any products for a non logged user",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{not_logged_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/product/all-by?section={{section}}&verify={{verify_liked_and_or_favourite}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"product",
+										"all-by"
+									],
+									"query": [
+										{
+											"key": "section",
+											"value": "{{section}}",
+											"description": "section that does not contains products"
+										},
+										{
+											"key": "verify",
+											"value": "{{verify_liked_and_or_favourite}}"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Trying to getting the list of products from an inexistent section for a non logged user",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{not_logged_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/product/all-by?section=ANTIBIOTICS&verify={{verify_liked_and_or_favourite}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"product",
+										"all-by"
+									],
+									"query": [
+										{
+											"key": "section",
+											"value": "ANTIBIOTICS",
+											"description": "section that does not contains products"
+										},
+										{
+											"key": "verify",
+											"value": "{{verify_liked_and_or_favourite}}"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Get all sections",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/product/all-sections",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"product",
+								"all-sections"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Getting all sections in database",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/product/all-sections",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"product",
+										"all-sections"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Get all",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{client1_token}}",
+								"description": "Logged client identification",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/product/all?verify={{verify_liked_and_or_favourite}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"product",
+								"all"
+							],
+							"query": [
+								{
+									"key": "verify",
+									"value": "{{verify_liked_and_or_favourite}}",
+									"description": "verify if this user has liked and/or favorited products"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "A client gets all products",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{client1_token}}",
+										"description": "Logged client identification",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/product/all?verify=true",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"product",
+										"all"
+									],
+									"query": [
+										{
+											"key": "verify",
+											"value": "true",
+											"description": "verify if this user has liked and/or favorited products"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "An administrator gets all products",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{administrator_token}}",
+										"description": "Logged client identification",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/product/all?verify=true",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"product",
+										"all"
+									],
+									"query": [
+										{
+											"key": "verify",
+											"value": "true",
+											"description": "verify if this user has liked and/or favorited products"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "A non logged user gets all products",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{not_logged_token}}",
+										"description": "Not logged user identification",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/product/all?verify=true",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"product",
+										"all"
+									],
+									"query": [
+										{
+											"key": "verify",
+											"value": "true",
+											"description": "verify if this user has liked and/or favorited products"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Get by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/product/by?id={{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"product",
+								"by"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{product_id}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "An user gets an existent product",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/product/by?id={{product_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"product",
+										"by"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{product_id}}",
+											"description": "existent product id"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "An user tries to get an inexistent product",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/product/by?id=-1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"product",
+										"by"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "-1",
+											"description": "inexistent product id"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "An user tries to get an existent product with a wrong format id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/product/by?id=\"1\"",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"product",
+										"by"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "\"1\"",
+											"description": "inexistent product id"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Like by id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{client1_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/product/like?id={{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"product",
+								"like"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{product_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unlike by id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{client1_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/product/unlike?id={{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"product",
+								"unlike"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{product_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Favourite by id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{client1_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/product/favourite?id={{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"product",
+								"favourite"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{product_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unfavourite by id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{client1_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/product/unfavourite?id={{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"product",
+								"unfavourite"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{product_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all favourite products from the logged user",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{administrator_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/product/favourites",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"product",
+								"favourites"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "An administrator gets their favorite products list",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{administrator_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/product/favorites",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"product",
+										"favorites"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "A client gets their favorite products list",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{client1_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/product/favourites",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"product",
+										"favourites"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "A visitor tries to get their favorite products list",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{not_logged_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/product/favorites",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"product",
+										"favorites"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Get all products by name",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{administrator_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/product/all-by-?key={{section}}&verify={{verify_liked_and_or_favourite}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"product",
+								"all-by-"
+							],
+							"query": [
+								{
+									"key": "key",
+									"value": "{{section}}"
+								},
+								{
+									"key": "verify",
+									"value": "{{verify_liked_and_or_favourite}}",
+									"description": "verify if this user has liked and/or favorited products"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Getting all products by part of existing name",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/product/all-by-?name=Nivea",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"product",
+										"all-by-"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Nivea"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Trying to all products by part of inexisting name",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/product/all-by-?name=Sundown",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"product",
+										"all-by-"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "Sundown"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Get all products by name logged as client",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{client1_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/product/all-by-?name=niv&verify={{verify_liked_and_or_favourite}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"product",
+										"all-by-"
+									],
+									"query": [
+										{
+											"key": "name",
+											"value": "niv"
+										},
+										{
+											"key": "verify",
+											"value": "{{verify_liked_and_or_favourite}}",
+											"description": "verify if this user has liked and/or favorited products"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Comment",
+			"item": [
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{administrator_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"content\":\"Wonderful product, a bit oily, but it have a great cost-benefit. I strongly reconmend to all that have dry skin.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/comment/create?id={{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"comment",
+								"create"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{product_id}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "An administrator adds their comment to a product",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{administrator_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"content\":\"Wonderful product, a bit oily, but it have a great cost-benefit. I strongly reconmend to all that have dry skin.\",\r\n\t\"nameOwner\":\"{{administrator_name}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/comment/create?id={{product_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"comment",
+										"create"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{product_id}}"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "An administrator tries to add another comment for a product",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{administrator_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"content\":\"Wonderful product, a bit oily, but it have a great cost-benefit. I strongly reconmend to all that have dry skin.\",\r\n\t\"nameOwner\":\"{{administrator_name}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/comment/create?id={{product_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"comment",
+										"create"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{product_id}}"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "A client adds their comment to a product",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{client1_token}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\t\"content\":\"The product is good, my skin got hydrated. But I got pimples because my skin is oily.\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/comment/create?id={{product_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"comment",
+										"create"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{product_id}}"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Get comment by product id for the logged user (OUT OF SCOPE)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{administrator_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/comment/by?id={{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"comment",
+								"by"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{product_id}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "An administrator gets a comment made by them from an existent product",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{administrator_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/comment/by?id={{product_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"comment",
+										"by"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{product_id}}",
+											"description": "existent product id"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "An administrator tries  to get a comment made by them from an inexistent product",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{administrator_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/comment/by?id=-87",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"comment",
+										"by"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "-87",
+											"description": "inexistent product id"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Delete comment by id",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{administrator_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/comment/by?id={{comment_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"comment",
+								"by"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{comment_id}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Delete an existent comment by the owner",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{client1_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/comment/by?id={{comment_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"comment",
+										"by"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{comment_id}}"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Update comment by id",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{administrator_token}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"content\": \"Awful product, in the first week the result was good, but over time the effect was the opposite. I will never buy this again.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/comment/by?id={{comment_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"comment",
+								"by"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{comment_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all comment from a product id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/comment/all-by?id={{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"comment",
+								"all-by"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{product_id}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Getting all comments from a existent product id (with comments)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/comment/all-by?id=1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"comment",
+										"all-by"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "1",
+											"description": "product with comments (at least 1)"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Getting all comments from a existent product id (without comments)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/comment/all-by?id=8",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"comment",
+										"all-by"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "8",
+											"description": "product with no comments"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Getting all comments from an inexistent product id",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/comment/all-by?id=-1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"comment",
+										"all-by"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "-1",
+											"description": "inexistent product id"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "New Order (REMOVED)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{client1_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/order/create?id={{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"create"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{product_id}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "A client adds an existent product to their own cart",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{client1_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/order/create?id={{product_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"order",
+										"create"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{product_id}}"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "A non logged client tries to add an existent product to their own cart",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/order/create?id={{product_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"order",
+										"create"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{product_id}}"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "A client tries to add an inexistent product to their own cart",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{client1_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/order/create?id=-87",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"order",
+										"create"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "-87",
+											"description": "inexistent product id"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Get order by id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{client1_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/order/by?id={{order_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"by"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{order_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create order or add product into existent order",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{client1_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/order/by?productId={{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"by"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "{{product_id}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Create order or add product into existent order for an existent client",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{client1_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/order/by?productId={{product_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"order",
+										"by"
+									],
+									"query": [
+										{
+											"key": "productId",
+											"value": "{{product_id}}"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Create order or add product into existent order for an existent administrator",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{administrator_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/order/by?productId={{product_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"order",
+										"by"
+									],
+									"query": [
+										{
+											"key": "productId",
+											"value": "{{product_id}}"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Remove product from order",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{client1_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/order/product-by?orderId={{order_id}}&productId={{product_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"product-by"
+							],
+							"query": [
+								{
+									"key": "orderId",
+									"value": "{{order_id}}"
+								},
+								{
+									"key": "productId",
+									"value": "{{product_id}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get all concluded orders",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{client1_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/order/all",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"all"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "A client with no concluded orders gets the list of concluded orders",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{client1_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/order/all",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"order",
+										"all"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "A visitor tries to get their list of concluded orders",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "token",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/order/all",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"order",
+										"all"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Conclude order",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{client1_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/order/finish?id={{order_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"finish"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{order_id}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "A client concludes a non concluded order",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{client1_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/order/finish?id={{order_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"order",
+										"finish"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{order_id}}"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "A client tries to conclude a concluded order",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{client1_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/order/finish?id={{order_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"order",
+										"finish"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{order_id}}"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "A client tries to conclude an inexistent order",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{client1_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/order/finish?id=-87",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"order",
+										"finish"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "-87",
+											"description": "incorrect order id"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "An administrator concludes a non concluded order",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{administrator_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/order/finish?id={{order_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"order",
+										"finish"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{order_id}}"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Clean cart",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{client1_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/order/by?id={{order_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"by"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{order_id}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Clean an existent cart",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{client1_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/order/by?id={{order_id}}",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"order",
+										"by"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{order_id}}"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Clean an inexistent cart",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "token",
+										"value": "{{client1_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/order/by?id=-87",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"order",
+										"by"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "-87"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Clean an inexistent cart for a non logged user",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "token",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/order/by?id=-87",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"order",
+										"by"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "-87"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Get order by token (Get cart)",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "token",
+								"value": "{{client1_token}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/order/cart",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"order",
+								"cart"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
